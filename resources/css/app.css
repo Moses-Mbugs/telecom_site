@@ -1,20 +1,5 @@
-@import 'tailwindcss';
-
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth fade animation classes */
-.fade-in {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
