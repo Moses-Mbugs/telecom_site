@@ -1,3 +1,4 @@
+{{--  shop.blade.php  --}}
 @extends('layouts.app')
 
 @push('styles')
@@ -158,86 +159,122 @@
         <aside class="col-span-12 md:col-span-3 p-8 rounded-2xl filter-sidebar shadow-md sticky top-6 self-start">
             <h2 class="text-xl font-bold text-gray-800 mb-6">🔍 Filter Products</h2>
 
-            <div class="mb-8">
-                <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Categories</h3>
-                <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-center">
-                        <input type="checkbox" id="cat-smartphones" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="cat-smartphones" class="cursor-pointer">Smartphones</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="cat-tablets" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="cat-tablets" class="cursor-pointer">Tablets</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="cat-screen" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="cat-screen" class="cursor-pointer">Screen Replacements</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="cat-batteries" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="cat-batteries" class="cursor-pointer">Batteries</label>
-                    </li>
-                </ul>
-            </div>
+            <form method="GET" action="{{ route('shop') }}">
+                {{-- Categories --}}
+                <div class="mb-8">
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Categories</h3>
+                    <ul class="space-y-3 text-gray-600">
+                        @foreach ($categories as $category)
+                            <li class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    name="categories[]"
+                                    value="{{ $category->id }}"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3"
+                                >
+                                <label class="cursor-pointer">{{ $category->name }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
 
-            <div>
-                <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Brand</h3>
-                <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-center">
-                        <input type="checkbox" id="brand-samsung" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="brand-samsung" class="cursor-pointer">Samsung</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="brand-iphone" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="brand-iphone" class="cursor-pointer">iPhone</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="brand-infinix" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="brand-infinix" class="cursor-pointer">Infinix</label>
-                    </li>
-                    <li class="flex items-center">
-                        <input type="checkbox" id="brand-tecno" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3">
-                        <label for="brand-tecno" class="cursor-pointer">Tecno</label>
-                    </li>
-                </ul>
-            </div>
-            <button class="w-full mt-6 bg-gray-800 text-white py-3 rounded-xl hover:bg-gray-900 transition font-medium">Apply Filters</button>
+                {{-- Brands --}}
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Brand</h3>
+                    <ul class="space-y-3 text-gray-600">
+                        @foreach ($brands as $brand)
+                            <li class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    name="brands[]"
+                                    value="{{ $brand->id }}"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 mr-3"
+                                >
+                                <label class="cursor-pointer">{{ $brand->name }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full mt-6 bg-gray-800 text-white py-3 rounded-xl hover:bg-gray-900 transition font-medium">
+                    Apply Filters
+                </button>
+            </form>
         </aside>
+
 
         <main id="products" class="col-span-12 md:col-span-9">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
                 <h2 class="text-3xl font-bold text-gray-800 mb-3 sm:mb-0">Featured Products</h2>
                 <div class="flex items-center space-x-2">
                     <span class="text-gray-700 font-medium">Sort by:</span>
-                    <select class="border-gray-300 rounded-xl shadow-sm p-3 bg-white hover:border-gray-400 transition focus-ring-gray">
-                        <option>Recommended</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                        <option>Newest Arrivals</option>
-                    </select>
+                        <select
+                            name="sort"
+                            onchange="this.form.submit()"
+                            class="border-gray-300 rounded-xl shadow-sm p-3 bg-white hover:border-gray-400 transition">
+                            <option value="">Recommended</option>
+                            <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>
+                                Price: Low to High
+                            </option>
+                            <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>
+                                Price: High to Low
+                            </option>
+                        </select>
+
                 </div>
             </div>
 
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @for ($i = 0; $i < 6; $i++)
-                <div class="p-5 glass-card">
-                    <div class="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+                @forelse ($products as $product)
+                    <div class="p-5 glass-card">
+                        <div class="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+                            @if ($product->image)
+                                <img
+                                    src="{{ asset('storage/' . $product->image) }}"
+                                    alt="{{ $product->name }}"
+                                    class="object-cover w-full h-full"
+                                >
+                            @else
+                                <span class="text-gray-400 text-sm">No Image</span>
+                            @endif
+                        </div>
 
+                        <h3 class="text-xl font-bold text-gray-900 mb-1">
+                            {{ $product->name }}
+                        </h3>
 
-[Image of a sleek, modern smartphone product]
+                        <p class="text-red-600 font-semibold text-lg mb-3">
+                            KES {{ number_format($product->price) }}
+                        </p>
+
+                        @if ($product->deposit_amount && $product->monthly_payment)
+                            <p class="text-gray-600 mb-4 text-sm">
+                                Or start with a
+                                <strong>KES {{ number_format($product->deposit_amount) }}</strong>
+                                deposit and pay
+                                <strong>KES {{ number_format($product->monthly_payment) }}/month</strong>.
+                            </p>
+                        @endif
+
+                        <a href="{{ route('product.show', $product->slug) }}"
+                            class="bg-gray-800 text-white w-full py-3 rounded-xl hover:bg-black transition duration-200 font-semibold text-center block">
+                                View Details
+                        </a>
 
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">MegaPhone Pro {{ $i + 1 }}</h3>
-                    <p class="text-red-600 font-semibold text-lg mb-3">KES 12,000</p>
-                    <p class="text-gray-600 mb-4 text-sm">
-                        Or start with a **KES 2,500 deposit** and pay **KES 1,500/month**.
+                @empty
+                    <p class="col-span-3 text-center text-gray-500">
+                        No products found.
                     </p>
-                    <button class="bg-gray-800 text-white w-full py-3 rounded-xl hover:bg-black transition duration-200 font-semibold focus-ring-red">
-                        View Details
-                    </button>
-                </div>
-                @endfor
+                @endforelse
             </div>
+
+            <div class="mt-10">
+                {{ $products->links() }}
+            </div>
+
         </main>
 
     </div>

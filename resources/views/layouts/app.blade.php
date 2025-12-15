@@ -239,16 +239,11 @@
         <div class="container mx-auto flex justify-between items-center py-5 px-6">
             <!-- Logo -->
             <a href="/" class="text-2xl font-bold flex items-center group">
-                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mr-3 group-hover:rotate-12 transition-transform duration-300">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
-                    </svg>
-                </div>
-                <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    Safe World Telecom
-                </span>
+                <img
+                    src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}"
+                    alt="Safe World Telecom Logo"
+                    class="w-20 h-10 mr-3">
             </a>
-
             <!-- Desktop Menu -->
             <ul class="hidden md:flex space-x-8 items-center">
                 <li><a href="/" class="nav-link hover:text-purple-400 transition font-medium">Home</a></li>
@@ -260,6 +255,15 @@
                         Contact
                     </a>
                 </li>
+                <a href="{{ route('cart.index') }}" class="relative">
+                    🛒 Cart
+                    @if(session('cart'))
+                        <span class="ml-1 text-xs bg-red-600 text-white px-2 rounded-full">
+                            {{ count(session('cart')) }}
+                        </span>
+                    @endif
+                </a>
+
             </ul>
 
             <!-- Mobile Menu Toggle -->
@@ -476,3 +480,7 @@
     @stack('scripts')
 </body>
 </html>
+
+
+
+       {{--  src="{{ asset('images/safe_world_logo_logo_only.svg') }}"  --}}
