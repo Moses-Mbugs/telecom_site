@@ -17,9 +17,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#667eea',
-                        secondary: '#764ba2',
-                        accent: '#38bdf8',
+                        primary: '#253748',
+                        secondary: '#7e7f74',
+                        accent: '#a02b2b',
                         neutral: '#f1f5f9',
                     },
                     fontFamily: {
@@ -110,7 +110,8 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
+            background: linear-gradient(90deg, #253748, #7e7f74);
             transition: width 0.3s ease;
         }
 
@@ -118,33 +119,32 @@
             width: 100%;
         }
 
-        /* Scroll Progress Bar */
+       /* Scroll Progress Bar */
         #scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
+            background: linear-gradient(90deg, #253748, #7e7f74);
             z-index: 9999;
             transition: width 0.1s ease;
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
         ::-webkit-scrollbar-track {
-            background: #1e293b;
+            background: #1e293b; /* Keeping a dark track */
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #667eea, #764ba2);
+            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
+            background: linear-gradient(180deg, #253748, #7e7f74);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #764ba2, #667eea);
+            /* UPDATED GRADIENT: Muted Khaki to Deep Slate (Reverse) */
+            background: linear-gradient(180deg, #7e7f74, #253748);
         }
 
         /* Floating Action Button */
@@ -154,12 +154,12 @@
             right: 30px;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #253748, #7e7f74);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(37, 55, 72, 0.4);
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 1000;
@@ -174,7 +174,7 @@
 
         .fab:hover {
             transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 6px 25px rgba(37, 55, 72, 0.6);
         }
 
         /* Footer Links Hover */
@@ -186,13 +186,13 @@
 
         .footer-link:hover {
             transform: translateX(5px);
-            color: #667eea;
+            color: #253748;
         }
 
         /* Loading Animation */
         .loader {
             border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #253748;
             border-radius: 50%;
             width: 40px;
             height: 40px;
