@@ -247,9 +247,9 @@
             <!-- Desktop Menu -->
             <ul class="hidden md:flex space-x-8 items-center">
                 <li><a href="/" class="nav-link hover:text-purple-400 transition font-medium">Home</a></li>
-                <li><a href="#about" class="nav-link hover:text-purple-400 transition font-medium">About</a></li>
-                <li><a href="#services" class="nav-link hover:text-purple-400 transition font-medium">Services</a></li>
-                <li><a href="#blog" class="nav-link hover:text-purple-400 transition font-medium">Blog</a></li>
+                 <li><a href="{{ route('about') }}" class="nav-link hover:text-primary transition font-medium">About</a></li>
+                <li><a href="#services" class="nav-link hover:text-primary transition font-medium">Services</a></li>
+                <li><a href="{{ route ('shop') }}" class="nav-link hover:text-primary transition font-medium">Shop</a></li>
                 <li>
                     <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold hover:shadow-glow transition-all duration-300 hover:scale-105">
                         Contact
@@ -394,92 +394,6 @@
         </svg>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        // Scroll Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('scroll-progress').style.width = scrolled + '%';
-        });
-
-        // Mobile Menu Toggle with Animation
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuToggle.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                menuToggle.classList.remove('active');
-            });
-        });
-
-        // Navbar Shrink on Scroll
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const currentScroll = window.pageYOffset;
-
-            if (currentScroll > 100) {
-                navbar.classList.add('navbar-shrink');
-            } else {
-                navbar.classList.remove('navbar-shrink');
-            }
-
-            lastScroll = currentScroll;
-        });
-
-        // Smooth Scroll for All Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#' && href !== '') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
-        });
-
-        // Scroll to Top Button
-        const scrollToTopBtn = document.getElementById('scrollToTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 500) {
-                scrollToTopBtn.classList.add('visible');
-            } else {
-                scrollToTopBtn.classList.remove('visible');
-            }
-        });
-
-        scrollToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Prevent empty hash links
-        document.querySelectorAll('a[href="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-        });
-    </script>
-
-    @stack('scripts')
-</body>
-</html>
 
 
 

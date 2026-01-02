@@ -49,7 +49,7 @@
 
             <div class="p-6 flex justify-between items-center">
                 <span class="text-xl font-bold">Total: KES {{ number_format($grandTotal) }}</span>
-                <a href="#" class="bg-red-600 text-white px-8 py-3 rounded-xl font-semibold">
+                <a href="{{ route('checkout.index') }}"   class="bg-red-600 text-white px-8 py-3 rounded-xl font-semibold">
                     Proceed to Checkout
                 </a>
             </div>
