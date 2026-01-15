@@ -10,6 +10,11 @@
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
 
     <!-- Custom Tailwind Config -->
     <script>
@@ -394,6 +399,9 @@
         </svg>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    @stack('scripts')
 
 
 

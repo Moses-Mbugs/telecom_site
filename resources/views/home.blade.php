@@ -461,130 +461,200 @@
     </div>
 </section>
 
+{{-- ======================= Map Section ===================== --}}
+<section class="bg-gray-100 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-3">📍 Our Shop Locations</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Find the nearest Safe World Telecom branch.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- MAP -->
+            <div class="lg:col-span-2">
+                <div id="map" class="w-full h-[500px] rounded-2xl shadow-lg"></div>
+            </div>
+
+            <!-- BRANCH LIST -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 space-y-4 overflow-y-auto max-h-[500px]">
+                <h3 class="text-xl font-semibold mb-4">Our Branches</h3>
+                <ul id="branch-list" class="space-y-3"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-// Particles.js Configuration
-particlesJS('particles-js', {
-    particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: '#ffffff' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5, random: false },
-        size: { value: 3, random: true },
-        line_linked: {
-            enable: true,
-            distance: 150,
-            color: '#ffffff',
-            opacity: 0.4,
-            width: 1
+    // Particles.js Configuration
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#ffffff' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.5, random: false },
+            size: { value: 3, random: true },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: '#ffffff',
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 2,
+                direction: 'none',
+                random: false,
+                straight: false,
+                out_mode: 'out',
+                bounce: false
+            }
         },
-        move: {
-            enable: true,
-            speed: 2,
-            direction: 'none',
-            random: false,
-            straight: false,
-            out_mode: 'out',
-            bounce: false
-        }
-    },
-    interactivity: {
-        detect_on: 'canvas',
-        events: {
-            onhover: { enable: true, mode: 'repulse' },
-            onclick: { enable: true, mode: 'push' },
-            resize: true
-        }
-    },
-    retina_detect: true
-});
+        interactivity: {
+            detect_on: 'canvas',
+            events: {
+                onhover: { enable: true, mode: 'repulse' },
+                onclick: { enable: true, mode: 'push' },
+                resize: true
+            }
+        },
+        retina_detect: true
+    });
 
-// Animated Counter
-function animateCounter(element) {
-    const target = parseInt(element.getAttribute('data-target'));
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    let current = 0;
+    // Animated Counter
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
 
-    const updateCounter = () => {
-        current += increment;
-        if (current < target) {
-            element.textContent = Math.floor(current);
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target;
-        }
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                element.textContent = Math.floor(current);
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target;
+            }
+        };
+
+        updateCounter();
+    }
+
+    // Intersection Observer for Fade-in Animation
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     };
 
-    updateCounter();
-}
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
 
-// Intersection Observer for Fade-in Animation
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+    // Animate counters when visible
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.stat-number');
+                counters.forEach(counter => animateCounter(counter));
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number').forEach(el => {
+        statsObserver.observe(el.parentElement.parentElement);
     });
-}, observerOptions);
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Animate counters when visible
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const counters = entry.target.querySelectorAll('.stat-number');
-            counters.forEach(counter => animateCounter(counter));
-            statsObserver.unobserve(entry.target);
-        }
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     });
-}, { threshold: 0.5 });
 
-document.querySelectorAll('.stat-number').forEach(el => {
-    statsObserver.observe(el.parentElement.parentElement);
-});
-
-// Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    // Top-up Form Handling
+    document.getElementById('topupForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const phoneNumber = document.getElementById('phoneNumber').value;
+
+        // Simple validation
+        if (phoneNumber.length < 10) {
+            alert('Please enter a valid phone number');
+            return;
+        }
+
+        // Show success message (in production, this would submit to backend)
+        alert('Top-up request submitted for ' + phoneNumber);
+        this.reset();
+    });
+
+    // Parallax Effect on Scroll
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('.floating');
+        if (parallax) {
+            parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
         }
     });
-});
-
-// Top-up Form Handling
-document.getElementById('topupForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const phoneNumber = document.getElementById('phoneNumber').value;
-
-    // Simple validation
-    if (phoneNumber.length < 10) {
-        alert('Please enter a valid phone number');
-        return;
-    }
-
-    // Show success message (in production, this would submit to backend)
-    alert('Top-up request submitted for ' + phoneNumber);
-    this.reset();
-});
-
-// Parallax Effect on Scroll
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.floating');
-    if (parallax) {
-        parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-});
 </script>
 
-@endsection
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        if (!document.getElementById('map')) return;
+
+        const branches = [
+            { name: "Nairobi CBD – Head Office", lat: -1.286389, lng: 36.817223, address: "Kimathi Street" },
+            { name: "Eldoret Branch", lat: 0.5143, lng: 35.2698, address: "Uganda Road" },
+            { name: "Kisumu Branch", lat: -0.0917, lng: 34.7680, address: "Oginga Odinga Street" },
+            { name: "Nakuru Branch", lat: -0.3031, lng: 36.0800, address: "Kenyatta Avenue" }
+        ];
+
+        const map = L.map('map').setView([-1.286389, 36.817223], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        const branchList = document.getElementById('branch-list');
+
+        branches.forEach(branch => {
+            const marker = L.marker([branch.lat, branch.lng]).addTo(map)
+                .bindPopup(`<strong>${branch.name}</strong><br>${branch.address}`);
+
+            const li = document.createElement('li');
+            li.className = 'p-3 border rounded-lg cursor-pointer hover:bg-purple-50 transition';
+            li.innerHTML = `
+                <strong>${branch.name}</strong><br>
+                <span class="text-sm text-gray-500">${branch.address}</span>
+            `;
+
+            li.onclick = () => {
+                map.setView([branch.lat, branch.lng], 14);
+                marker.openPopup();
+            };
+
+            branchList.appendChild(li);
+        });
+
+    });
+</script>
+@endpush
+
