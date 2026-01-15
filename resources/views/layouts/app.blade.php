@@ -10,11 +10,9 @@
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <!-- Custom Tailwind Config -->
     <script>
@@ -115,7 +113,6 @@
             left: 0;
             width: 0;
             height: 2px;
-            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
             background: linear-gradient(90deg, #253748, #7e7f74);
             transition: width 0.3s ease;
         }
@@ -124,31 +121,32 @@
             width: 100%;
         }
 
-       /* Scroll Progress Bar */
+        /* Scroll Progress Bar */
         #scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
             height: 3px;
-            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
             background: linear-gradient(90deg, #253748, #7e7f74);
-            z-index: 9999;
+            z-index: 100000;
             transition: width 0.1s ease;
         }
 
         /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
         ::-webkit-scrollbar-track {
-            background: #1e293b; /* Keeping a dark track */
+            background: #1e293b;
         }
 
         ::-webkit-scrollbar-thumb {
-            /* UPDATED GRADIENT: Deep Slate to Muted Khaki */
             background: linear-gradient(180deg, #253748, #7e7f74);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            /* UPDATED GRADIENT: Muted Khaki to Deep Slate (Reverse) */
             background: linear-gradient(180deg, #7e7f74, #253748);
         }
 
@@ -167,7 +165,7 @@
             box-shadow: 0 4px 15px rgba(37, 55, 72, 0.4);
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 1000;
+            z-index: 9998;
             opacity: 0;
             transform: translateY(100px);
         }
@@ -230,9 +228,69 @@
         .hamburger.active span:nth-child(3) {
             transform: rotate(45deg) translate(-5px, -6px);
         }
-    </style>
 
-    @stack('styles')
+        /* ============================================
+           CRITICAL Z-INDEX FIX FOR NAVBAR & MAP
+           ============================================ */
+
+        /* Force navbar to stay on top of everything */
+        #navbar {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 99999 !important;
+            width: 100% !important;
+        }
+
+        /* Ensure mobile menu also stays on top */
+        #mobile-menu {
+            position: relative !important;
+            z-index: 99999 !important;
+        }
+
+        /* Make sure Leaflet map doesn't overlap navbar */
+        #map {
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
+        }
+
+        .leaflet-pane,
+        .leaflet-tile-pane,
+        .leaflet-overlay-pane,
+        .leaflet-shadow-pane,
+        .leaflet-marker-pane,
+        .leaflet-tooltip-pane,
+        .leaflet-popup-pane {
+            z-index: auto !important;
+        }
+
+        /* Particles should be below everything */
+        #particles-js {
+            z-index: 1 !important;
+        }
+
+        /* Ensure proper stacking context */
+        body {
+            padding-top: 0 !important;
+        }
+
+        main {
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        section {
+            position: relative !important;
+            z-index: auto !important;
+        }
+
+        @stack('styles')
+    </style>
 </head>
 <body class="bg-neutral text-gray-900 antialiased">
 
@@ -240,7 +298,7 @@
     <div id="scroll-progress"></div>
 
     <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white shadow-lg fixed w-full z-50 transition-all duration-300" id="navbar">
+    <nav class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white shadow-lg fixed w-full transition-all duration-300" id="navbar">
         <div class="container mx-auto flex justify-between items-center py-5 px-6">
             <!-- Logo -->
             <a href="/" class="text-2xl font-bold flex items-center group">
@@ -249,26 +307,28 @@
                     alt="Safe World Telecom Logo"
                     class="w-20 h-10 mr-3">
             </a>
+
             <!-- Desktop Menu -->
             <ul class="hidden md:flex space-x-8 items-center">
                 <li><a href="/" class="nav-link hover:text-purple-400 transition font-medium">Home</a></li>
-                 <li><a href="{{ route('about') }}" class="nav-link hover:text-primary transition font-medium">About</a></li>
+                <li><a href="{{ route('about') }}" class="nav-link hover:text-primary transition font-medium">About</a></li>
                 <li><a href="#services" class="nav-link hover:text-primary transition font-medium">Services</a></li>
-                <li><a href="{{ route ('shop') }}" class="nav-link hover:text-primary transition font-medium">Shop</a></li>
+                <li><a href="{{ route('shop') }}" class="nav-link hover:text-primary transition font-medium">Shop</a></li>
                 <li>
                     <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold hover:shadow-glow transition-all duration-300 hover:scale-105">
                         Contact
                     </a>
                 </li>
-                <a href="{{ route('cart.index') }}" class="relative">
-                    🛒 Cart
-                    @if(session('cart'))
-                        <span class="ml-1 text-xs bg-red-600 text-white px-2 rounded-full">
-                            {{ count(session('cart')) }}
-                        </span>
-                    @endif
-                </a>
-
+                <li>
+                    <a href="{{ route('cart.index') }}" class="relative">
+                        🛒 Cart
+                        @if(session('cart'))
+                            <span class="ml-1 text-xs bg-red-600 text-white px-2 rounded-full">
+                                {{ count(session('cart')) }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
             </ul>
 
             <!-- Mobile Menu Toggle -->
@@ -399,10 +459,66 @@
         </svg>
     </div>
 
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            this.classList.toggle('active');
+        });
+
+        // Scroll Progress Bar
+        window.addEventListener('scroll', function() {
+            const scrollProgress = document.getElementById('scroll-progress');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            scrollProgress.style.width = scrollPercentage + '%';
+
+            // Show/hide FAB
+            const fab = document.getElementById('scrollToTop');
+            if (scrollTop > 300) {
+                fab.classList.add('visible');
+            } else {
+                fab.classList.remove('visible');
+            }
+
+            // Navbar shrink on scroll
+            const navbar = document.getElementById('navbar');
+            if (scrollTop > 50) {
+                navbar.classList.add('navbar-shrink');
+            } else {
+                navbar.classList.remove('navbar-shrink');
+            }
+        });
+
+        // Scroll to Top
+        document.getElementById('scrollToTop').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    menuToggle.classList.remove('active');
+                }
+            });
+        });
+    </script>
 
     @stack('scripts')
 
-
-
-       {{--  src="{{ asset('images/safe_world_logo_logo_only.svg') }}"  --}}
+</body>
+</html>
