@@ -8,11 +8,14 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::view('/welcome', 'welcome')->name('welcome');
+
 Route::post('/topup', [TopUpController::class, 'topup'])->name('topup');
 
 
 
 Route::view('/about', 'about')->name('about');
+Route::view('/locations', 'locations')->name('locations');
 
 
 // Shop Route
