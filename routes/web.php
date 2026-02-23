@@ -10,6 +10,7 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Auth;
 
 Route::view('/', 'welcome')->name('welcome');
+Route::redirect('/home', '/');
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::view('/welcome', 'welcome')->name('welcome');
 
