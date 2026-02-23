@@ -457,7 +457,7 @@
                         Quick Links
                     </h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ route('home') }}" class="footer-link text-gray-300 hover:text-purple-400 transition">Home</a></li>
+                        <li><a href="{{ route('welcome') }}" class="footer-link text-gray-300 hover:text-purple-400 transition">Home</a></li>
                         <li><a href="{{ route('about') }}" class="footer-link text-gray-300 hover:text-purple-400 transition">About Us</a></li>
                         <li><a href="{{ route('shop') }}" class="footer-link text-gray-300 hover:text-purple-400 transition">Shop</a></li>
                         <li><a href="#topup" class="footer-link text-gray-300 hover:text-purple-400 transition">Top Up</a></li>

@@ -20,6 +20,14 @@ class Product extends Model
         'image',
         'category_id',
         'brand_id',
+        'is_featured',
+        'discount_price',
+        'deal_end_time',
+    ];
+
+    protected $casts = [
+        'is_featured' => 'boolean',
+        'deal_end_time' => 'datetime',
     ];
 
     public function category()

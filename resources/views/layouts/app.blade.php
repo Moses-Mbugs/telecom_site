@@ -298,7 +298,9 @@
     <div id="scroll-progress"></div>
 
     <!-- Navbar -->
+    @unless(isset($hideNavbar) && $hideNavbar)
     <nav class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white shadow-lg fixed w-full transition-all duration-300" id="navbar">
+
         <div class="container mx-auto flex justify-between items-center py-5 px-6">
             <!-- Logo -->
             <a href="/" class="text-2xl font-bold flex items-center group">
@@ -354,9 +356,10 @@
             </ul>
         </div>
     </nav>
+    @endunless
 
     <!-- Main content -->
-    <main class="pt-20">
+    <main class="{{ (isset($hideNavbar) && $hideNavbar) ? '' : 'pt-20' }}">
         @yield('content')
     </main>
 
