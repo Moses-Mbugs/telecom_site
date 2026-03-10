@@ -31,7 +31,7 @@
                     
                     <a href="{{ route('product.show', $item->product->slug) }}" class="block relative h-48 bg-gray-50 p-6 flex items-center justify-center">
                         @if($item->product->image)
-                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
                         @else
                             <span class="text-gray-400">No Image</span>
                         @endif

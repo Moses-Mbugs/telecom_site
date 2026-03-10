@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\StrapiService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -15,19 +15,26 @@ class CartController extends Controller
     }
 
     // Add to cart
-    public function add(Product $product)
+    public function add($id)
     {
+        $strapi  = app(StrapiService::class);
+        $product = $strapi->getProductById((int) $id);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product not found');
+        }
+
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity']++;
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
         } else {
-            $cart[$product->id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->price,
+            $cart[$id] = [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'price'    => $product->price,
                 'quantity' => 1,
-                'image' => $product->image,
+                'image'    => $product->image,
             ];
         }
 
