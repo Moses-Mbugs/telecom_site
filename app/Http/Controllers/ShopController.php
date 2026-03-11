@@ -2,100 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
+use App\Services\StrapiService;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    protected StrapiService $strapi;
+
+    public function __construct(StrapiService $strapi)
+    {
+        $this->strapi = $strapi;
+    }
+
     public function index(Request $request)
     {
-        // Base query
-        $query = Product::query()->with(['category', 'brand']);
+        $params = array_filter([
+            'search'    => $request->input('search'),
+            'category'  => $request->input('category'),
+            'brand'     => $request->input('brand'),
+            'featured'  => $request->input('featured'),
+            'min_price' => $request->input('min_price'),
+            'max_price' => $request->input('max_price'),
+            'sort'      => $request->input('sort'),
+        ], fn ($v) => $v !== null && $v !== '');
 
-        // ✅ Search
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('brand', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
-            });
-        }
+        $params['page']     = $request->input('page', 1);
+        $params['pageSize'] = 9;
 
-        // ✅ Filter by category (singular)
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
-        // ✅ Filter by categories (plural/array)
-        if ($request->filled('categories')) {
-            $query->whereIn('category_id', (array)$request->categories);
-        }
-
-        // ✅ Filter by brand (singular)
-        if ($request->filled('brand')) {
-            $query->where('brand_id', $request->brand);
-        }
-        // ✅ Filter by brands (plural/array)
-        if ($request->filled('brands')) {
-            $query->whereIn('brand_id', (array)$request->brands);
-        }
-
-        // ✅ Filter by featured
-        if ($request->filled('featured')) {
-            $query->where('is_featured', true);
-        }
-
-        // ✅ Filter by price range
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        // ✅ Sorting
-        if ($request->sort === 'price_asc') {
-            $query->orderBy('price', 'asc');
-        } elseif ($request->sort === 'price_desc') {
-            $query->orderBy('price', 'desc');
-        } else {
-            $query->latest(); // default
-        }
-
-        // ✅ Pagination
-        $products = $query->paginate(9)->withQueryString();
-
-        // Load filter data
-        $categories = Category::orderBy('name')->get();
-        $brands     = Brand::withCount('products')->orderBy('name')->get();
-
-        // Featured Products (8 items) - For the Carousel
-        $featuredProducts = Product::where('is_featured', true)
-            ->with(['category', 'brand'])
-            ->latest()
-            ->take(8)
-            ->get();
-
-        // Latest Deals
-        $deals = Product::whereNotNull('deal_end_time')
-            ->where('deal_end_time', '>', now())
-            ->with(['category', 'brand'])
-            ->orderBy('deal_end_time', 'asc')
-            ->take(4)
-            ->get();
+        $products         = $this->strapi->getProducts($params);
+        $categories       = $this->strapi->getCategories();
+        $brands           = $this->strapi->getBrands();
+        $featuredProducts = $this->strapi->getFeaturedProducts(8);
+        $deals            = $this->strapi->getDeals(4);
 
         return view('shop', compact('products', 'categories', 'brands', 'featuredProducts', 'deals'));
     }
 
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)
-            ->with(['category', 'brand'])
-            ->firstOrFail();
+        $product = $this->strapi->getProductBySlug($slug);
+
+        if (!$product) {
+            abort(404);
+        }
 
         return view('product-show', compact('product'));
     }

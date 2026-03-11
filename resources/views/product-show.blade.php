@@ -8,7 +8,7 @@
         <!-- Product Image -->
         <div class="bg-white rounded-3xl shadow-lg p-6 flex items-center justify-center">
             @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="max-h-[400px] object-contain">
+                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="max-h-[400px] object-contain">
             @else
                 <div class="text-gray-400 text-lg">No image available</div>
             @endif
@@ -53,7 +53,7 @@
 
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row gap-4">
-               <form method="POST" action="{{ route('cart.add', $product) }}">
+               <form method="POST" action="{{ route('cart.add', $product->id) }}">
                     @csrf
                     <button class="w-full bg-gray-900 text-white px-8 py-4 rounded-2xl hover:bg-black transition font-semibold">
                         Add to Cart

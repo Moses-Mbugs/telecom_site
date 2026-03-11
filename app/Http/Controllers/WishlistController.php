@@ -2,18 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\StrapiService;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlist = auth()->user()->wishlist()->with('product')->get();
+        $wishlistItems = auth()->user()->wishlist()->get();
+
+        if ($wishlistItems->isNotEmpty()) {
+            $ids            = $wishlistItems->pluck('product_id')->all();
+            $strapiProducts = app(StrapiService::class)->getProductsByIds($ids);
+
+            $wishlistItems->each(function ($item) use ($strapiProducts) {
+                $item->setRelation('product', $strapiProducts->get($item->product_id));
+            });
+        }
+
+        // Exclude wishlist entries whose product no longer exists in Strapi.
+        $wishlist = $wishlistItems->filter(fn ($item) => $item->product !== null)->values();
+
         return view('wishlist.index', compact('wishlist'));
     }
 
-    public function toggle(Product $product)
+    public function toggle($id)
     {
         $user = auth()->user();
 
@@ -21,22 +34,22 @@ class WishlistController extends Controller
             return response()->json(['error' => 'Please login first'], 401);
         }
 
-        $exists = $user->wishlist()->where('product_id', $product->id)->exists();
+        $exists = $user->wishlist()->where('product_id', $id)->exists();
 
         if ($exists) {
-            $user->wishlist()->where('product_id', $product->id)->delete();
+            $user->wishlist()->where('product_id', $id)->delete();
             $message = 'Removed from wishlist';
-            $added = false;
+            $added   = false;
         } else {
-            $user->wishlist()->create(['product_id' => $product->id]);
+            $user->wishlist()->create(['product_id' => $id]);
             $message = 'Added to wishlist';
-            $added = true;
+            $added   = true;
         }
 
         return response()->json([
             'message' => $message,
-            'added' => $added,
-            'count' => $user->wishlist()->count()
+            'added'   => $added,
+            'count'   => $user->wishlist()->count(),
         ]);
     }
 }

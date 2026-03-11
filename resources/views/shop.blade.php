@@ -279,7 +279,7 @@
 
                                     <div class="relative h-48 bg-gray-50 p-6 flex items-center justify-center">
                                         @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                                            <img src="{{ $product->image }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
                                         @else
                                             <span class="text-gray-400">No Image</span>
                                         @endif
@@ -375,7 +375,7 @@
                                     <div class="flex gap-5 items-center bg-white p-5 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300 group">
                                         <div class="w-32 h-32 bg-gray-50 rounded-xl p-3 flex-shrink-0 flex items-center justify-center">
                                              @if($deal->image)
-                                                <img src="{{ asset('storage/' . $deal->image) }}" alt="{{ $deal->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300">
+                                                <img src="{{ $deal->image }}" alt="{{ $deal->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300">
                                             @else
                                                 <span class="text-xs">No Img</span>
                                             @endif
@@ -428,7 +428,7 @@
                                     <div class="absolute inset-0 bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
 
                                     @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain transform group-hover:scale-110 transition duration-500 relative z-0">
+                                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain transform group-hover:scale-110 transition duration-500 relative z-0">
                                     @else
                                         <span class="text-gray-400">No Image</span>
                                     @endif
