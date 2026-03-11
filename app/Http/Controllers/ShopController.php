@@ -34,8 +34,18 @@ class ShopController extends Controller
         $brands           = $this->strapi->getBrands();
         $featuredProducts = $this->strapi->getFeaturedProducts(8);
         $deals            = $this->strapi->getDeals(4);
+        $flashSales       = $this->strapi->getFlashSales(4);
+        $shopPage         = $this->strapi->getShopPage();
 
-        return view('shop', compact('products', 'categories', 'brands', 'featuredProducts', 'deals'));
+        return view('shop', compact(
+            'products',
+            'categories',
+            'brands',
+            'featuredProducts',
+            'deals',
+            'flashSales',
+            'shopPage'
+        ));
     }
 
     public function show($slug)

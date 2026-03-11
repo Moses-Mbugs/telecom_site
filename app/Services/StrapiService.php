@@ -15,12 +15,13 @@ class StrapiService
         $this->baseUrl = config('services.strapi.url', 'http://localhost:1337');
     }
 
+    // -------------------------------------------------------------------------
+    // Transformers
+    // -------------------------------------------------------------------------
+
     /**
      * Transform a single Strapi item (v4 or v5) into a plain object
      * whose properties match what the Blade templates expect.
-     *
-     * Strapi v4 wraps fields inside an 'attributes' key.
-     * Strapi v5 returns fields at the top level of the item.
      */
     protected function transformProduct(array $item): object
     {
@@ -30,14 +31,16 @@ class StrapiService
         $obj->id              = $item['id'] ?? null;
         $obj->name            = $attrs['name'] ?? null;
         $obj->slug            = $attrs['slug'] ?? null;
-        $obj->description     = $attrs['description'] ?? null;
+        $obj->description = $this->extractPlainText($attrs['description'] ?? '');
         $obj->price           = $attrs['price'] ?? 0;
         $obj->discount_price  = $attrs['discount_price'] ?? null;
         $obj->deposit_amount  = $attrs['deposit_amount'] ?? null;
         $obj->monthly_payment = $attrs['monthly_payment'] ?? null;
         $obj->stock           = $attrs['stock'] ?? 0;
         $obj->is_featured     = $attrs['is_featured'] ?? false;
+        $obj->is_flash_sale   = $attrs['is_flash_sale'] ?? false;
         $obj->deal_end_time   = $attrs['deal_end_time'] ?? null;
+        $obj->specifications  = $attrs['specifications'] ?? [];
         $obj->image           = $this->extractImageUrl($attrs);
         $obj->category        = $this->extractRelation($attrs['category'] ?? null);
         $obj->brand           = $this->extractRelation($attrs['brand'] ?? null);
@@ -57,17 +60,14 @@ class StrapiService
             return null;
         }
 
-        // Strapi v4: { data: { id, attributes: { url } } }  or  { data: [ { ... } ] }
         if (array_key_exists('data', $raw)) {
             $data = $raw['data'];
             if (!$data) {
                 return null;
             }
-            // Distinguish a list of items (numeric keys) from a single item (string keys)
             $node = isset($data[0]) ? $data[0] : $data;
             $url  = $node['attributes']['url'] ?? ($node['url'] ?? null);
         } else {
-            // Strapi v5 or a direct object/array: { url: '...' } or [ { url: '...' }, ... ]
             $node = isset($raw[0]) ? $raw[0] : $raw;
             $url  = $node['url'] ?? null;
         }
@@ -80,8 +80,7 @@ class StrapiService
     }
 
     /**
-     * Extract a Strapi relationship (e.g. category, brand) and return a
-     * plain object with the relation's id and all its scalar attributes.
+     * Extract a Strapi relationship and return a plain object.
      */
     protected function extractRelation(?array $relation): ?object
     {
@@ -89,28 +88,54 @@ class StrapiService
             return null;
         }
 
-        // Strapi v4: { data: { id, attributes: { name, ... } } }
         if (array_key_exists('data', $relation)) {
             $data = $relation['data'];
             if (!$data) {
                 return null;
             }
-            $relAttrs       = $data['attributes'] ?? $data;
-            $obj            = new \stdClass();
-            $obj->id        = $data['id'] ?? null;
+            $relAttrs = $data['attributes'] ?? $data;
+            $obj      = new \stdClass();
+            $obj->id  = $data['id'] ?? null;
             foreach ($relAttrs as $key => $value) {
                 $obj->{$key} = $value;
             }
             return $obj;
         }
 
-        // Strapi v5 / direct object: { id, name, ... }
         if (isset($relation['id'])) {
             return (object) $relation;
         }
 
         return null;
     }
+
+    /**
+     * Extract a media URL from a Strapi media field (used for non-product media).
+     */
+    protected function extractMediaUrl(?array $field): ?string
+    {
+        if (empty($field)) {
+            return null;
+        }
+
+        // v4: { data: { attributes: { url } } }
+        if (isset($field['data']['attributes']['url'])) {
+            $url = $field['data']['attributes']['url'];
+            return str_starts_with($url, 'http') ? $url : $this->baseUrl . $url;
+        }
+
+        // v5: { url: '...' }
+        if (isset($field['url'])) {
+            $url = $field['url'];
+            return str_starts_with($url, 'http') ? $url : $this->baseUrl . $url;
+        }
+
+        return null;
+    }
+
+    // -------------------------------------------------------------------------
+    // Products
+    // -------------------------------------------------------------------------
 
     /**
      * Fetch a paginated list of products with optional filters and sorting.
@@ -151,8 +176,8 @@ class StrapiService
             $query['filters[price][$lte]'] = $params['max_price'];
         }
 
-        $sortMap        = ['price_asc' => 'price:asc', 'price_desc' => 'price:desc'];
-        $query['sort']  = $sortMap[$params['sort'] ?? ''] ?? 'createdAt:desc';
+        $sortMap       = ['price_asc' => 'price:asc', 'price_desc' => 'price:desc'];
+        $query['sort'] = $sortMap[$params['sort'] ?? ''] ?? 'createdAt:desc';
 
         $response = Http::get($this->baseUrl . '/api/products', $query);
 
@@ -199,11 +224,11 @@ class StrapiService
     public function getDeals(int $limit = 4): Collection
     {
         $response = Http::get($this->baseUrl . '/api/products', [
-            'populate'                         => '*',
-            'filters[deal_end_time][$notNull]'  => 'true',
-            'filters[deal_end_time][$gt]'       => now()->toISOString(),
-            'sort'                             => 'deal_end_time:asc',
-            'pagination[pageSize]'             => $limit,
+            'populate'                        => '*',
+            'filters[deal_end_time][$notNull]' => 'true',
+            'filters[deal_end_time][$gt]'      => now()->toISOString(),
+            'sort'                            => 'deal_end_time:asc',
+            'pagination[pageSize]'            => $limit,
         ]);
 
         if ($response->failed()) {
@@ -214,61 +239,22 @@ class StrapiService
     }
 
     /**
-     * Fetch all categories ordered by name.
+     * Fetch flash sale products.
      */
-    public function getCategories(): Collection
+    public function getFlashSales(int $limit = 4): Collection
     {
-        $response = Http::get($this->baseUrl . '/api/categories', [
-            'sort'                 => 'name:asc',
-            'pagination[pageSize]' => 100,
+        $response = Http::get($this->baseUrl . '/api/products', [
+            'populate'                    => '*',
+            'filters[is_flash_sale][$eq]' => 'true',
+            'sort'                        => 'createdAt:desc',
+            'pagination[pageSize]'        => $limit,
         ]);
 
         if ($response->failed()) {
             return collect();
         }
 
-        $items = array_map(function (array $item): object {
-            $attrs     = array_key_exists('attributes', $item) ? $item['attributes'] : $item;
-            $obj       = new \stdClass();
-            $obj->id   = $item['id'];
-            $obj->name = $attrs['name'] ?? null;
-            return $obj;
-        }, $response->json()['data'] ?? []);
-
-        return collect($items);
-    }
-
-    /**
-     * Fetch all brands ordered by name, with product counts where available.
-     */
-    public function getBrands(): Collection
-    {
-        $response = Http::get($this->baseUrl . '/api/brands', [
-            'sort'                      => 'name:asc',
-            'pagination[pageSize]'      => 100,
-            'populate[products][count]' => 'true',
-        ]);
-
-        if ($response->failed()) {
-            return collect();
-        }
-
-        $items = array_map(function (array $item): object {
-            $attrs               = array_key_exists('attributes', $item) ? $item['attributes'] : $item;
-            $obj                 = new \stdClass();
-            $obj->id             = $item['id'];
-            $obj->name           = $attrs['name'] ?? null;
-            $products            = $attrs['products'] ?? null;
-            $obj->products_count = null;
-            if (is_array($products)) {
-                $obj->products_count = isset($products['data'])
-                    ? count($products['data'])
-                    : count($products);
-            }
-            return $obj;
-        }, $response->json()['data'] ?? []);
-
-        return collect($items);
+        return collect(array_map([$this, 'transformProduct'], $response->json()['data'] ?? []));
     }
 
     /**
@@ -333,5 +319,192 @@ class StrapiService
 
         return collect(array_map([$this, 'transformProduct'], $response->json()['data'] ?? []))
             ->keyBy('id');
+    }
+
+    // -------------------------------------------------------------------------
+    // Categories & Brands
+    // -------------------------------------------------------------------------
+
+    /**
+     * Fetch all categories ordered by name.
+     */
+    public function getCategories(): Collection
+    {
+        $response = Http::get($this->baseUrl . '/api/categories', [
+            'sort'                 => 'name:asc',
+            'pagination[pageSize]' => 100,
+        ]);
+
+        if ($response->failed()) {
+            return collect();
+        }
+
+        $items = array_map(function (array $item): object {
+            $attrs     = array_key_exists('attributes', $item) ? $item['attributes'] : $item;
+            $obj       = new \stdClass();
+            $obj->id   = $item['id'];
+            $obj->name = $attrs['name'] ?? null;
+            $obj->slug = $attrs['slug'] ?? null;
+            return $obj;
+        }, $response->json()['data'] ?? []);
+
+        return collect($items);
+    }
+
+    /**
+     * Fetch all brands ordered by name, with product counts where available.
+     */
+    public function getBrands(): Collection
+    {
+        $response = Http::get($this->baseUrl . '/api/brands', [
+            'sort'                      => 'name:asc',
+            'pagination[pageSize]'      => 100,
+            'populate[products][count]' => 'true',
+        ]);
+
+        if ($response->failed()) {
+            return collect();
+        }
+
+        $items = array_map(function (array $item): object {
+            $attrs               = array_key_exists('attributes', $item) ? $item['attributes'] : $item;
+            $obj                 = new \stdClass();
+            $obj->id             = $item['id'];
+            $obj->name           = $attrs['name'] ?? null;
+            $obj->slug           = $attrs['slug'] ?? null;
+            $products            = $attrs['products'] ?? null;
+            $obj->products_count = null;
+            if (is_array($products)) {
+                $obj->products_count = isset($products['data'])
+                    ? count($products['data'])
+                    : count($products);
+            }
+            return $obj;
+        }, $response->json()['data'] ?? []);
+
+        return collect($items);
+    }
+
+    // -------------------------------------------------------------------------
+    // Single Types (Page Content)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Fetch the Homepage single type content.
+     * Endpoint: GET /api/homepage?populate=deep
+     */
+    public function getHomepage(): ?object
+    {
+        $response = Http::get($this->baseUrl . '/api/homepage', [
+            'populate' => 'deep',
+        ]);
+
+        if ($response->failed()) {
+            return null;
+        }
+
+        $raw   = $response->json()['data'] ?? null;
+        if (!$raw) {
+            return null;
+        }
+
+        $attrs = array_key_exists('attributes', $raw) ? $raw['attributes'] : $raw;
+        $obj   = new \stdClass();
+
+        // Hero
+        $obj->hero_title      = $attrs['hero_title'] ?? null;
+        $obj->hero_subtitle   = $attrs['hero_subtitle'] ?? null;
+        $obj->hero_background = $this->extractMediaUrl($attrs['hero_background'] ?? null);
+
+        // Stats (repeatable component)
+        $obj->stats = $attrs['stats'] ?? [];
+
+        // Story
+        $obj->story_title       = $attrs['story_title'] ?? null;
+        $obj->story_description = $attrs['story_description'] ?? null;
+        $obj->story_image       = $this->extractMediaUrl($attrs['story_image'] ?? null);
+        $obj->story_link        = $attrs['story_link'] ?? null;
+
+        // Timeline (repeatable component)
+        $obj->timeline = $attrs['timeline'] ?? [];
+
+        // Ad Slideshow (repeatable component)
+        $obj->ad_slideshow = array_map(function (array $slide): object {
+            $s              = new \stdClass();
+            $s->badge       = $slide['badge'] ?? null;
+            $s->title       = $slide['title'] ?? null;
+            $s->description = $slide['description'] ?? null;
+            $s->link        = $slide['link'] ?? null;
+            $s->image       = $this->extractMediaUrl($slide['image'] ?? null);
+            return $s;
+        }, $attrs['adSlideshow'] ?? []);
+
+        // Top-Up Section
+        $obj->top_up_title       = $attrs['topUpSection']['title'] ?? null;
+        $obj->top_up_description = $attrs['topUpSection']['description'] ?? null;
+        $obj->top_up_features    = $attrs['topUpSection']['features'] ?? [];
+
+        // Explore Section
+        $obj->explore_title      = $attrs['exploreSection']['title'] ?? null;
+        $obj->explore_background = $this->extractMediaUrl($attrs['exploreSection']['backgroundImage'] ?? null);
+        $obj->explore_buttons    = $attrs['exploreSection']['buttons'] ?? [];
+
+        // Why Choose Us / Features (repeatable component)
+        $obj->features = $attrs['features'] ?? [];
+
+        // Reviews (repeatable component or relation)
+        $obj->reviews = $attrs['reviews'] ?? [];
+
+        return $obj;
+    }
+
+    /**
+     * Fetch the ShopPage single type content.
+     * Endpoint: GET /api/shop-page?populate=deep
+     */
+    public function getShopPage(): ?object
+    {
+        $response = Http::get($this->baseUrl . '/api/shop-page', [
+            'populate' => 'deep',
+        ]);
+
+        if ($response->failed()) {
+            return null;
+        }
+
+        $raw = $response->json()['data'] ?? null;
+        if (!$raw) {
+            return null;
+        }
+
+        $attrs = array_key_exists('attributes', $raw) ? $raw['attributes'] : $raw;
+        $obj   = new \stdClass();
+
+        // Top Alert Strip
+        $obj->top_alert_content = $attrs['top_alert_content'] ?? null;
+        $obj->top_alert_color   = $attrs['top_alert_color'] ?? '#000000';
+        $obj->top_alert_active  = $attrs['top_alert_active'] ?? false;
+
+        // Sidebar Banner
+        $obj->sidebar_banner_title       = $attrs['sidebar_banner_title'] ?? null;
+        $obj->sidebar_banner_discount    = $attrs['sidebar_banner_discount'] ?? null;
+        $obj->sidebar_banner_code        = $attrs['sidebar_banner_code'] ?? null;
+        $obj->sidebar_banner_description = $attrs['sidebar_banner_description'] ?? null;
+        $obj->sidebar_banner_image       = $this->extractMediaUrl($attrs['sidebar_banner_image'] ?? null);
+
+        return $obj;
+    }
+
+    protected function extractPlainText(mixed $value): string
+    {
+        if (is_string($value)) return $value;
+        if (!is_array($value)) return '';
+
+        return collect($value)
+            ->pluck('children')
+            ->flatten(1)
+            ->pluck('text')
+            ->filter()
+            ->implode(' ');
     }
 }

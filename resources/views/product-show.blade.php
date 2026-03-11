@@ -26,18 +26,23 @@
             </div>
 
             <p class="text-gray-700 leading-relaxed mb-6">
-                {{ $product->description ?? 'No description provided.' }}
+                @php
+                    $desc = $product->description;
+                    echo is_array($desc)
+                        ? collect($desc)->pluck('children')->flatten(1)->pluck('text')->filter()->implode(' ')
+                        : ($desc ?? 'No description provided.');
+                @endphp
             </p>
 
             <!-- Meta -->
             <div class="grid grid-cols-2 gap-4 mb-8 text-sm">
                 <div class="bg-gray-100 rounded-xl p-4">
                     <span class="font-semibold text-gray-700">Category</span>
-                    <p class="text-gray-600">{{ $product->category->name }}</p>
+                    <p class="text-gray-600">{{ $product->category->name ?? 'Uncategorized' }}</p>
                 </div>
                 <div class="bg-gray-100 rounded-xl p-4">
                     <span class="font-semibold text-gray-700">Brand</span>
-                    <p class="text-gray-600">{{ $product->brand->name }}</p>
+                    <p class="text-gray-600">{{ $product->brand->name ?? 'Unknown' }}</p>
                 </div>
                 <div class="bg-gray-100 rounded-xl p-4">
                     <span class="font-semibold text-gray-700">Stock</span>
@@ -53,13 +58,12 @@
 
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row gap-4">
-               <form method="POST" action="{{ route('cart.add', $product->id) }}">
+                <form method="POST" action="{{ route('cart.add', $product->id) }}">
                     @csrf
                     <button class="w-full bg-gray-900 text-white px-8 py-4 rounded-2xl hover:bg-black transition font-semibold">
                         Add to Cart
                     </button>
                 </form>
-
 
                 <a href="{{ route('shop') }}" class="w-full text-center border border-gray-300 px-8 py-4 rounded-2xl hover:bg-gray-100 transition font-semibold">
                     Back to Shop

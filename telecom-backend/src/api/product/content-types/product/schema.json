@@ -32,7 +32,7 @@
     },
     "image": {
       "type": "media",
-      "multiple": false,
+      "multiple": true,
       "allowedTypes": [
         "images",
         "files",
@@ -49,6 +49,26 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::brand.brand"
+    },
+    "discount_price": {
+      "type": "decimal"
+    },
+    "deposit_amount": {
+      "type": "decimal"
+    },
+    "monthly_payment": {
+      "type": "decimal"
+    },
+    "stock": {
+      "type": "integer"
+    },
+    "is_flash_sale": {
+      "type": "boolean"
+    },
+    "specifications": {
+      "type": "component",
+      "component": "product.specification",
+      "repeatable": true
     }
   }
 }
