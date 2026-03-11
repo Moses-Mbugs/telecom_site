@@ -23,7 +23,13 @@ class WishlistController extends Controller
         // Exclude wishlist entries whose product no longer exists in Strapi.
         $wishlist = $wishlistItems->filter(fn ($item) => $item->product !== null)->values();
 
-        return view('wishlist.index', compact('wishlist'));
+        // Pass an empty shopPage object or fetch it if needed by the layout
+        $shopPage = new \stdClass();
+        $shopPage->top_alert_active = false;
+        $shopPage->top_alert_content = '';
+        $shopPage->top_alert_color = '#dc2626';
+
+        return view('wishlist.index', compact('wishlist', 'shopPage'));
     }
 
     public function toggle($id)

@@ -75,7 +75,57 @@ Proposed schema for the `Product` collection in Strapi.
 
 ---
 
-## 5. Implementation Strategy (Future)
+## 6. Advanced Features (Recommended)
+
+To fully leverage Strapi as your backend, consider adding these collections to manage the entire business logic.
+
+### A. Order Management (`Order` Collection)
+Track customer purchases and order status.
+
+| Field Name | Type | Notes |
+|------------|------|-------|
+| `order_number` | UID | Unique Order ID (e.g., ORD-12345). |
+| `customer_email` | Email | Link to the buyer. |
+| `products` | JSON | Snapshot of items purchased (ID, name, price, qty). |
+| `total_amount` | Decimal | Final price paid. |
+| `status` | Enumeration | `pending`, `processing`, `shipped`, `delivered`, `cancelled`. |
+| `payment_status` | Enumeration | `unpaid`, `paid`, `refunded`. |
+| `shipping_address` | Component | Address fields. |
+
+### B. Customer Reviews (`Review` Collection)
+Allow users to rate and review products.
+
+| Field Name | Type | Notes |
+|------------|------|-------|
+| `rating` | Integer | 1-5 stars. |
+| `comment` | Text | User feedback. |
+| `product` | Relation | Belongs to one Product. |
+| `author_name` | String | Display name. |
+| `is_approved` | Boolean | Moderation flag (default: false). |
+
+### C. SEO & Meta Tags (Reusable Component)
+Create a `Seo` component and add it to every Page and Product type.
+
+| Field Name | Type | Notes |
+|------------|------|-------|
+| `metaTitle` | String | Browser tab title (good for Google). |
+| `metaDescription` | Text | Search result description. |
+| `shareImage` | Media | Image for Facebook/Twitter sharing. |
+
+### D. Blog / News (`Article` Collection)
+Drive traffic with SEO content.
+
+| Field Name | Type | Notes |
+|------------|------|-------|
+| `title` | String | Article headline. |
+| `slug` | UID | URL-friendly slug. |
+| `content` | Rich Text | The article body. |
+| `cover_image` | Media | Main image. |
+| `category` | Relation | Tag articles (e.g., "Tech News", "Guides"). |
+
+---
+
+## 7. Implementation Strategy (Future)
 
 1.  **Setup Strapi**: Create the Content Types listed above.
 2.  **Populate Data**: Migrate existing hardcoded data and database records to Strapi.

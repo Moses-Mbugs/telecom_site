@@ -37,8 +37,9 @@ Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout', [CartController::class, 'checkoutWhatsApp'])->name('checkout.index');
+// Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+// Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 // Wishlist Routes
 Route::middleware('auth')->group(function () {

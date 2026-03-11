@@ -56,6 +56,24 @@ class ShopController extends Controller
             abort(404);
         }
 
-        return view('product-show', compact('product'));
+        $brands = $this->strapi->getBrands();
+        $flashSales = $this->strapi->getFlashSales(1); // Get 1 flash sale for the strip
+
+        // Fetch related products
+        $relatedProducts = collect();
+        if (isset($product->category->id)) {
+            $relatedPaginator = $this->strapi->getProducts([
+                'category' => $product->category->id,
+                'pageSize' => 5
+            ]);
+            
+            $relatedProducts = collect($relatedPaginator->items())
+                ->filter(fn($p) => $p->id !== $product->id)
+                ->take(4);
+        }
+
+        $shopPage = $this->strapi->getShopPage();
+
+        return view('product-show', compact('product', 'relatedProducts', 'shopPage', 'brands', 'flashSales'));
     }
 }

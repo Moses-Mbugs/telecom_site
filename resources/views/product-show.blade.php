@@ -1,75 +1,402 @@
-{{--  product-show.blade.php  --}}
 @extends('layouts.app')
 
+@php
+    $hideNavbar = true;
+@endphp
+
 @section('content')
-<div class="max-w-7xl mx-auto px-6 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-        <!-- Product Image -->
-        <div class="bg-white rounded-3xl shadow-lg p-6 flex items-center justify-center">
-            @if($product->image)
-                <img src="{{ $product->image }}" alt="{{ $product->name }}" class="max-h-[400px] object-contain">
-            @else
-                <div class="text-gray-400 text-lg">No image available</div>
-            @endif
+    <!-- Top Advert Strip -->
+    @if (isset($shopPage) && $shopPage->top_alert_active)
+        <div class="text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50"
+            style="background-color: {{ $shopPage->top_alert_color ?? '#dc2626' }}">
+            {{ $shopPage->top_alert_content }}
         </div>
+    @elseif(isset($flashSales) && count($flashSales) > 0)
+        @php $flashSale = $flashSales[0]; @endphp
+        <div
+            class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50">
+            🚀 {{ $flashSale->name ?? 'FLASH SALE' }}: UP TO {{ $flashSale->discount_percentage ?? '50' }}% OFF SELECTED PHONES! LIMITED TIME OFFER.
+        </div>
+    @else
+        <div
+            class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50">
+            🚀 FLASH SALE: UP TO 50% OFF SELECTED PHONES! LIMITED TIME OFFER.
+        </div>
+    @endif
 
-        <!-- Product Info -->
-        <div>
-            <h1 class="text-4xl font-extrabold text-gray-900 mb-4">{{ $product->name }}</h1>
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between gap-4">
+                <!-- Left: Back & Logo -->
+                <div class="flex items-center gap-4 md:gap-6">
+                    <a href="{{ route('shop') }}"
+                        class="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </a>
+                    <a href="/" class="flex items-center flex-shrink-0">
+                        <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World"
+                            class="h-8 md:h-10 object-contain">
+                    </a>
+                </div>
 
-            <div class="flex items-center space-x-4 mb-6">
-                <span class="text-3xl font-bold text-red-600">KES {{ number_format($product->price) }}</span>
-                @if($product->deposit_amount)
-                    <span class="text-sm text-gray-500">or deposit KES {{ number_format($product->deposit_amount) }}</span>
+                <!-- Center: Search -->
+                <div class="flex-1 max-w-2xl hidden md:block mx-4">
+                    <form action="{{ route('shop') }}" method="GET" class="relative group">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Search products..."
+                            class="w-full bg-gray-100 border-2 border-transparent rounded-full py-2.5 px-6 pr-12 focus:bg-white focus:border-purple-500 focus:ring-0 transition-all duration-300">
+                        <button type="submit"
+                            class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 hover:shadow-lg transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Icons -->
+                <div class="flex items-center gap-4 md:gap-8">
+                    <!-- Wishlist -->
+                    <a href="{{ route('wishlist.index') }}" class="relative group">
+                        <div class="p-2 transition">
+                            <svg class="w-7 h-7 text-gray-600 group-hover:text-red-500 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        @auth
+                            <span
+                                class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
+                                {{ auth()->user()->wishlist->count() }}
+                            </span>
+                        @endauth
+                    </a>
+
+                    <!-- Cart -->
+                    <a href="{{ route('cart.index') }}" class="flex items-center gap-3 group">
+                        <div class="relative p-2">
+                            <svg class="w-7 h-7 text-gray-600 group-hover:text-purple-600 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                            <span
+                                class="absolute top-0 right-0 bg-purple-600 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
+                                {{ count(session('cart', [])) }}
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="bg-gray-50 border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <nav class="text-sm font-medium text-gray-500">
+                <ol class="list-none p-0 inline-flex flex-wrap gap-2">
+                    <li class="flex items-center">
+                        <a href="/" class="hover:text-purple-600 transition-colors">Home</a>
+                        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </li>
+                    <li class="flex items-center">
+                        <a href="{{ route('shop') }}" class="hover:text-purple-600 transition-colors">Shop</a>
+                        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </li>
+                    @if (isset($product->category->name) && isset($product->category->id))
+                        <li class="flex items-center">
+                            <a href="{{ route('shop', ['category' => $product->category->id]) }}"
+                                class="hover:text-purple-600 transition-colors">{{ $product->category->name }}</a>
+                            <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </li>
+                    @endif
+                    <li class="text-purple-600 font-bold truncate max-w-[200px]">{{ $product->name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
+
+            <!-- Left: Images -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex items-center justify-center h-[500px] relative overflow-hidden group">
+                    @if ($product->image)
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                            class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105" id="main-image">
+                    @else
+                        <span class="text-gray-400 text-lg">No Image Available</span>
+                    @endif
+
+                    @if($product->is_featured)
+                        <span class="absolute top-6 left-6 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Featured</span>
+                    @endif
+
+                    @if($product->discount_price)
+                         <span class="absolute top-6 right-6 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sale</span>
+                    @endif
+                </div>
+
+                <!-- Thumbnails (Placeholder for future gallery) -->
+                @if($product->image)
+                <div class="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
+                    <div class="w-24 h-24 rounded-xl border-2 border-purple-600 p-2 cursor-pointer bg-white">
+                        <img src="{{ $product->image }}" class="w-full h-full object-contain">
+                    </div>
+                    <!-- Additional thumbnails would loop here -->
+                </div>
                 @endif
             </div>
 
-            <p class="text-gray-700 leading-relaxed mb-6">
-                @php
-                    $desc = $product->description;
-                    echo is_array($desc)
-                        ? collect($desc)->pluck('children')->flatten(1)->pluck('text')->filter()->implode(' ')
-                        : ($desc ?? 'No description provided.');
-                @endphp
-            </p>
+            <!-- Right: Product Info -->
+            <div class="flex flex-col h-full">
+                <div class="mb-2 flex items-center gap-3">
+                    @if (data_get($product, 'brand.name'))
+                        <span class="text-sm font-bold text-gray-500 uppercase tracking-wider">{{ data_get($product, 'brand.name') }}</span>
+                    @endif
+                    @if($product->stock > 0)
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-md">In Stock</span>
+                    @else
+                        <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-md">Out of Stock</span>
+                    @endif
+                </div>
 
-            <!-- Meta -->
-            <div class="grid grid-cols-2 gap-4 mb-8 text-sm">
-                <div class="bg-gray-100 rounded-xl p-4">
-                    <span class="font-semibold text-gray-700">Category</span>
-                    <p class="text-gray-600">{{ $product->category->name ?? 'Uncategorized' }}</p>
-                </div>
-                <div class="bg-gray-100 rounded-xl p-4">
-                    <span class="font-semibold text-gray-700">Brand</span>
-                    <p class="text-gray-600">{{ $product->brand->name ?? 'Unknown' }}</p>
-                </div>
-                <div class="bg-gray-100 rounded-xl p-4">
-                    <span class="font-semibold text-gray-700">Stock</span>
-                    <p class="text-gray-600">{{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}</p>
-                </div>
-                <div class="bg-gray-100 rounded-xl p-4">
-                    <span class="font-semibold text-gray-700">Monthly Payment</span>
-                    <p class="text-gray-600">
-                        {{ $product->monthly_payment ? 'KES ' . number_format($product->monthly_payment) : 'N/A' }}
-                    </p>
-                </div>
-            </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">{{ $product->name }}</h1>
 
-            <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-4">
-                <form method="POST" action="{{ route('cart.add', $product->id) }}">
-                    @csrf
-                    <button class="w-full bg-gray-900 text-white px-8 py-4 rounded-2xl hover:bg-black transition font-semibold">
-                        Add to Cart
-                    </button>
-                </form>
+                <div class="flex items-end gap-4 mb-8">
+                    <span class="text-4xl font-black text-purple-600">KES {{ number_format($product->price) }}</span>
+                    @if ($product->discount_price)
+                        <span class="text-xl text-gray-400 line-through mb-1">KES {{ number_format($product->discount_price) }}</span>
+                        <span class="text-sm font-bold text-red-500 mb-2 bg-red-50 px-2 py-1 rounded-md">
+                            Save KES {{ number_format($product->discount_price - $product->price) }}
+                        </span>
+                    @endif
+                </div>
 
-                <a href="{{ route('shop') }}" class="w-full text-center border border-gray-300 px-8 py-4 rounded-2xl hover:bg-gray-100 transition font-semibold">
-                    Back to Shop
-                </a>
+                @if($product->deposit_amount || $product->monthly_payment)
+                <div class="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 mb-8 border border-purple-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Flexible Payment Options
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        @if($product->deposit_amount)
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Deposit</span>
+                            <span class="text-xl font-bold text-gray-900">KES {{ number_format($product->deposit_amount) }}</span>
+                        </div>
+                        @endif
+                        @if($product->monthly_payment)
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Monthly</span>
+                            <span class="text-xl font-bold text-gray-900">KES {{ number_format($product->monthly_payment) }}</span>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <div class="prose prose-sm text-gray-600 mb-8 max-w-none">
+                     {{ Str::limit(strip_tags($product->description), 200) }}
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-auto space-y-4">
+                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="flex gap-4">
+                        @csrf
+                        <div class="w-24">
+                            <label class="sr-only">Quantity</label>
+                            <input type="number" name="quantity" value="1" min="1" max="10" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-center font-bold focus:ring-purple-500 focus:border-purple-500">
+                        </div>
+                        <button type="submit" class="flex-1 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-purple-600 shadow-xl hover:shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            Add to Cart
+                        </button>
+                    </form>
+
+                    <div class="flex gap-4">
+                        @auth
+                            <button onclick="toggleWishlist({{ $product->id }})" id="wishlist-btn-{{ $product->id }}"
+                                class="flex-1 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:border-red-500 hover:text-red-500 transition-colors flex items-center justify-center gap-2 {{ auth()->user()->wishlist()->where('product_id', $product->id)->exists() ? 'text-red-500 border-red-500' : '' }}">
+                                <svg class="w-5 h-5" fill="{{ auth()->user()->wishlist()->where('product_id', $product->id)->exists() ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                <span id="wishlist-text-{{ $product->id }}">{{ auth()->user()->wishlist()->where('product_id', $product->id)->exists() ? 'Saved' : 'Add to Wishlist' }}</span>
+                            </button>
+                        @else
+                            <a href="{{ route('login') }}" class="flex-1 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:border-red-500 hover:text-red-500 transition-colors flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                Add to Wishlist
+                            </a>
+                        @endauth
+
+                        <a href="https://wa.me/?text=Check out {{ $product->name }} on Safe World Telecom! {{ url()->current() }}" target="_blank" class="flex-1 border-2 border-green-100 bg-green-50 text-green-700 py-3 rounded-xl font-bold hover:bg-green-100 transition-colors flex items-center justify-center gap-2">
+                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            Share
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Product Details Tabs -->
+        <div class="mt-20">
+            <div class="border-b border-gray-200" x-data="{ tab: 'description' }">
+                <div class="flex gap-8 mb-8 overflow-x-auto">
+                    <button @click="tab = 'description'" :class="{'text-purple-600 border-purple-600': tab === 'description', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'description'}" class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">
+                        Description
+                    </button>
+                    <button @click="tab = 'specifications'" :class="{'text-purple-600 border-purple-600': tab === 'specifications', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'specifications'}" class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">
+                        Specifications
+                    </button>
+                    <button @click="tab = 'reviews'" :class="{'text-purple-600 border-purple-600': tab === 'reviews', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'reviews'}" class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">
+                        Reviews (0)
+                    </button>
+                </div>
+
+                <div x-show="tab === 'description'" class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 prose max-w-none">
+                     {!! nl2br(e($product->description)) !!}
+                </div>
+
+                <div x-show="tab === 'specifications'" class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100" style="display: none;">
+                    @if(!empty($product->specifications) && count($product->specifications) > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             @foreach($product->specifications as $spec)
+                                 <div class="flex justify-between py-3 border-b border-gray-100">
+                                     <span class="font-medium text-gray-600">{{ $spec['label'] ?? 'Feature' }}</span>
+                                     <span class="font-bold text-gray-900">{{ $spec['value'] ?? '-' }}</span>
+                                 </div>
+                             @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 italic">No specific specifications listed for this product.</p>
+                    @endif
+                </div>
+
+                <div x-show="tab === 'reviews'" class="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center" style="display: none;">
+                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">No Reviews Yet</h3>
+                    <p class="text-gray-500 mb-6">Be the first to review this product!</p>
+                    <button class="bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+            <div class="mt-20">
+                <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+                    <span class="text-purple-600">✦</span> Related Products
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach($relatedProducts as $related)
+                        <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
+                            <div class="relative h-48 bg-gray-50 p-6 flex items-center justify-center">
+                                @if ($related->image)
+                                    <img src="{{ $related->image }}" alt="{{ $related->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                                @else
+                                    <span class="text-gray-400 text-sm">No Image</span>
+                                @endif
+                                <a href="{{ route('product.show', $related->slug) }}" class="absolute inset-0 z-10"></a>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-bold text-gray-800 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-purple-600 transition-colors">
+                                    <a href="{{ route('product.show', $related->slug) }}">{{ $related->name }}</a>
+                                </h3>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-gray-900">KES {{ number_format($related->price) }}</span>
+                                    @if ($related->discount_price)
+                                        <span class="text-xs text-red-500 font-bold bg-red-50 px-2 py-1 rounded">-{{ round((($related->discount_price - $related->price)/$related->discount_price)*100) }}%</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- Brands Section -->
+        @if(isset($brands) && count($brands) > 0)
+        <div class="mt-20">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+                <span class="text-purple-600">✦</span> Shop by Brand
+            </h2>
+            <div class="flex flex-wrap gap-4">
+                @foreach($brands as $brand)
+                    @if(isset($brand->name) && isset($brand->id))
+                        <a href="{{ route('shop', ['brand' => $brand->id]) }}"
+                           class="px-6 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-600 hover:border-purple-600 hover:text-purple-600 hover:shadow-md transition-all">
+                            {{ $brand->name }}
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+        @endif
+
     </div>
-</div>
+
+    <!-- Script for Tabs (Alpine.js is usually preferred, but simple vanilla JS here if Alpine isn't loaded) -->
+    <!-- Assuming Alpine.js is loaded in layout as 'x-data' syntax is used above. If not, this JS is a fallback or complement. -->
+    <!-- Actually, I used x-data above, so I assume Alpine is available. If not, I should add a script tag to load it or use vanilla JS. -->
+    <!-- Safe World likely uses Alpine or vanilla. I'll stick to x-data which is cleaner, but I'll add a script just in case x-data doesn't work. -->
+    @push('scripts')
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        function toggleWishlist(productId) {
+            const btn = document.getElementById(`wishlist-btn-${productId}`);
+            const text = document.getElementById(`wishlist-text-${productId}`);
+            const svg = btn.querySelector('svg');
+
+            fetch(`/wishlist/toggle/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '{{ route("login") }}';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.added) {
+                    btn.classList.add('text-red-500', 'border-red-500');
+                    svg.setAttribute('fill', 'currentColor');
+                    text.textContent = 'Saved';
+                } else {
+                    btn.classList.remove('text-red-500', 'border-red-500');
+                    svg.setAttribute('fill', 'none');
+                    text.textContent = 'Add to Wishlist';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    @endpush
+
 @endsection
