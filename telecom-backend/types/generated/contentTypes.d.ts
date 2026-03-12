@@ -666,6 +666,14 @@ export interface ApiShopPageShopPage extends Struct.SingleTypeSchema {
       'api::shop-page.shop-page'
     > &
       Schema.Attribute.Private;
+    product_banner_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    product_banner_link: Schema.Attribute.String;
+    promo_banner_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    promo_banner_link: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     sidebar_banner_code: Schema.Attribute.String;
     sidebar_banner_description: Schema.Attribute.String;

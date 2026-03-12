@@ -33,7 +33,7 @@ class StrapiService
         $obj->id              = $item['id'] ?? null;
         $obj->name            = $attrs['name'] ?? null;
         $obj->slug            = $attrs['slug'] ?? null;
-        $obj->description = $this->extractPlainText($attrs['description'] ?? '');
+        $obj->description     = $this->extractPlainText($attrs['description'] ?? '');
         $obj->price           = $attrs['price'] ?? 0;
         $obj->discount_price  = $attrs['discount_price'] ?? null;
         $obj->deposit_amount  = $attrs['deposit_amount'] ?? null;
@@ -226,11 +226,11 @@ class StrapiService
     public function getDeals(int $limit = 4): Collection
     {
         $response = Http::get($this->baseUrl . '/api/products', [
-            'populate'                        => '*',
+            'populate'                         => '*',
             'filters[deal_end_time][$notNull]' => 'true',
             'filters[deal_end_time][$gt]'      => now()->toISOString(),
-            'sort'                            => 'deal_end_time:asc',
-            'pagination[pageSize]'            => $limit,
+            'sort'                             => 'deal_end_time:asc',
+            'pagination[pageSize]'             => $limit,
         ]);
 
         if ($response->failed()) {
@@ -346,7 +346,7 @@ class StrapiService
      *   - customer_email (string)  Buyer's email (optional for WhatsApp checkout)
      *   - products       (array)   Snapshot of cart items
      *   - total_amount   (float)   Final total
-     *   - order_status         (string)  "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+     *   - order_status   (string)  "pending" | "processing" | "shipped" | "delivered" | "cancelled"
      *   - payment_status (string)  "unpaid" | "paid" | "refunded"
      *   - shipping_address (array) Address component fields (optional)
      */
@@ -438,19 +438,19 @@ class StrapiService
 
     /**
      * Fetch the Homepage single type content.
-     * Endpoint: GET /api/homepage?populate=deep
+     * Endpoint: GET /api/homepage?populate=*
      */
     public function getHomepage(): ?object
     {
         $response = Http::get($this->baseUrl . '/api/homepage', [
-            'populate' => 'deep',
+            'populate' => '*',
         ]);
 
         if ($response->failed()) {
             return null;
         }
 
-        $raw   = $response->json()['data'] ?? null;
+        $raw = $response->json()['data'] ?? null;
         if (!$raw) {
             return null;
         }
@@ -507,12 +507,14 @@ class StrapiService
 
     /**
      * Fetch the ShopPage single type content.
-     * Endpoint: GET /api/shop-page?populate=deep
+     * Endpoint: GET /api/shop-page?populate[field]=true
      */
     public function getShopPage(): ?object
     {
         $response = Http::get($this->baseUrl . '/api/shop-page', [
-            'populate' => 'deep',
+            'populate[promo_banner_image]'   => 'true',
+            'populate[product_banner_image]' => 'true',
+            'populate[sidebar_banner_image]' => 'true',
         ]);
 
         if ($response->failed()) {
