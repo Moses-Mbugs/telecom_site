@@ -287,7 +287,18 @@ class StrapiService
         ]);
 
         if ($response->failed()) {
-            return null;
+            $fallback = Http::get($this->baseUrl . '/api/products', [
+                'populate'             => '*',
+                'filters[id][$eq]'     => $id,
+                'pagination[pageSize]' => 1,
+            ]);
+
+            if ($fallback->failed()) {
+                return null;
+            }
+
+            $items = $fallback->json()['data'] ?? [];
+            return !empty($items) ? $this->transformProduct($items[0]) : null;
         }
 
         $item = $response->json()['data'] ?? null;
