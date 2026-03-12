@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Http;
 class StrapiService
 {
     protected string $baseUrl;
+    protected ?string $apiToken;
 
     public function __construct()
     {
-        $this->baseUrl = config('services.strapi.url', 'http://localhost:1337');
+        $this->baseUrl  = config('services.strapi.url', 'http://localhost:1337');
+        $this->apiToken = config('services.strapi.token') ?: null;
     }
 
     // -------------------------------------------------------------------------
@@ -330,6 +332,40 @@ class StrapiService
 
         return collect(array_map([$this, 'transformProduct'], $response->json()['data'] ?? []))
             ->keyBy('id');
+    }
+
+    // -------------------------------------------------------------------------
+    // Orders
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a new order record in Strapi.
+     *
+     * Expected $data keys:
+     *   - order_number   (string)  Unique order ID, e.g. "ORD-12345"
+     *   - customer_email (string)  Buyer's email (optional for WhatsApp checkout)
+     *   - products       (array)   Snapshot of cart items
+     *   - total_amount   (float)   Final total
+     *   - status         (string)  "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+     *   - payment_status (string)  "unpaid" | "paid" | "refunded"
+     *   - shipping_address (array) Address component fields (optional)
+     */
+    public function createOrder(array $data): ?array
+    {
+        $request = Http::when(
+            $this->apiToken,
+            fn ($http) => $http->withToken($this->apiToken)
+        );
+
+        $response = $request->post($this->baseUrl . '/api/orders', [
+            'data' => $data,
+        ]);
+
+        if ($response->failed()) {
+            return null;
+        }
+
+        return $response->json();
     }
 
     // -------------------------------------------------------------------------

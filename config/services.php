@@ -36,7 +36,8 @@ return [
     ],
 
     'strapi' => [
-        'url' => env('STRAPI_URL', 'http://localhost:1337'),
+        'url'   => env('STRAPI_URL', 'http://localhost:1337'),
+        'token' => env('STRAPI_API_TOKEN'),
     ],
 
 ];
