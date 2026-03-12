@@ -348,13 +348,25 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('cart.index') }}" class="relative">
-                        🛒 Cart
-                        @if(session('cart'))
-                            <span class="ml-1 text-xs bg-red-600 text-white px-2 rounded-full">
-                                {{ count(session('cart')) }}
-                            </span>
-                        @endif
+                    @php
+                        $cart = session('cart', []);
+                        $cartCount = array_sum(array_column($cart, 'quantity'));
+                        $cartTotal = collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']);
+                    @endphp
+                    <a href="{{ route('cart.index') }}" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 group">
+                        <div class="relative">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            @if($cartCount > 0)
+                                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">{{ $cartCount }}</span>
+                            @endif
+                        </div>
+                        <span class="text-sm font-semibold">
+                            @if($cartCount > 0)
+                                {{ $cartCount }} {{ Str::plural('item', $cartCount) }} &mdash; KES {{ number_format($cartTotal) }}
+                            @else
+                                Cart
+                            @endif
+                        </span>
                     </a>
                 </li>
             </ul>

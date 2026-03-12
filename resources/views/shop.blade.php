@@ -73,13 +73,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('wishlist.index') }}" class="relative group p-2">
-                        <svg class="w-6 h-6 text-gray-600 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                        @auth
-                            <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">{{ auth()->user()->wishlist->count() }}</span>
-                        @endauth
-                    </a>
-
+                    <!-- Cart -->
                     <a href="{{ route('cart.index') }}" class="flex items-center gap-3 group bg-gray-50 hover:bg-purple-50 px-4 py-2 rounded-full transition-colors">
                         <div class="relative">
                             <svg class="w-5 h-5 text-gray-600 group-hover:text-purple-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
@@ -240,6 +234,19 @@
                         </div>
                     @endif
 
+                    <!-- Promo Banner -->
+                    @if (isset($shopPage) && $shopPage->promo_banner_image)
+                        <div class="mb-10">
+                            @if ($shopPage->promo_banner_link)
+                                <a href="{{ $shopPage->promo_banner_link }}" target="_blank" rel="noopener">
+                                    <img src="{{ $shopPage->promo_banner_image }}" alt="Promotion" class="w-full rounded-2xl shadow-lg object-cover">
+                                </a>
+                            @else
+                                <img src="{{ $shopPage->promo_banner_image }}" alt="Promotion" class="w-full rounded-2xl shadow-lg object-cover">
+                            @endif
+                        </div>
+                    @endif
+
                     <!-- Featured Products Carousel -->
                     @if ($featuredProducts->isNotEmpty())
                         <div class="mb-10">
@@ -386,7 +393,7 @@
                             </a>
                         </div>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             @foreach ($products as $product)
                                 <div class="bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col h-full relative">
 
@@ -401,18 +408,6 @@
                                             <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">Low Stock</span>
                                         @endif
                                     </div>
-
-                                    <!-- Wishlist Button -->
-                                    @auth
-                                        <button onclick="toggleWishlist({{ $product->id }})" id="wishlist-btn-{{ $product->id }}"
-                                            class="absolute top-4 right-4 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-50 transition-all transform hover:scale-110 {{ auth()->user()->wishlist()->where('product_id', $product->id)->exists() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' }}">
-                                            <svg id="wishlist-svg-{{ $product->id }}" class="w-4 h-4" fill="{{ auth()->user()->wishlist()->where('product_id', $product->id)->exists() ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                        </button>
-                                    @else
-                                        <a href="{{ route('login') }}" class="absolute top-4 right-4 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all transform hover:scale-110">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                        </a>
-                                    @endauth
 
                                     <!-- Image -->
                                     <div class="relative h-48 bg-gray-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center group-hover:bg-purple-50/30 transition-colors">
@@ -555,39 +550,6 @@
     </div>
 
     <script>
-        function toggleWishlist(productId) {
-            const btn = document.getElementById(`wishlist-btn-${productId}`);
-            const svg = document.getElementById(`wishlist-svg-${productId}`);
-
-            fetch(`/wishlist/toggle/${productId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.status === 401) {
-                    window.location.href = '{{ route("login") }}';
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.added) {
-                    btn.classList.add('text-red-500');
-                    btn.classList.remove('text-gray-400', 'hover:text-red-500');
-                    svg.setAttribute('fill', 'currentColor');
-                } else {
-                    btn.classList.remove('text-red-500');
-                    btn.classList.add('text-gray-400', 'hover:text-red-500');
-                    svg.setAttribute('fill', 'none');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
         document.addEventListener('alpine:init', () => {
             Alpine.data('countdown', (endTime) => ({
                 days: '00',

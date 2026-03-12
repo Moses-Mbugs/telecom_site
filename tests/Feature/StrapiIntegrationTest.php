@@ -24,6 +24,7 @@ it('shop index fetches products from strapi and returns the shop view', function
         ], 200),
         '*/api/categories*' => Http::response(['data' => [], 'meta' => ['pagination' => []]], 200),
         '*/api/brands*'     => Http::response(['data' => [], 'meta' => ['pagination' => []]], 200),
+        '*/api/shop-page*'  => Http::response(['data' => null], 200),
     ]);
 
     $response = $this->get('/shop');
@@ -65,6 +66,8 @@ it('shop show returns the product view when slug is found in strapi', function (
             ],
             'meta' => ['pagination' => ['page' => 1, 'pageSize' => 1, 'pageCount' => 1, 'total' => 1]],
         ], 200),
+        '*/api/brands*'    => Http::response(['data' => [], 'meta' => ['pagination' => []]], 200),
+        '*/api/shop-page*' => Http::response(['data' => null], 200),
     ]);
 
     $response = $this->get('/product/samsung-galaxy');
@@ -112,7 +115,7 @@ it('strapi service transforms v4 product data correctly', function () {
 
 it('strapi service returns null when product is not found', function () {
     Http::fake([
-        '*/api/products/999*' => Http::response([
+        '*/api/products*' => Http::response([
             'data'  => null,
             'error' => ['status' => 404, 'name' => 'NotFoundError', 'message' => 'Not Found'],
         ], 404),
