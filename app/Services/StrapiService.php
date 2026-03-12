@@ -346,7 +346,7 @@ class StrapiService
      *   - customer_email (string)  Buyer's email (optional for WhatsApp checkout)
      *   - products       (array)   Snapshot of cart items
      *   - total_amount   (float)   Final total
-     *   - status         (string)  "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+     *   - order_status         (string)  "pending" | "processing" | "shipped" | "delivered" | "cancelled"
      *   - payment_status (string)  "unpaid" | "paid" | "refunded"
      *   - shipping_address (array) Address component fields (optional)
      */
