@@ -539,6 +539,12 @@ class StrapiService
         $obj->sidebar_banner_description = $attrs['sidebar_banner_description'] ?? null;
         $obj->sidebar_banner_image       = $this->extractMediaUrl($attrs['sidebar_banner_image'] ?? null);
 
+        // Advertisement Banners
+        $obj->promo_banner_image   = $this->extractMediaUrl($attrs['promo_banner_image'] ?? null);
+        $obj->promo_banner_link    = $attrs['promo_banner_link'] ?? null;
+        $obj->product_banner_image = $this->extractMediaUrl($attrs['product_banner_image'] ?? null);
+        $obj->product_banner_link  = $attrs['product_banner_link'] ?? null;
+
         return $obj;
     }
 
