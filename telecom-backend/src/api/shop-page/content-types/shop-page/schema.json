@@ -41,6 +41,32 @@
         "videos",
         "audios"
       ]
+    },
+    "promo_banner_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "promo_banner_link": {
+      "type": "string"
+    },
+    "product_banner_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "product_banner_link": {
+      "type": "string"
     }
   }
 }
