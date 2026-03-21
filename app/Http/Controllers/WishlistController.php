@@ -2,26 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\StrapiService;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlistItems = auth()->user()->wishlist()->get();
-
-        if ($wishlistItems->isNotEmpty()) {
-            $ids            = $wishlistItems->pluck('product_id')->all();
-            $strapiProducts = app(StrapiService::class)->getProductsByIds($ids);
-
-            $wishlistItems->each(function ($item) use ($strapiProducts) {
-                $item->setRelation('product', $strapiProducts->get($item->product_id));
-            });
-        }
-
-        // Exclude wishlist entries whose product no longer exists in Strapi.
-        $wishlist = $wishlistItems->filter(fn ($item) => $item->product !== null)->values();
+        $wishlist = auth()->user()->wishlist()->with('product')->get()
+            ->filter(fn ($item) => $item->product !== null)
+            ->values();
 
         // Pass an empty shopPage object or fetch it if needed by the layout
         $shopPage = new \stdClass();

@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\StrapiService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
-    protected StrapiService $strapi;
-
-    public function __construct(StrapiService $strapi)
-    {
-        $this->strapi = $strapi;
-    }
-
     // View cart
     public function index()
     {
@@ -45,7 +39,7 @@ class CartController extends Controller
     // Add to cart
     public function add($id)
     {
-        $product = $this->strapi->getProductById((int) $id);
+        $product = Product::find($id);
 
         if (!$product) {
             return redirect()->back()->with('error', 'Product not found');
@@ -125,30 +119,27 @@ class CartController extends Controller
         $message .= "\nTotal: KES " . number_format($total);
         $message .= "\n\nPlease advise on payment and delivery.";
 
-        // Log the order to Strapi before redirecting
-        $orderNumber = 'ORD-' . strtoupper(Str::random(8));
-        $productsSnapshot = array_values(array_map(function ($item) {
-            return [
-                'id'       => $item['id'],
-                'name'     => $item['name'],
-                'price'    => $item['price'],
-                'quantity' => $item['quantity'],
-            ];
-        }, $cart));
+        // Log the order to the database before redirecting
+        try {
+            $order = Order::create([
+                'user_id'      => auth()->check() ? auth()->id() : null,
+                'total_amount' => $total,
+                'status'       => 'pending',
+            ]);
 
-        $strapiOrder = $this->strapi->createOrder([
-            'order_number'   => $orderNumber,
-            'customer_email' => auth()->check() ? auth()->user()->email : null,
-            'products'       => $productsSnapshot,
-            'total_amount'   => $total,
-            'status'         => 'pending',
-            'payment_status' => 'unpaid',
-        ]);
-
-        if ($strapiOrder === null) {
-            Log::error('Failed to log WhatsApp order to Strapi', [
-                'order_number' => $orderNumber,
-                'total'        => $total,
+            foreach ($cart as $item) {
+                OrderItem::create([
+                    'order_id'   => $order->id,
+                    'product_id' => $item['id'],
+                    'quantity'   => $item['quantity'],
+                    'price'      => $item['price'],
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to save order to database', [
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'total'   => $total,
+                'error'   => $e->getMessage(),
             ]);
         }
 
