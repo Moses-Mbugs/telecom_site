@@ -2,40 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\StrapiService;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-    protected StrapiService $strapi;
-
-    public function __construct(StrapiService $strapi)
-    {
-        $this->strapi = $strapi;
-    }
-
     public function index(Request $request)
     {
-        $params = array_filter([
-            'search'    => $request->input('search'),
-            'category'  => $request->input('category'),
-            'brand'     => $request->input('brand'),
-            'featured'  => $request->input('featured'),
-            'min_price' => $request->input('min_price'),
-            'max_price' => $request->input('max_price'),
-            'sort'      => $request->input('sort'),
-        ], fn ($v) => $v !== null && $v !== '');
+        $query = Product::with(['category', 'brand']);
 
-        $params['page']     = $request->input('page', 1);
-        $params['pageSize'] = 9;
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
 
-        $products         = $this->strapi->getProducts($params);
-        $categories       = $this->strapi->getCategories();
-        $brands           = $this->strapi->getBrands();
-        $featuredProducts = $this->strapi->getFeaturedProducts(8);
-        $deals            = $this->strapi->getDeals(4);
-        $flashSales       = $this->strapi->getFlashSales(4);
-        $shopPage         = $this->strapi->getShopPage();
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
+
+        if ($request->filled('brand')) {
+            $query->where('brand_id', $request->input('brand'));
+        }
+
+        if ($request->filled('featured')) {
+            $query->where('is_featured', true);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->input('min_price'));
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->input('max_price'));
+        }
+
+        switch ($request->input('sort')) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+        }
+
+        $products         = $query->paginate(9)->withQueryString();
+        $categories       = Category::all();
+        $brands           = Brand::all();
+        $featuredProducts = Product::with(['category', 'brand'])->where('is_featured', true)->orderBy('created_at', 'desc')->take(8)->get();
+        $deals            = Product::with(['category', 'brand'])->whereNotNull('deal_end_time')->where('deal_end_time', '>', now())->orderBy('deal_end_time', 'asc')->take(4)->get();
+        $flashSales       = Product::with(['category', 'brand'])->whereNotNull('discount_price')->orderBy('created_at', 'desc')->take(4)->get();
+        $shopPage         = null;
 
         return view('shop', compact(
             'products',
@@ -50,29 +73,21 @@ class ShopController extends Controller
 
     public function show($slug)
     {
-        $product = $this->strapi->getProductBySlug($slug);
+        $product = Product::with(['category', 'brand'])->where('slug', $slug)->firstOrFail();
 
-        if (!$product) {
-            abort(404);
-        }
+        $brands     = Brand::all();
+        $flashSales = Product::with(['category', 'brand'])->whereNotNull('discount_price')->orderBy('created_at', 'desc')->take(1)->get();
 
-        $brands = $this->strapi->getBrands();
-        $flashSales = $this->strapi->getFlashSales(1); // Get 1 flash sale for the strip
-
-        // Fetch related products
         $relatedProducts = collect();
-        if (isset($product->category->id)) {
-            $relatedPaginator = $this->strapi->getProducts([
-                'category' => $product->category->id,
-                'pageSize' => 5
-            ]);
-            
-            $relatedProducts = collect($relatedPaginator->items())
-                ->filter(fn($p) => $p->id !== $product->id)
-                ->take(4);
+        if ($product->category_id) {
+            $relatedProducts = Product::with(['category', 'brand'])
+                ->where('category_id', $product->category_id)
+                ->where('id', '!=', $product->id)
+                ->take(4)
+                ->get();
         }
 
-        $shopPage = $this->strapi->getShopPage();
+        $shopPage = null;
 
         return view('product-show', compact('product', 'relatedProducts', 'shopPage', 'brands', 'flashSales'));
     }
