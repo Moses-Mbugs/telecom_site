@@ -21,7 +21,7 @@ Route::post('/topup', [TopUpController::class, 'topup'])->name('topup');
 
 
 Route::view('/about', 'about')->name('about');
-Route::view('/locations', 'locations')->name('locations');
+Route::get('/locations', [\App\Http\Controllers\HomeController::class, 'locations'])->name('locations');
 
 
 // Shop Route
