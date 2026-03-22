@@ -15,4 +15,15 @@ class Testimonial extends Model
         'image_url',
         'rating',
     ];
+
+    public function getAssetUrlAttribute()
+    {
+        if (!$this->image_url) {
+            return null;
+        }
+        if (str_starts_with($this->image_url, 'http')) {
+            return $this->image_url;
+        }
+        return asset('storage/' . $this->image_url);
+    }
 }

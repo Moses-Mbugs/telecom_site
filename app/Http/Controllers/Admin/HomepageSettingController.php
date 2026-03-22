@@ -56,7 +56,11 @@ class HomepageSettingController extends Controller
         foreach ($imageKeys as $key) {
             $fileField = $key . '_file';
             if ($request->hasFile($fileField) && $request->file($fileField)->isValid()) {
-                $path = $request->file($fileField)->store('uploads', 'public');
+                $oldPath = HomepageSetting::get($key);
+                if ($oldPath && !str_starts_with($oldPath, 'http')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+                }
+                $path = $request->file($fileField)->store('homepage', 'public');
                 HomepageSetting::set($key, $path);
             }
         }

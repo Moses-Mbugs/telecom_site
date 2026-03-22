@@ -269,7 +269,7 @@
                                         <div
                                             class="relative aspect-square mb-4 bg-white/5 rounded-lg flex items-center justify-center overflow-hidden">
                                             @if ($product->image)
-                                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                     class="object-contain w-full h-full p-2 group-hover:scale-110 transition-transform duration-500">
                                             @else
                                                 <span class="text-xs text-gray-400">No Image</span>
@@ -333,7 +333,7 @@
                                         <div
                                             class="relative h-40 bg-gray-50 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
                                             @if ($product->image)
-                                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                     class="max-w-[90%] max-h-[90%] object-contain group-hover:scale-110 transition-transform duration-500">
                                             @else
                                                 <span class="text-gray-400 text-xs">No Image</span>
@@ -415,7 +415,7 @@
                                             <div
                                                 class="w-20 h-20 bg-white rounded-lg p-2 flex-shrink-0 flex items-center justify-center shadow-sm">
                                                 @if ($deal->image)
-                                                    <img src="{{ $deal->image }}" alt="{{ $deal->name }}"
+                                                    <img src="{{ $deal->image_url }}" alt="{{ $deal->name }}"
                                                         class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-300">
                                                 @else
                                                     <span class="text-[10px] text-gray-400">No Image</span>
@@ -534,7 +534,7 @@
                                     <div
                                         class="relative h-48 bg-gray-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center group-hover:bg-purple-50/30 transition-colors">
                                         @if ($product->image)
-                                            <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                 class="max-w-[80%] max-h-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
                                         @else
                                             <span class="text-gray-400 text-xs">No Image</span>

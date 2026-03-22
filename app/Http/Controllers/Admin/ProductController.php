@@ -88,6 +88,9 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            if ($product->image && !str_starts_with($product->image, 'http')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+            }
             $validated['image'] = $request->file('image')->store('products', 'public');
         } else {
             unset($validated['image']);

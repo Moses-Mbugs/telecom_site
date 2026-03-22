@@ -59,6 +59,9 @@ class TestimonialController extends Controller
         ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            if ($testimonial->image_url && !str_starts_with($testimonial->image_url, 'http')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($testimonial->image_url);
+            }
             $validated['image_url'] = $request->file('image')->store('testimonials', 'public');
         }
 

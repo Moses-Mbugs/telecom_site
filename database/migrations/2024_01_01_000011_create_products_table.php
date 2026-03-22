@@ -13,17 +13,18 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('price');
-            $table->unsignedBigInteger('discount_price')->nullable();
-            $table->unsignedBigInteger('deposit_amount')->nullable();
-            $table->unsignedBigInteger('monthly_payment')->nullable();
-            $table->unsignedInteger('stock')->default(0);
+            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('discount_price', 10, 2)->nullable();
+            $table->decimal('deposit_amount', 10, 2)->nullable();
+            $table->decimal('monthly_payment', 10, 2)->nullable();
+            $table->integer('stock')->default(0);
             $table->string('image')->nullable();
-            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('brand_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('brand_id')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('is_featured')->default(false);
             $table->timestamp('deal_end_time')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

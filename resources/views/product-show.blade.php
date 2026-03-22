@@ -110,7 +110,7 @@
                     <div class="space-y-6">
                         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex items-center justify-center h-[440px] relative overflow-hidden group">
                             @if ($product->image)
-                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                     class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105" id="main-image">
                             @else
                                 <span class="text-gray-400 text-lg">No Image Available</span>
@@ -127,7 +127,7 @@
                         @if($product->image)
                         <div class="flex gap-4 overflow-x-auto pb-2">
                             <div class="w-24 h-24 rounded-xl border-2 border-purple-600 p-2 cursor-pointer bg-white flex-shrink-0">
-                                <img src="{{ $product->image }}" class="w-full h-full object-contain">
+                                <img src="{{ $product->image_url }}" class="w-full h-full object-contain">
                             </div>
                         </div>
                         @endif

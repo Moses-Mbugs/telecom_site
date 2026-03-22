@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -29,6 +30,17 @@ class Product extends Model
         'is_featured' => 'boolean',
         'deal_end_time' => 'datetime',
     ];
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+        return asset('storage/' . $this->image);
+    }
 
     public function category()
     {

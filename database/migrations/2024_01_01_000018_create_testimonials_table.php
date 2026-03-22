@@ -8,16 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('homepage_settings', function (Blueprint $table) {
+        Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->text('value')->nullable();
+            $table->string('client_name');
+            $table->text('content');
+            $table->string('image_url')->nullable();
+            $table->integer('rating')->default(5);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('homepage_settings');
+        Schema::dropIfExists('testimonials');
     }
 };
