@@ -9,7 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Auth;
 
-Route::view('/', 'welcome')->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::redirect('/home', '/');
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::view('/welcome', 'welcome')->name('welcome');
@@ -45,4 +45,19 @@ Route::get('/checkout', [CartController::class, 'checkoutWhatsApp'])->name('chec
 Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+});
+
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    // Homepage Settings
+    Route::get('/homepage', [\App\Http\Controllers\Admin\HomepageSettingController::class, 'index'])->name('homepage.index');
+    Route::post('/homepage', [\App\Http\Controllers\Admin\HomepageSettingController::class, 'update'])->name('homepage.update');
+
+    // Testimonials
+    Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class);
+
+    // Products
+    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
 });
