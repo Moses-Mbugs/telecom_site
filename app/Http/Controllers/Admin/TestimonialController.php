@@ -75,6 +75,9 @@ class TestimonialController extends Controller
 
     public function destroy(Testimonial $testimonial)
     {
+        if ($testimonial->image_url && !str_starts_with($testimonial->image_url, 'http')) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($testimonial->image_url);
+        }
         $testimonial->delete();
         return redirect()->route('admin.testimonials.index')
             ->with('success', 'Testimonial deleted.');

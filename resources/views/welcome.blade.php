@@ -365,11 +365,10 @@
             <div class="flex w-max animate-marquee">
                 @php
                     $avatarColors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-pink-500', 'bg-yellow-500', 'bg-indigo-500'];
-                    $testimonialList = $testimonials->count() > 0 ? $testimonials : collect([]);
                 @endphp
                 {{-- Set 1 --}}
                 <div class="flex">
-                    @foreach($testimonialList as $index => $testimonial)
+                    @foreach($testimonials as $index => $testimonial)
                         @php
                             $words = explode(' ', $testimonial->client_name);
                             $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
@@ -390,7 +389,7 @@
                                     </div>
                                 </div>
                                 <div class="flex text-yellow-400 mb-4">
-                                    @for($s = 0; $s < $testimonial->rating; $s++)★@endfor
+                                    {{ str_repeat('★', min(5, max(0, $testimonial->rating))) }}
                                 </div>
                                 <p class="text-gray-600 italic">"{{ $testimonial->content }}"</p>
                             </div>
@@ -400,7 +399,7 @@
 
                 {{-- Set 2 (Duplicate for infinite loop) --}}
                 <div class="flex">
-                    @foreach($testimonialList as $index => $testimonial)
+                    @foreach($testimonials as $index => $testimonial)
                         @php
                             $words = explode(' ', $testimonial->client_name);
                             $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
@@ -421,7 +420,7 @@
                                     </div>
                                 </div>
                                 <div class="flex text-yellow-400 mb-4">
-                                    @for($s = 0; $s < $testimonial->rating; $s++)★@endfor
+                                    {{ str_repeat('★', min(5, max(0, $testimonial->rating))) }}
                                 </div>
                                 <p class="text-gray-600 italic">"{{ $testimonial->content }}"</p>
                             </div>
