@@ -1,0 +1,119 @@
+@extends('admin.layout')
+
+@section('page-title', 'Manage Homepage')
+
+@section('content')
+<form action="{{ route('admin.homepage.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+    @csrf
+
+    {{-- Hero Section --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b">🦸 Hero Section</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Hero Title</label>
+                <input type="text" name="hero_title" value="{{ old('hero_title', $settings['hero_title'] ?? '') }}"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Hero Subtitle</label>
+                <input type="text" name="hero_subtitle" value="{{ old('hero_subtitle', $settings['hero_subtitle'] ?? '') }}"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Hero Background Image</label>
+                @if(!empty($settings['hero_image']))
+                    <div class="mb-2">
+                        @php $img = $settings['hero_image']; @endphp
+                        <img src="{{ Str::startsWith($img, 'http') ? $img : asset('storage/' . $img) }}" class="h-24 rounded-lg object-cover" alt="Current hero image">
+                        <p class="text-xs text-gray-400 mt-1">Current image. Upload a new file to replace it.</p>
+                    </div>
+                @endif
+                <input type="file" name="hero_image_file" accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+            </div>
+        </div>
+    </div>
+
+    {{-- Journey Section --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b">🚀 Our Journey Section</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Journey Title</label>
+                <input type="text" name="journey_title" value="{{ old('journey_title', $settings['journey_title'] ?? '') }}"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Journey Image</label>
+                @if(!empty($settings['journey_image']))
+                    @php $img = $settings['journey_image']; @endphp
+                    <img src="{{ Str::startsWith($img, 'http') ? $img : asset('storage/' . $img) }}" class="h-16 rounded-lg object-cover mb-2" alt="Journey image">
+                @endif
+                <input type="file" name="journey_image_file" accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Journey Text</label>
+                <textarea name="journey_text" rows="4"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none resize-none">{{ old('journey_text', $settings['journey_text'] ?? '') }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    {{-- Plans Section --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b">📶 Data Plans Section</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Plans Title</label>
+                <input type="text" name="plans_title" value="{{ old('plans_title', $settings['plans_title'] ?? '') }}"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Plans Image</label>
+                @if(!empty($settings['plans_image']))
+                    @php $img = $settings['plans_image']; @endphp
+                    <img src="{{ Str::startsWith($img, 'http') ? $img : asset('storage/' . $img) }}" class="h-16 rounded-lg object-cover mb-2" alt="Plans image">
+                @endif
+                <input type="file" name="plans_image_file" accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Plans Text</label>
+                <textarea name="plans_text" rows="3"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none resize-none">{{ old('plans_text', $settings['plans_text'] ?? '') }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    {{-- Why Choose Us --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b">⭐ Why Choose Us Cards</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach([1,2,3] as $i)
+            <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Card {{ $i }}</h3>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Title</label>
+                    <input type="text" name="why_us_{{ $i }}_title" value="{{ old('why_us_'.$i.'_title', $settings['why_us_'.$i.'_title'] ?? '') }}"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Text</label>
+                    <textarea name="why_us_{{ $i }}_text" rows="3"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none resize-none">{{ old('why_us_'.$i.'_text', $settings['why_us_'.$i.'_text'] ?? '') }}</textarea>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="flex justify-end">
+        <button type="submit"
+            class="px-8 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition shadow-lg">
+            Save All Changes
+        </button>
+    </div>
+</form>
+@endsection

@@ -93,7 +93,8 @@
 
         {{-- Background Image --}}
         <div class="absolute inset-0 z-0">
-            <img src="{{ asset('images/hero.jpg') }}" alt="Safe World Telecom Hero" class="w-full h-full object-cover">
+            @php $heroImage = $settings['hero_image'] ?? 'images/hero.jpg'; @endphp
+            <img src="{{ Str::startsWith($heroImage, 'http') ? $heroImage : asset('storage/' . $heroImage) }}" alt="Safe World Telecom Hero" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/50"></div> {{-- Dark overlay --}}
         </div>
 
@@ -109,12 +110,12 @@
 
                     {{-- Company Name --}}
                     <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
-                        Safe World Telecom
+                        {{ $settings['hero_title'] ?? 'Safe World Telecom' }}
                     </h1>
 
                     {{-- Statement --}}
                     <p class="text-base md:text-lg text-gray-200 mb-10 leading-relaxed drop-shadow-md">
-                        Experience our latest initiative, and products & services that have been innovated to transform lives of Kenyans.
+                        {{ $settings['hero_subtitle'] ?? 'Experience our latest initiative, and products & services that have been innovated to transform lives of Kenyans.' }}
                     </p>
 
                     {{-- Buttons --}}
@@ -158,15 +159,16 @@
                 {{-- Left: Photo --}}
                 <div class="lg:w-1/2 w-full">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500">
-                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our Story Team" class="w-full h-full object-cover">
+                        @php $journeyImage = $settings['journey_image'] ?? 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'; @endphp
+                        <img src="{{ Str::startsWith($journeyImage, 'http') ? $journeyImage : asset('storage/' . $journeyImage) }}" alt="Our Story Team" class="w-full h-full object-cover">
                     </div>
                 </div>
 
                 {{-- Right: Wording --}}
                 <div class="lg:w-1/2 w-full">
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">Our Journey of Innovation</h2>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{{ $settings['journey_title'] ?? 'Our Journey of Innovation' }}</h2>
                     <p class="text-gray-600 text-lg leading-relaxed mb-8">
-                        From humble beginnings to becoming a trusted name in Kenyan telecommunications, Safe World Telecom has always been driven by one mission: connecting people. We started with a vision to make technology accessible to everyone, and today, we continue to break barriers and bring the future closer to you.
+                        {{ $settings['journey_text'] ?? 'From humble beginnings to becoming a trusted name in Kenyan telecommunications, Safe World Telecom has always been driven by one mission: connecting people.' }}
                     </p>
                     <a href="{{ route('about') }}" class="inline-block px-8 py-3 bg-purple-700 text-white rounded-full font-semibold hover:bg-purple-800 transition duration-300 shadow-lg">
                         Explore Full Story
@@ -213,11 +215,12 @@
             <div class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
                 {{-- Slide 1 --}}
                 <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100">
-                    <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover" alt="Ad Slide 1">
+                    @php $plansImage = $settings['plans_image'] ?? 'https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'; @endphp
+                    <img src="{{ Str::startsWith($plansImage, 'http') ? $plansImage : asset('storage/' . $plansImage) }}" class="w-full h-full object-cover" alt="Ad Slide 1">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-10 md:p-16">
                         <span class="px-4 py-1 bg-purple-600 text-white text-sm font-bold rounded-full w-fit mb-4">Featured Offer</span>
-                        <h3 class="text-3xl md:text-5xl font-bold text-white mb-4">Unlimited Data Plans</h3>
-                        <p class="text-gray-200 text-lg md:text-xl max-w-xl">Stay connected without limits. Stream, game, and work with our new affordable unlimited fiber packages.</p>
+                        <h3 class="text-3xl md:text-5xl font-bold text-white mb-4">{{ $settings['plans_title'] ?? 'Unlimited Data Plans' }}</h3>
+                        <p class="text-gray-200 text-lg md:text-xl max-w-xl">{{ $settings['plans_text'] ?? 'Stay connected without limits. Stream, game, and work with our new affordable unlimited fiber packages.' }}</p>
                     </div>
                 </div>
             </div>
@@ -313,9 +316,9 @@
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition-colors duration-500">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Lightning Fast Speed</h3>
+                    <h3 class="text-2xl font-bold mb-4">{{ $settings['why_us_1_title'] ?? 'Lightning Fast Speed' }}</h3>
                     <p class="text-gray-600 group-hover:text-purple-100 transition-colors duration-500">
-                        Experience blazing-fast network solutions built for modern demands with our cutting-edge 5G technology.
+                        {{ $settings['why_us_1_text'] ?? 'Experience blazing-fast network solutions built for modern demands with our cutting-edge 5G technology.' }}
                     </p>
                 </div>
 
@@ -324,9 +327,9 @@
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition-colors duration-500">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">24/7 Expert Support</h3>
+                    <h3 class="text-2xl font-bold mb-4">{{ $settings['why_us_2_title'] ?? '24/7 Expert Support' }}</h3>
                     <p class="text-gray-600 group-hover:text-blue-100 transition-colors duration-500">
-                        Round-the-clock technical assistance from our expert team, always ready to help you whenever you need us.
+                        {{ $settings['why_us_2_text'] ?? 'Round-the-clock technical assistance from our expert team, always ready to help you whenever you need us.' }}
                     </p>
                 </div>
 
@@ -335,9 +338,9 @@
                     <div class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition-colors duration-500">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Affordable Plans</h3>
+                    <h3 class="text-2xl font-bold mb-4">{{ $settings['why_us_3_title'] ?? 'Affordable Plans' }}</h3>
                     <p class="text-gray-600 group-hover:text-green-100 transition-colors duration-500">
-                        High-quality telecom services tailored to every budget without compromising on quality or reliability.
+                        {{ $settings['why_us_3_text'] ?? 'High-quality telecom services tailored to every budget without compromising on quality or reliability.' }}
                     </p>
                 </div>
             </div>
@@ -360,31 +363,36 @@
             <div class="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
 
             <div class="flex w-max animate-marquee">
+                @php
+                    $avatarColors = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-pink-500', 'bg-yellow-500', 'bg-indigo-500'];
+                    $testimonialList = $testimonials->count() > 0 ? $testimonials : collect([]);
+                @endphp
                 {{-- Set 1 --}}
                 <div class="flex">
-                    @foreach([
-                        ['name' => 'John Doe', 'role' => 'Business Owner', 'text' => 'Excellent service! The fiber internet is blazing fast and has transformed how we operate.', 'initials' => 'JD', 'color' => 'bg-blue-500'],
-                        ['name' => 'Sarah Wanjiku', 'role' => 'Freelancer', 'text' => 'Love the customer support. They resolved my issue in minutes. Highly recommended!', 'initials' => 'SW', 'color' => 'bg-purple-500'],
-                        ['name' => 'Michael Omondi', 'role' => 'Student', 'text' => 'Great data plans. Very affordable and reliable for my online classes.', 'initials' => 'MO', 'color' => 'bg-green-500'],
-                        ['name' => 'Emily Chen', 'role' => 'Digital Nomad', 'text' => 'Best telecom provider in Kenya. The 5G speeds are incredible.', 'initials' => 'EC', 'color' => 'bg-pink-500'],
-                        ['name' => 'David Kamau', 'role' => 'Tech Enthusiast', 'text' => 'The M-Pesa integration is seamless. Makes topping up so easy.', 'initials' => 'DK', 'color' => 'bg-yellow-500'],
-                        ['name' => 'Grace Nyambura', 'role' => 'Teacher', 'text' => 'Reliable connectivity even in rural areas. Thank you Safe World!', 'initials' => 'GN', 'color' => 'bg-indigo-500'],
-                    ] as $review)
+                    @foreach($testimonialList as $index => $testimonial)
+                        @php
+                            $words = explode(' ', $testimonial->client_name);
+                            $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
+                            $color = $avatarColors[$index % count($avatarColors)];
+                        @endphp
                         <div class="w-80 md:w-96 p-8 bg-white rounded-3xl shadow-xl mx-4 border border-gray-100 flex flex-col justify-between hover:scale-105 transition-transform duration-300">
                             <div class="mb-4">
                                 <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 {{ $review['color'] }} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                                        {{ $review['initials'] }}
-                                    </div>
+                                    @if($testimonial->image_url)
+                                        <img src="{{ Str::startsWith($testimonial->image_url, 'http') ? $testimonial->image_url : asset('storage/' . $testimonial->image_url) }}" alt="{{ $testimonial->client_name }}" class="w-12 h-12 rounded-full object-cover mr-4">
+                                    @else
+                                        <div class="w-12 h-12 {{ $color }} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                                            {{ $initials }}
+                                        </div>
+                                    @endif
                                     <div>
-                                        <h4 class="font-bold text-gray-900">{{ $review['name'] }}</h4>
-                                        <p class="text-sm text-gray-500">{{ $review['role'] }}</p>
+                                        <h4 class="font-bold text-gray-900">{{ $testimonial->client_name }}</h4>
                                     </div>
                                 </div>
                                 <div class="flex text-yellow-400 mb-4">
-                                    ★★★★★
+                                    @for($s = 0; $s < $testimonial->rating; $s++)★@endfor
                                 </div>
-                                <p class="text-gray-600 italic">"{{ $review['text'] }}"</p>
+                                <p class="text-gray-600 italic">"{{ $testimonial->content }}"</p>
                             </div>
                         </div>
                     @endforeach
@@ -392,29 +400,30 @@
 
                 {{-- Set 2 (Duplicate for infinite loop) --}}
                 <div class="flex">
-                    @foreach([
-                        ['name' => 'John Doe', 'role' => 'Business Owner', 'text' => 'Excellent service! The fiber internet is blazing fast and has transformed how we operate.', 'initials' => 'JD', 'color' => 'bg-blue-500'],
-                        ['name' => 'Sarah Wanjiku', 'role' => 'Freelancer', 'text' => 'Love the customer support. They resolved my issue in minutes. Highly recommended!', 'initials' => 'SW', 'color' => 'bg-purple-500'],
-                        ['name' => 'Michael Omondi', 'role' => 'Student', 'text' => 'Great data plans. Very affordable and reliable for my online classes.', 'initials' => 'MO', 'color' => 'bg-green-500'],
-                        ['name' => 'Emily Chen', 'role' => 'Digital Nomad', 'text' => 'Best telecom provider in Kenya. The 5G speeds are incredible.', 'initials' => 'EC', 'color' => 'bg-pink-500'],
-                        ['name' => 'David Kamau', 'role' => 'Tech Enthusiast', 'text' => 'The M-Pesa integration is seamless. Makes topping up so easy.', 'initials' => 'DK', 'color' => 'bg-yellow-500'],
-                        ['name' => 'Grace Nyambura', 'role' => 'Teacher', 'text' => 'Reliable connectivity even in rural areas. Thank you Safe World!', 'initials' => 'GN', 'color' => 'bg-indigo-500'],
-                    ] as $review)
+                    @foreach($testimonialList as $index => $testimonial)
+                        @php
+                            $words = explode(' ', $testimonial->client_name);
+                            $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
+                            $color = $avatarColors[$index % count($avatarColors)];
+                        @endphp
                         <div class="w-80 md:w-96 p-8 bg-white rounded-3xl shadow-xl mx-4 border border-gray-100 flex flex-col justify-between hover:scale-105 transition-transform duration-300">
                             <div class="mb-4">
                                 <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 {{ $review['color'] }} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                                        {{ $review['initials'] }}
-                                    </div>
+                                    @if($testimonial->image_url)
+                                        <img src="{{ Str::startsWith($testimonial->image_url, 'http') ? $testimonial->image_url : asset('storage/' . $testimonial->image_url) }}" alt="{{ $testimonial->client_name }}" class="w-12 h-12 rounded-full object-cover mr-4">
+                                    @else
+                                        <div class="w-12 h-12 {{ $color }} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                                            {{ $initials }}
+                                        </div>
+                                    @endif
                                     <div>
-                                        <h4 class="font-bold text-gray-900">{{ $review['name'] }}</h4>
-                                        <p class="text-sm text-gray-500">{{ $review['role'] }}</p>
+                                        <h4 class="font-bold text-gray-900">{{ $testimonial->client_name }}</h4>
                                     </div>
                                 </div>
                                 <div class="flex text-yellow-400 mb-4">
-                                    ★★★★★
+                                    @for($s = 0; $s < $testimonial->rating; $s++)★@endfor
                                 </div>
-                                <p class="text-gray-600 italic">"{{ $review['text'] }}"</p>
+                                <p class="text-gray-600 italic">"{{ $testimonial->content }}"</p>
                             </div>
                         </div>
                     @endforeach
