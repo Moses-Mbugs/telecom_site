@@ -41,3 +41,6 @@ class CheckoutController extends Controller
             ->with('success', 'Order details captured. Payment coming next.');
     }
 }
+
+
+// dev.safeworldtelecom.co.ke ---- production ready build
