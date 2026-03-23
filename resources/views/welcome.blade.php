@@ -215,8 +215,12 @@
             <div class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
                 {{-- Slide 1 --}}
                 <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100">
-                    @php $plansImage = $settings['plans_image'] ?? 'https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'; @endphp
-                    <img src="{{ Str::startsWith($plansImage, 'http') ? $plansImage : asset('storage/' . $plansImage) }}" class="w-full h-full object-cover" alt="Ad Slide 1">
+                    @if(!empty($settings['plans_video']))
+                        <video src="{{ Str::startsWith($settings['plans_video'], 'http') ? $settings['plans_video'] : asset('storage/' . $settings['plans_video']) }}" class="w-full h-full object-cover" autoplay loop muted playsinline></video>
+                    @else
+                        @php $plansImage = $settings['plans_image'] ?? 'https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'; @endphp
+                        <img src="{{ Str::startsWith($plansImage, 'http') ? $plansImage : asset('storage/' . $plansImage) }}" class="w-full h-full object-cover" alt="Ad Slide 1">
+                    @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-10 md:p-16">
                         <span class="px-4 py-1 bg-purple-600 text-white text-sm font-bold rounded-full w-fit mb-4">Featured Offer</span>
                         <h3 class="text-3xl md:text-5xl font-bold text-white mb-4">{{ $settings['plans_title'] ?? 'Unlimited Data Plans' }}</h3>

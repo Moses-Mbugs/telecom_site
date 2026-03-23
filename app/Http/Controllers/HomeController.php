@@ -14,7 +14,7 @@ class HomeController extends Controller
         $keys = [
             'hero_title', 'hero_subtitle', 'hero_image',
             'journey_title', 'journey_text', 'journey_image',
-            'plans_title', 'plans_text', 'plans_image',
+            'plans_title', 'plans_text', 'plans_image', 'plans_video',
             'why_us_1_title', 'why_us_1_text',
             'why_us_2_title', 'why_us_2_text',
             'why_us_3_title', 'why_us_3_text',

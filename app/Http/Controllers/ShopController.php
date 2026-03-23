@@ -60,6 +60,10 @@ class ShopController extends Controller
         $flashSales       = Product::with(['category', 'brand'])->whereNotNull('discount_price')->orderBy('created_at', 'desc')->take(4)->get();
         $shopPage         = null;
 
+        $shopVideo = \App\Models\HomepageSetting::get('shop_video');
+        $shopVideoTitle = \App\Models\HomepageSetting::get('shop_video_title');
+        $shopVideoText = \App\Models\HomepageSetting::get('shop_video_text');
+
         return view('shop', compact(
             'products',
             'categories',
@@ -67,7 +71,10 @@ class ShopController extends Controller
             'featuredProducts',
             'deals',
             'flashSales',
-            'shopPage'
+            'shopPage',
+            'shopVideo',
+            'shopVideoTitle',
+            'shopVideoText'
         ));
     }
 

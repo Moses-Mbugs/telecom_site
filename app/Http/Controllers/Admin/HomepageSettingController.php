@@ -13,10 +13,11 @@ class HomepageSettingController extends Controller
         $keys = [
             'hero_title', 'hero_subtitle', 'hero_image',
             'journey_title', 'journey_text', 'journey_image',
-            'plans_title', 'plans_text', 'plans_image',
+            'plans_title', 'plans_text', 'plans_image', 'plans_video',
             'why_us_1_title', 'why_us_1_text',
             'why_us_2_title', 'why_us_2_text',
             'why_us_3_title', 'why_us_3_text',
+            'shop_video', 'shop_video_title', 'shop_video_text',
         ];
 
         $settings = HomepageSetting::whereIn('key', $keys)->pluck('value', 'key');
@@ -33,9 +34,11 @@ class HomepageSettingController extends Controller
             'why_us_1_title', 'why_us_1_text',
             'why_us_2_title', 'why_us_2_text',
             'why_us_3_title', 'why_us_3_text',
+            'shop_video_title', 'shop_video_text',
         ];
 
         $imageKeys = ['hero_image', 'journey_image', 'plans_image'];
+        $videoKeys = ['plans_video', 'shop_video'];
 
         $rules = [];
         foreach ($textKeys as $key) {
@@ -43,6 +46,9 @@ class HomepageSettingController extends Controller
         }
         foreach ($imageKeys as $key) {
             $rules[$key . '_file'] = 'nullable|image|max:5120';
+        }
+        foreach ($videoKeys as $key) {
+            $rules[$key . '_file'] = 'nullable|mimes:mp4,mov,avi,wmv|max:51200'; // 50MB max
         }
 
         $validated = $request->validate($rules);
@@ -52,8 +58,10 @@ class HomepageSettingController extends Controller
             HomepageSetting::set($key, $request->input($key));
         }
 
-        // Save image uploads
-        foreach ($imageKeys as $key) {
+        $allFileKeys = array_merge($imageKeys, $videoKeys);
+
+        // Save file uploads
+        foreach ($allFileKeys as $key) {
             $fileField = $key . '_file';
             if ($request->hasFile($fileField) && $request->file($fileField)->isValid()) {
                 $oldPath = HomepageSetting::get($key);
@@ -63,6 +71,23 @@ class HomepageSettingController extends Controller
                 $path = $request->file($fileField)->store('homepage', 'public');
                 HomepageSetting::set($key, $path);
             }
+        }
+
+        // Handle deletions for videos
+        if ($request->has('remove_plans_video')) {
+            $oldPath = HomepageSetting::get('plans_video');
+            if ($oldPath && !str_starts_with($oldPath, 'http')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            HomepageSetting::set('plans_video', null);
+        }
+
+        if ($request->has('remove_shop_video')) {
+            $oldPath = HomepageSetting::get('shop_video');
+            if ($oldPath && !str_starts_with($oldPath, 'http')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            HomepageSetting::set('shop_video', null);
         }
 
         return redirect()->route('admin.homepage.index')

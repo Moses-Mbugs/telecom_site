@@ -452,6 +452,26 @@
                         </div>
                     @endif
 
+                    <!-- Shop Video Section -->
+                    @if (!empty($shopVideo))
+                        <div class="mb-10 rounded-2xl overflow-hidden shadow-lg relative group">
+                            <video src="{{ Str::startsWith($shopVideo, 'http') ? $shopVideo : asset('storage/' . $shopVideo) }}" 
+                                class="w-full h-auto max-h-[500px] object-cover" 
+                                autoplay loop muted playsinline>
+                            </video>
+                            @if(!empty($shopVideoTitle) || !empty($shopVideoText))
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
+                                    @if(!empty($shopVideoTitle))
+                                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">{{ $shopVideoTitle }}</h2>
+                                    @endif
+                                    @if(!empty($shopVideoText))
+                                        <p class="text-gray-200 text-sm md:text-base max-w-2xl">{{ $shopVideoText }}</p>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
                     <!-- Sort & Filter Bar (Mobile Toggle + Sort) -->
                     <div
                         class="flex items-center justify-between mb-6 sticky top-[72px] lg:static z-30 bg-gray-50/95 backdrop-blur-sm py-2 lg:py-0">
