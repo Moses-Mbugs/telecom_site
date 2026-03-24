@@ -60,4 +60,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 
     // Products
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+
+    // Locations
+    Route::resource('locations', \App\Http\Controllers\Admin\LocationController::class);
 });

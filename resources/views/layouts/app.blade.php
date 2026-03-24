@@ -343,9 +343,18 @@
                 <li><a href="#services" class="nav-link hover:text-primary transition font-medium">Services</a></li>
                 <li><a href="{{ route('shop') }}" class="nav-link hover:text-primary transition font-medium">Shop</a></li>
                 <li>
-                    <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold hover:shadow-glow transition-all duration-300 hover:scale-105">
-                        Contact
-                    </a>
+                    @auth
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/30">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold hover:shadow-glow transition-all duration-300 hover:scale-105">
+                            Login
+                        </a>
+                    @endauth
                 </li>
                 <li>
                     @php
@@ -385,11 +394,20 @@
                 <li><a href="/" class="block hover:text-purple-400 transition font-medium py-2">Home</a></li>
                 <li><a href="#about" class="block hover:text-purple-400 transition font-medium py-2">About</a></li>
                 <li><a href="#services" class="block hover:text-purple-400 transition font-medium py-2">Services</a></li>
-                <li><a href="#blog" class="block hover:text-purple-400 transition font-medium py-2">Blog</a></li>
+                <li><a href="{{ route('shop') }}" class="block hover:text-purple-400 transition font-medium py-2">Shop</a></li>
                 <li>
-                    <a href="#contact" class="block px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold text-center hover:shadow-glow transition-all duration-300">
-                        Contact Us
-                    </a>
+                    @auth
+                        <form action="{{ route('logout') }}" method="POST" class="w-full">
+                            @csrf
+                            <button type="submit" class="block w-full px-6 py-3 bg-red-600 rounded-full font-semibold text-center hover:bg-red-700 transition-all duration-300">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="block px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-semibold text-center hover:shadow-glow transition-all duration-300">
+                            Login
+                        </a>
+                    @endauth
                 </li>
             </ul>
         </div>
