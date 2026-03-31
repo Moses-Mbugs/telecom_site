@@ -180,19 +180,19 @@
             <div class="mt-20 pt-10 border-t border-gray-200">
                 <div class="flex flex-wrap justify-between items-center text-center gap-8">
                     <div class="flex-1 min-w-[150px]">
-                        <div class="text-4xl font-bold text-gray-300 mb-2">2007</div>
+                        <div class="text-4xl font-bold text-gray-300 mb-2">2014</div>
                         <div class="text-lg font-semibold text-gray-700">Established</div>
                         <p class="text-sm text-gray-500">The journey began</p>
                     </div>
                     <div class="hidden md:block w-16 h-1 bg-gray-200"></div>
                     <div class="flex-1 min-w-[150px]">
-                        <div class="text-4xl font-bold text-purple-300 mb-2">2011</div>
+                        <div class="text-4xl font-bold text-purple-300 mb-2">2015</div>
                         <div class="text-lg font-semibold text-gray-700">Expanded</div>
                         <p class="text-sm text-gray-500">First major branch</p>
                     </div>
                     <div class="hidden md:block w-16 h-1 bg-gray-200"></div>
                     <div class="flex-1 min-w-[150px]">
-                        <div class="text-4xl font-bold text-purple-500 mb-2">2015</div>
+                        <div class="text-4xl font-bold text-purple-500 mb-2">2017</div>
                         <div class="text-lg font-semibold text-gray-700">Nationwide</div>
                         <p class="text-sm text-gray-500">Covering key regions</p>
                     </div>
