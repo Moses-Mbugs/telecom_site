@@ -32,25 +32,40 @@
     @endif
 
     <!-- Mobile Header -->
-    <header class="lg:hidden bg-white shadow-sm sticky top-0 z-40 px-4 py-3 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2">
-            <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World" class="h-8 w-auto">
-        </a>
-        <div class="flex items-center gap-4">
-            <button @click="$dispatch('open-cart')" class="relative text-gray-600 hover:text-purple-600 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <header class="lg:hidden bg-white shadow-sm sticky top-0 z-40">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2">
+                <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World" class="h-8 w-auto">
+            </a>
+            <div class="flex items-center gap-4">
+                <button @click="$dispatch('open-cart')" class="relative text-gray-600 hover:text-purple-600 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span
+                        class="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">{{ count(session('cart', [])) }}</span>
+                </button>
+                <button @click="$dispatch('open-mobile-menu')" class="text-gray-600 hover:text-purple-600 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Search Bar -->
+        <div class="px-4 pb-3">
+            <form action="{{ route('shop') }}" method="GET" class="relative">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Search products..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 px-5 pl-10 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all outline-none text-sm text-gray-700 placeholder-gray-400">
+                <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <span
-                    class="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">{{ count(session('cart', [])) }}</span>
-            </button>
-            <button @click="$dispatch('open-mobile-menu')" class="text-gray-600 hover:text-purple-600 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </button>
+            </form>
         </div>
     </header>
 
@@ -121,11 +136,11 @@
         </div>
     </header>
 
-    <div class="bg-gray-50 min-h-screen py-8" x-data="{ mobileFiltersOpen: false }">
-        <div class="container mx-auto px-4 lg:px-6">
+    <div class="bg-gray-50 min-h-screen py-4 sm:py-8" x-data="{ mobileFiltersOpen: false }">
+        <div class="container mx-auto px-3 sm:px-4 lg:px-6">
 
             <!-- Breadcrumbs -->
-            <nav class="flex mb-8 text-sm text-gray-500">
+            <nav class="flex mb-4 sm:mb-8 text-sm text-gray-500">
                 <a href="/" class="hover:text-purple-600 transition-colors">Home</a>
                 <span class="mx-2">/</span>
                 <span class="text-gray-800 font-medium">Shop</span>
@@ -329,7 +344,7 @@
                             <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar">
                                 @foreach ($featuredProducts as $product)
                                     <div
-                                        class="min-w-[200px] md:min-w-[240px] snap-center bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+                                        class="min-w-[160px] sm:min-w-[200px] md:min-w-[240px] snap-center bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
                                         <div
                                             class="relative h-40 bg-gray-50 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
                                             @if ($product->image)
@@ -474,36 +489,41 @@
 
                     <!-- Sort & Filter Bar (Mobile Toggle + Sort) -->
                     <div
-                        class="flex items-center justify-between mb-6 sticky top-[72px] lg:static z-30 bg-gray-50/95 backdrop-blur-sm py-2 lg:py-0">
-                        <h2 class="text-xl font-bold text-gray-900 hidden lg:block">All Products <span
-                                class="text-sm font-normal text-gray-500 ml-2">({{ $products->total() }} items)</span>
-                        </h2>
+                        class="flex items-center justify-between mb-6 lg:static z-30 bg-gray-50/95 backdrop-blur-sm py-2 lg:py-0">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 hidden lg:block">All Products <span
+                                    class="text-sm font-normal text-gray-500 ml-2">({{ $products->total() }} items)</span>
+                            </h2>
+                            <span class="lg:hidden text-xs text-gray-500 font-medium">{{ $products->total() }} items</span>
+                        </div>
 
-                        <button @click="mobileFiltersOpen = true"
-                            class="lg:hidden flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg text-sm font-bold text-gray-700 shadow-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
-                                </path>
-                            </svg>
-                            Filters
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button @click="mobileFiltersOpen = true"
+                                class="lg:hidden flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg text-sm font-bold text-gray-700 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+                                    </path>
+                                </svg>
+                                Filters
+                            </button>
 
-                        <form method="GET" action="{{ route('shop') }}" id="sortForm"
-                            class="flex items-center gap-2">
-                            @foreach (request()->except(['sort', 'page']) as $key => $value)
-                                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                            @endforeach
-                            <select name="sort" onchange="document.getElementById('sortForm').submit()"
-                                class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 p-2.5 shadow-sm outline-none cursor-pointer">
-                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest Arrivals
-                                </option>
-                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price:
-                                    Low to High</option>
-                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price:
-                                    High to Low</option>
-                            </select>
-                        </form>
+                            <form method="GET" action="{{ route('shop') }}" id="sortForm"
+                                class="flex items-center gap-2">
+                                @foreach (request()->except(['sort', 'page']) as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endforeach
+                                <select name="sort" onchange="document.getElementById('sortForm').submit()"
+                                    class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 p-2.5 shadow-sm outline-none cursor-pointer">
+                                    <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest Arrivals
+                                    </option>
+                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price:
+                                        Low to High</option>
+                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price:
+                                        High to Low</option>
+                                </select>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- Products Grid -->
@@ -530,10 +550,10 @@
                             </a>
                         </div>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                             @foreach ($products as $product)
                                 <div
-                                    class="bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col h-full relative">
+                                    class="bg-white rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col h-full relative">
 
                                     <!-- Badges -->
                                     <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
@@ -551,8 +571,8 @@
                                     </div>
 
                                     <!-- Image -->
-                                    <div
-                                        class="relative h-48 bg-gray-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center group-hover:bg-purple-50/30 transition-colors">
+                                    <a href="{{ route('product.show', $product->slug) }}"
+                                        class="relative h-32 sm:h-40 lg:h-48 bg-gray-50 rounded-xl mb-3 overflow-hidden flex items-center justify-center group-hover:bg-purple-50/30 transition-colors block">
                                         @if ($product->image)
                                             <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                 class="max-w-[80%] max-h-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
@@ -560,15 +580,15 @@
                                             <span class="text-gray-400 text-xs">No Image</span>
                                         @endif
 
-                                        <!-- Quick Action Overlay -->
+                                        <!-- Quick Action Overlay (Desktop hover) -->
                                         <div
-                                            class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <a href="{{ route('product.show', $product->slug) }}"
-                                                class="bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-purple-600 hover:text-white">
+                                            class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center hidden lg:flex">
+                                            <span
+                                                class="bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                                                 View Details
-                                            </a>
+                                            </span>
                                         </div>
-                                    </div>
+                                    </a>
 
                                     <!-- Content -->
                                     <div class="flex-1 flex flex-col">
@@ -576,16 +596,16 @@
                                             <span
                                                 class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1 block">{{ data_get($product, 'category.name', 'General') }}</span>
                                             <h3
-                                                class="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
+                                                class="font-bold text-sm sm:text-base text-gray-900 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
                                                 <a
                                                     href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                             </h3>
                                         </div>
 
-                                        <div class="mt-auto pt-3 border-t border-dashed border-gray-100">
-                                            <div class="flex items-center justify-between mb-3">
+                                        <div class="mt-auto pt-2 sm:pt-3 border-t border-dashed border-gray-100">
+                                            <div class="flex items-center justify-between mb-2 sm:mb-3">
                                                 <div class="flex flex-col">
-                                                    <span class="font-extrabold text-lg text-gray-900">KES
+                                                    <span class="font-extrabold text-base sm:text-lg text-gray-900">KES
                                                         {{ number_format($product->price) }}</span>
                                                     @if ($product->discount_price)
                                                         <span class="text-xs text-gray-400 line-through">KES
@@ -596,15 +616,16 @@
 
                                             <form action="{{ route('cart.add', $product->id) }}" method="POST">
                                                 @csrf
-                                                <button type="submit"
-                                                    class="w-full bg-gray-900 text-white py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-gray-200 hover:bg-purple-600 hover:shadow-purple-200 transition-all duration-300 flex items-center justify-center gap-2 group/btn">
-                                                    <svg class="w-4 h-4 text-gray-300 group-hover/btn:text-white transition-colors"
+                                                <button type="submit" aria-label="Add to Cart"
+                                                    class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-purple-600 hover:shadow-purple-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
+                                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300 group-hover/btn:text-white transition-colors"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
                                                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                                     </svg>
-                                                    Add to Cart
+                                                    <span class="hidden sm:inline">Add to Cart</span>
+                                                    <span class="sm:hidden">Add</span>
                                                 </button>
                                             </form>
                                         </div>
