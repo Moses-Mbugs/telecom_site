@@ -489,7 +489,7 @@
 
                     <!-- Sort & Filter Bar (Mobile Toggle + Sort) -->
                     <div
-                        class="flex items-center justify-between mb-6 sticky top-[116px] lg:top-auto lg:static z-30 bg-gray-50/95 backdrop-blur-sm py-2 lg:py-0">
+                        class="flex items-center justify-between mb-6 lg:static z-30 bg-gray-50/95 backdrop-blur-sm py-2 lg:py-0">
                         <div>
                             <h2 class="text-xl font-bold text-gray-900 hidden lg:block">All Products <span
                                     class="text-sm font-normal text-gray-500 ml-2">({{ $products->total() }} items)</span>
@@ -584,7 +584,7 @@
                                         <div
                                             class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center hidden lg:flex">
                                             <span
-                                                class="bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-purple-600 hover:text-white">
+                                                class="bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                                                 View Details
                                             </span>
                                         </div>
@@ -616,7 +616,7 @@
 
                                             <form action="{{ route('cart.add', $product->id) }}" method="POST">
                                                 @csrf
-                                                <button type="submit"
+                                                <button type="submit" aria-label="Add to Cart"
                                                     class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-purple-600 hover:shadow-purple-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
                                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300 group-hover/btn:text-white transition-colors"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
