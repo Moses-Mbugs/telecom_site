@@ -8,49 +8,10 @@
     <meta name="description" content="Safe World Telecom - Modern telecom solutions for the future">
     <title>{{ config('app.name', 'Safe World Telecom') }}</title>
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Custom Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#253748',
-                        secondary: '#7e7f74',
-                        accent: '#a02b2b',
-                        neutral: '#f1f5f9',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'glow': '0 0 20px rgba(102, 126, 234, 0.4)',
-                        'glow-lg': '0 0 40px rgba(102, 126, 234, 0.6)',
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        slideDown: {
-                            '0%': { transform: 'translateY(-100%)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -518,6 +479,8 @@
         </svg>
     </div>
 
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -527,10 +490,12 @@
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
 
-        menuToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
-            this.classList.toggle('active');
-        });
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                this.classList.toggle('active');
+            });
+        }
 
         // Scroll Progress Bar
         window.addEventListener('scroll', function() {
@@ -538,40 +503,51 @@
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrollPercentage = (scrollTop / scrollHeight) * 100;
-            scrollProgress.style.width = scrollPercentage + '%';
+            if (scrollProgress) {
+                scrollProgress.style.width = scrollPercentage + '%';
+            }
 
             // Show/hide FAB
             const fab = document.getElementById('scrollToTop');
-            if (scrollTop > 300) {
-                fab.classList.add('visible');
-            } else {
-                fab.classList.remove('visible');
+            if (fab) {
+                if (scrollTop > 300) {
+                    fab.classList.add('visible');
+                } else {
+                    fab.classList.remove('visible');
+                }
             }
 
             // Navbar shrink on scroll
             const navbar = document.getElementById('navbar');
-            if (scrollTop > 50) {
-                navbar.classList.add('navbar-shrink');
-            } else {
-                navbar.classList.remove('navbar-shrink');
+            if (navbar) {
+                if (scrollTop > 50) {
+                    navbar.classList.add('navbar-shrink');
+                } else {
+                    navbar.classList.remove('navbar-shrink');
+                }
             }
         });
 
         // Scroll to Top
-        document.getElementById('scrollToTop').addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        const scrollToTopButton = document.getElementById('scrollToTop');
+        if (scrollToTopButton) {
+            scrollToTopButton.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     // Close mobile menu if open
-                    mobileMenu.classList.add('hidden');
-                    menuToggle.classList.remove('active');
+                    if (mobileMenu && menuToggle) {
+                        mobileMenu.classList.add('hidden');
+                        menuToggle.classList.remove('active');
+                    }
                 }
             });
         });

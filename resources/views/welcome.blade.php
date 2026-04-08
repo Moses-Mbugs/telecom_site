@@ -5,35 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Safe World Telecom - Modern telecom solutions for the future">
     <title>{{ config('app.name', 'Safe World Telecom') }}</title>
-
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Custom Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#253748',
-                        secondary: '#7e7f74',
-                        accent: '#a02b2b',
-                        neutral: '#f1f5f9',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'glow': '0 0 20px rgba(102, 126, 234, 0.4)',
-                        'glow-lg': '0 0 40px rgba(102, 126, 234, 0.6)',
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
