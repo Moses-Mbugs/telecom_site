@@ -251,7 +251,7 @@
                         class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Specifications</button>
                     <button @click="tab = 'reviews'"
                         :class="{'text-purple-600 border-purple-600': tab === 'reviews', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'reviews'}"
-                        class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Reviews (0)</button>
+                        class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Reviews ({{ $reviewsCount ?? 0 }})</button>
                 </div>
 
                 <div x-show="tab === 'description'" class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 prose max-w-none">
@@ -273,11 +273,112 @@
                     @endif
                 </div>
 
-                <div x-show="tab === 'reviews'" class="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center" style="display: none;">
-                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">No Reviews Yet</h3>
-                    <p class="text-gray-500 mb-6">Be the first to review this product!</p>
-                    <button class="bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</button>
+                <div x-show="tab === 'reviews'" class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100" style="display: none;">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Customer Reviews</h3>
+                                    <p class="text-sm text-gray-500 mt-1">{{ $reviewsCount ?? 0 }} {{ Str::plural('review', $reviewsCount ?? 0) }}</p>
+                                </div>
+                                @if(($reviewsCount ?? 0) > 0)
+                                    <div class="text-right">
+                                        <div class="flex items-center justify-end gap-1 text-yellow-400">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <svg class="w-5 h-5" fill="{{ $i <= floor($reviewsAverage ?? 0) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.044 6.293a1 1 0 00.95.69h6.613c.969 0 1.371 1.24.588 1.81l-5.35 3.887a1 1 0 00-.364 1.118l2.044 6.293c.3.921-.755 1.688-1.54 1.118l-5.35-3.887a1 1 0 00-1.175 0l-5.35 3.887c-.784.57-1.838-.197-1.539-1.118l2.044-6.293a1 1 0 00-.364-1.118L2.98 11.72c-.783-.57-.38-1.81.588-1.81h6.614a1 1 0 00.95-.69l2.044-6.293z"></path>
+                                                </svg>
+                                            @endfor
+                                        </div>
+                                        <p class="text-sm font-bold text-gray-900 mt-1">{{ $reviewsAverage ?? 0 }}/5</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            @if(($reviewsCount ?? 0) === 0)
+                                <div class="text-center py-10">
+                                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                                    <h4 class="text-lg font-bold text-gray-800 mb-2">No Reviews Yet</h4>
+                                    <p class="text-gray-500 mb-6">Be the first to review this product.</p>
+                                    @auth
+                                        <a href="#write-review" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</a>
+                                    @else
+                                        <a href="{{ route('login') }}" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Sign in to review</a>
+                                    @endauth
+                                </div>
+                            @else
+                                <div class="space-y-6">
+                                    @foreach(($reviews ?? []) as $review)
+                                        <div class="border border-gray-100 rounded-2xl p-6">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <div>
+                                                    <p class="font-bold text-gray-900">{{ $review->user->name ?? 'Anonymous' }}</p>
+                                                    <p class="text-xs text-gray-400 mt-1">{{ optional($review->created_at)->format('d M Y') }}</p>
+                                                </div>
+                                                <div class="flex items-center gap-1 text-yellow-400">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-4 h-4" fill="{{ $i <= (int) $review->rating ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.044 6.293a1 1 0 00.95.69h6.613c.969 0 1.371 1.24.588 1.81l-5.35 3.887a1 1 0 00-.364 1.118l2.044 6.293c.3.921-.755 1.688-1.54 1.118l-5.35-3.887a1 1 0 00-1.175 0l-5.35 3.887c-.784.57-1.838-.197-1.539-1.118l2.044-6.293a1 1 0 00-.364-1.118L2.98 11.72c-.783-.57-.38-1.81.588-1.81h6.614a1 1 0 00.95-.69l2.044-6.293z"></path>
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                            @if(!empty($review->title))
+                                                <p class="mt-4 font-bold text-gray-800">{{ $review->title }}</p>
+                                            @endif
+                                            <p class="mt-3 text-gray-600">{{ $review->comment }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <div class="mt-10 flex justify-center">
+                                    @auth
+                                        <a href="#write-review" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</a>
+                                    @else
+                                        <a href="{{ route('login') }}" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Sign in to review</a>
+                                    @endauth
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="w-full lg:w-96">
+                            <div id="write-review" class="border border-gray-100 rounded-3xl p-6">
+                                <h4 class="text-lg font-bold text-gray-900 mb-1">Write a Review</h4>
+                                <p class="text-sm text-gray-500 mb-6">Share your experience with this product.</p>
+
+                                @auth
+                                    <form action="{{ route('product.reviews.store', $product->slug) }}" method="POST" class="space-y-4">
+                                        @csrf
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-700 mb-2">Rating</label>
+                                            <select name="rating" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none">
+                                                @for($i = 5; $i >= 1; $i--)
+                                                    <option value="{{ $i }}" {{ (int) old('rating', 5) === $i ? 'selected' : '' }}>{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                            @error('rating')<p class="text-xs text-red-500 mt-2">{{ $message }}</p>@enderror
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-700 mb-2">Title</label>
+                                            <input type="text" name="title" value="{{ old('title') }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none">
+                                            @error('title')<p class="text-xs text-red-500 mt-2">{{ $message }}</p>@enderror
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-700 mb-2">Comment</label>
+                                            <textarea name="comment" rows="4" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none resize-none">{{ old('comment') }}</textarea>
+                                            @error('comment')<p class="text-xs text-red-500 mt-2">{{ $message }}</p>@enderror
+                                        </div>
+
+                                        <button type="submit" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-purple-600 transition-colors">Submit Review</button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}" class="block w-full text-center bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-purple-600 transition-colors">Sign in to review</a>
+                                @endauth
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -336,9 +437,5 @@
         @endif
 
     </div>
-
-    @push('scripts')
-    <script src="//unpkg.com/alpinejs" defer></script>
-    @endpush
 
 @endsection

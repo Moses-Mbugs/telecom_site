@@ -96,6 +96,11 @@ class ShopController extends Controller
 
         $shopPage = null;
 
-        return view('product-show', compact('product', 'relatedProducts', 'shopPage', 'brands', 'flashSales'));
+        $reviewsQuery = $product->reviews()->where('is_approved', true)->with('user')->latest();
+        $reviews = $reviewsQuery->get();
+        $reviewsCount = $reviews->count();
+        $reviewsAverage = $reviewsCount > 0 ? round($reviews->avg('rating'), 1) : 0;
+
+        return view('product-show', compact('product', 'relatedProducts', 'shopPage', 'brands', 'flashSales', 'reviews', 'reviewsCount', 'reviewsAverage'));
     }
 }

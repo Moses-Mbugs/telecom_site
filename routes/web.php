@@ -7,6 +7,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ProductReviewController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
@@ -45,6 +46,7 @@ Route::get('/checkout', [CartController::class, 'checkoutWhatsApp'])->name('chec
 Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/product/{slug}/reviews', [ProductReviewController::class, 'store'])->name('product.reviews.store');
 });
 
 // Admin Routes
