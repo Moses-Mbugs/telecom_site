@@ -264,3 +264,12 @@ CREATE TABLE `product_reviews` (
   CONSTRAINT `product_reviews_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   CONSTRAINT `product_reviews_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- If you already have an existing database and only need to enable admin deletion of categories/brands
+-- without deleting products, run the following ALTER statements:
+-- (these change products.category_id / products.brand_id to ON DELETE SET NULL)
+-- ALTER TABLE `products` DROP FOREIGN KEY `products_category_id_foreign`;
+-- ALTER TABLE `products` DROP FOREIGN KEY `products_brand_id_foreign`;
+-- ALTER TABLE `products`
+--   ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+--   ADD CONSTRAINT `products_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE SET NULL;

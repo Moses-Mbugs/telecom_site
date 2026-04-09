@@ -60,6 +60,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     // Testimonials
     Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class);
 
+    // Categories
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->except(['show']);
+
+    // Brands
+    Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class)->except(['show']);
+
     // Products
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
 
