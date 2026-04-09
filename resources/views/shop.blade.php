@@ -32,7 +32,7 @@
     @endif
 
     <!-- Mobile Header -->
-    <header class="lg:hidden bg-white shadow-sm sticky top-0 z-40">
+    <header class="lg:hidden bg-white shadow-sm sticky top-0 z-40" x-data>
         <div class="px-4 py-3 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
                 <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World" class="h-8 w-auto">
@@ -136,7 +136,7 @@
         </div>
     </header>
 
-    <div class="bg-gray-50 min-h-screen py-4 sm:py-8" x-data="{ mobileFiltersOpen: false }">
+    <div class="bg-gray-50 min-h-screen py-4 sm:py-8" x-data="{ mobileFiltersOpen: false }" @open-mobile-menu.window="mobileFiltersOpen = true" @keydown.escape.window="mobileFiltersOpen = false">
         <div class="container mx-auto px-3 sm:px-4 lg:px-6">
 
             <!-- Breadcrumbs -->
@@ -470,8 +470,8 @@
                     <!-- Shop Video Section -->
                     @if (!empty($shopVideo))
                         <div class="mb-10 rounded-2xl overflow-hidden shadow-lg relative group">
-                            <video src="{{ Str::startsWith($shopVideo, 'http') ? $shopVideo : asset('storage/' . $shopVideo) }}" 
-                                class="w-full h-auto max-h-[500px] object-cover" 
+                            <video src="{{ Str::startsWith($shopVideo, 'http') ? $shopVideo : asset('storage/' . $shopVideo) }}"
+                                class="w-full h-auto max-h-[500px] object-cover"
                                 autoplay loop muted playsinline>
                             </video>
                             @if(!empty($shopVideoTitle) || !empty($shopVideoText))
