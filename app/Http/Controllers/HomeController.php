@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index()
     {
         $keys = [
-            'hero_title', 'hero_subtitle', 'hero_image',
+            'hero_title', 'hero_subtitle', 'hero_image', 'hero_video',
             'journey_title', 'journey_text', 'journey_image',
             'plans_title', 'plans_text', 'plans_image', 'plans_video',
             'why_us_1_title', 'why_us_1_text',

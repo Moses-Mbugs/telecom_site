@@ -21,16 +21,38 @@
                     class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
             </div>
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-600 mb-1">Hero Background Image</label>
-                @if(!empty($settings['hero_image']))
-                    <div class="mb-2">
-                        @php $img = $settings['hero_image']; @endphp
-                        <img src="{{ Str::startsWith($img, 'http') ? $img : asset('storage/' . $img) }}" class="h-24 rounded-lg object-cover" alt="Current hero image">
-                        <p class="text-xs text-gray-400 mt-1">Current image. Upload a new file to replace it.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Hero Background Image</label>
+                        @if(!empty($settings['hero_image']))
+                            <div class="mb-2">
+                                @php $img = $settings['hero_image']; @endphp
+                                <img src="{{ Str::startsWith($img, 'http') ? $img : asset('storage/' . $img) }}" class="h-24 rounded-lg object-cover" alt="Current hero image">
+                            </div>
+                        @endif
+                        <input type="file" name="hero_image_file" accept="image/*"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+                        <p class="text-xs text-gray-400 mt-1">Fallback if video is not set.</p>
                     </div>
-                @endif
-                <input type="file" name="hero_image_file" accept="image/*"
-                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Hero Background Video</label>
+                        @if(!empty($settings['hero_video']))
+                            <div class="mb-2 flex items-center justify-between">
+                                <span class="text-sm text-green-600 font-medium flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    Video Uploaded
+                                </span>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="remove_hero_video" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                    <span class="ml-2 text-sm text-red-600">Remove Video</span>
+                                </label>
+                            </div>
+                        @endif
+                        <input type="file" name="hero_video_file" accept="video/mp4,video/x-m4v,video/*"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                        <p class="text-xs text-gray-400 mt-1">Takes precedence over image. Max 50MB.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

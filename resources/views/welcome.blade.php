@@ -63,10 +63,21 @@
     {{-- 1. Hero Section --}}
     <section class="relative h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
 
-        {{-- Background Image --}}
+        {{-- Background Media --}}
         <div class="absolute inset-0 z-0">
-            @php $heroImage = $settings['hero_image'] ?? 'images/hero.jpg'; @endphp
-            <img src="{{ Str::startsWith($heroImage, 'http') ? $heroImage : asset('storage/' . $heroImage) }}" alt="Safe World Telecom Hero" class="w-full h-full object-cover">
+            @if(!empty($settings['hero_video']))
+                <video
+                    src="{{ Str::startsWith($settings['hero_video'], 'http') ? $settings['hero_video'] : asset('storage/' . $settings['hero_video']) }}"
+                    class="w-full h-full object-cover"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                ></video>
+            @else
+                @php $heroImage = $settings['hero_image'] ?? 'images/hero.jpg'; @endphp
+                <img src="{{ Str::startsWith($heroImage, 'http') ? $heroImage : asset('storage/' . $heroImage) }}" alt="Safe World Telecom Hero" class="w-full h-full object-cover">
+            @endif
             <div class="absolute inset-0 bg-black/50"></div> {{-- Dark overlay --}}
         </div>
 

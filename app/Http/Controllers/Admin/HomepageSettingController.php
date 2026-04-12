@@ -11,7 +11,7 @@ class HomepageSettingController extends Controller
     public function index()
     {
         $keys = [
-            'hero_title', 'hero_subtitle', 'hero_image',
+            'hero_title', 'hero_subtitle', 'hero_image', 'hero_video',
             'journey_title', 'journey_text', 'journey_image',
             'plans_title', 'plans_text', 'plans_image', 'plans_video',
             'why_us_1_title', 'why_us_1_text',
@@ -38,7 +38,7 @@ class HomepageSettingController extends Controller
         ];
 
         $imageKeys = ['hero_image', 'journey_image', 'plans_image'];
-        $videoKeys = ['plans_video', 'shop_video'];
+        $videoKeys = ['hero_video', 'plans_video', 'shop_video'];
 
         $rules = [];
         foreach ($textKeys as $key) {
@@ -74,20 +74,14 @@ class HomepageSettingController extends Controller
         }
 
         // Handle deletions for videos
-        if ($request->has('remove_plans_video')) {
-            $oldPath = HomepageSetting::get('plans_video');
-            if ($oldPath && !str_starts_with($oldPath, 'http')) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+        foreach (['hero_video', 'plans_video', 'shop_video'] as $videoKey) {
+            if ($request->has('remove_' . $videoKey)) {
+                $oldPath = HomepageSetting::get($videoKey);
+                if ($oldPath && !str_starts_with($oldPath, 'http')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+                }
+                HomepageSetting::set($videoKey, null);
             }
-            HomepageSetting::set('plans_video', null);
-        }
-
-        if ($request->has('remove_shop_video')) {
-            $oldPath = HomepageSetting::get('shop_video');
-            if ($oldPath && !str_starts_with($oldPath, 'http')) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
-            }
-            HomepageSetting::set('shop_video', null);
         }
 
         return redirect()->route('admin.homepage.index')
