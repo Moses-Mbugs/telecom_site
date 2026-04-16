@@ -29,7 +29,7 @@ class HomeController extends Controller
 
     public function locations()
     {
-        $locations = Location::select(['id', 'name', 'address', 'phone', 'image_url'])->get();
+        $locations = Location::select(['id', 'name', 'address', 'phone', 'image_url', 'map_embed_url'])->get();
 
         return view('locations', compact('locations'));
     }
