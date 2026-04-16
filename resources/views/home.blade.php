@@ -27,14 +27,14 @@
     }
 
     .gradient-text {
-        background: linear-gradient(135deg, #667eea 0%, #4BA261FF 100%);
+        background: linear-gradient(135deg, #b5342a 0%, #1e3040 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
     .gradient-bg {
-        background: linear-gradient(135deg, #667eea 0%, #4BA268FF 100%);
+        background: linear-gradient(135deg, #b5342a 0%, #1e3040 100%);
     }
 
     .service-card {
@@ -86,7 +86,7 @@
     .stat-number {
         font-size: 3rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #b5342a 0%, #1e3040 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -130,7 +130,7 @@
         left: 0;
         width: 0;
         height: 2px;
-        background: #667eea;
+        background: #b5342a;
         transition: width 0.3s;
     }
 
@@ -165,13 +165,13 @@
 @section('content')
 
 {{-- ===================== HERO SECTION WITH PARTICLES ===================== --}}
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1e3040]">
     <div id="particles-js"></div>
 
     <!-- Animated Blobs -->
-    <div class="blob w-96 h-96 bg-purple-500 top-20 left-20"></div>
-    <div class="blob w-80 h-80 bg-blue-500 bottom-20 right-20" style="animation-delay: 2s;"></div>
-    <div class="blob w-72 h-72 bg-pink-500 top-1/2 right-1/4" style="animation-delay: 4s;"></div>
+    <div class="blob w-96 h-96 bg-[#b5342a] top-20 left-20"></div>
+    <div class="blob w-80 h-80 bg-[#7a7a6a] bottom-20 right-20" style="animation-delay: 2s;"></div>
+    <div class="blob w-72 h-72 bg-[#b5342a] top-1/2 right-1/4" style="animation-delay: 4s;"></div>
 
     <!-- Hero Content -->
     <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
@@ -187,7 +187,7 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="#services" class="pulse-button px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold text-lg shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 transform hover:scale-105">
+            <a href="#services" class="pulse-button px-10 py-4 bg-accent text-white rounded-full font-semibold text-lg shadow-2xl hover:shadow-glow transition-all duration-300 transform hover:scale-105">
                 Explore our Products
             </a>
             {{--  <a href="#topup" class="px-10 py-4 glass-card text-white rounded-full font-semibold text-lg hover:bg-white/20 transition-all duration-300">
@@ -238,15 +238,15 @@
 
         <div class="grid md:grid-cols-4 gap-10">
             <!-- Top-up Service -->
-            <div class="service-card bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-3xl shadow-xl fade-in">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-red-50 p-8 rounded-3xl shadow-xl fade-in">
+                <div class="w-16 h-16 bg-gradient-to-br from-[#1e3040] to-[#b5342a] rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold mb-3">Top-Up Services</h3>
                 <p class="text-gray-600 mb-6">Instant pinless airtime top-up for all major networks. Fast, secure, and reliable.</p>
-                <a href="#topup" class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                <a href="#topup" class="inline-block px-6 py-3 bg-[#b5342a] text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
                     Top Up Now →
                 </a>
             </div>
@@ -279,9 +279,9 @@
                 </a>
             </div>
             <!-- IoT Services -->
-            <div class="service-card bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-3xl shadow-xl fade-in" style="transition-delay: 0.2s;">
+            <div class="service-card bg-gradient-to-br from-gray-50 to-blue-50 p-8 rounded-3xl shadow-xl fade-in" style="transition-delay: 0.2s;">
                 <!-- Icon Circle -->
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-[#1e3040] to-[#7a7a6a] rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <!-- IoT / Network style icon -->
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -297,7 +297,7 @@
                 </p>
 
                 <!-- CTA Button -->
-                <a href="#quote" class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                <a href="#quote" class="inline-block px-6 py-3 bg-[#1e3040] text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
                     Get A Quote →
                 </a>
             </div>
@@ -307,10 +307,10 @@
 </section>
 
 {{-- ===================== TOP UP SECTION ===================== --}}
-<section id="topup" class="py-32 px-6 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+<section id="topup" class="py-32 px-6 bg-[#1e3040] relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl"></div>
-        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"></div>
+        <div class="absolute top-0 left-0 w-96 h-96 bg-[#b5342a] rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-[#7a7a6a] rounded-full filter blur-3xl"></div>
     </div>
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
@@ -328,12 +328,12 @@
                     type="tel"
                     id="phoneNumber"
                     placeholder="Enter phone number (e.g., 0712345678)"
-                    class="topup-input flex-1 px-6 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-all duration-300"
+                    class="topup-input flex-1 px-6 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-accent transition-all duration-300"
                     required
                 />
                 <button
                     type="submit"
-                    class="px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300">
+                    class="px-10 py-4 bg-accent text-white rounded-xl font-semibold hover:shadow-2xl hover:shadow-glow transform hover:scale-105 transition-all duration-300">
                     Top Up Now
                 </button>
             </form>
@@ -367,7 +367,7 @@
 
         <div class="grid md:grid-cols-3 gap-10">
             <div class="text-center p-8 fade-in">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="w-20 h-20 bg-gradient-to-br from-[#1e3040] to-[#b5342a] rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
@@ -412,7 +412,7 @@
         <div class="grid md:grid-cols-4 gap-8">
             @php
                 $blogPosts = [
-                    ['title' => '5G Revolution in Kenya', 'excerpt' => 'Discover how 5G is transforming connectivity', 'color' => 'from-blue-500 to-purple-600'],
+                    ['title' => '5G Revolution in Kenya', 'excerpt' => 'Discover how 5G is transforming connectivity', 'color' => 'from-[#1e3040] to-[#b5342a]'],
                     ['title' => 'The Future of VoIP', 'excerpt' => 'Next-gen voice communication technologies', 'color' => 'from-green-500 to-teal-600'],
                     ['title' => 'Cybersecurity in Telecom', 'excerpt' => 'Protecting your digital infrastructure', 'color' => 'from-red-500 to-pink-600'],
                     ['title' => 'Fiber Optic Innovation', 'excerpt' => 'Advanced cable technologies explained', 'color' => 'from-orange-500 to-yellow-600'],
@@ -431,7 +431,7 @@
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2">{{ $post['title'] }}</h3>
                         <p class="text-gray-600 text-sm mb-4">{{ $post['excerpt'] }}</p>
-                        <a href="#" class="text-purple-600 font-semibold hover:text-purple-800 transition-colors">
+                        <a href="#" class="text-accent font-semibold hover:text-primary transition-colors">
                             Read more →
                         </a>
                     </div>
@@ -442,10 +442,10 @@
 </section>
 
 {{-- ===================== CTA SECTION ===================== --}}
-<section class="py-32 px-6 bg-gradient-to-br from-purple-900 via-blue-900 to-slate-900 relative overflow-hidden">
+<section class="py-32 px-6 bg-[#1e3040] relative overflow-hidden">
     <div class="absolute inset-0 opacity-20">
-        <div class="absolute top-10 left-10 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl"></div>
-        <div class="absolute bottom-10 right-10 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl"></div>
+        <div class="absolute top-10 left-10 w-64 h-64 bg-[#b5342a] rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-64 h-64 bg-[#7a7a6a] rounded-full filter blur-3xl"></div>
     </div>
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
@@ -455,7 +455,7 @@
         <p class="text-xl text-gray-300 mb-12 fade-in">
             Join thousands of satisfied customers who trust our telecom solutions
         </p>
-        <a href="#" class="inline-block px-12 py-5 bg-white text-purple-900 font-bold text-lg rounded-full shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 fade-in">
+        <a href="#" class="inline-block px-12 py-5 bg-white text-primary font-bold text-lg rounded-full shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 fade-in">
             Contact Us Today
         </a>
     </div>
@@ -640,7 +640,7 @@
                 .bindPopup(`<strong>${branch.name}</strong><br>${branch.address}`);
 
             const li = document.createElement('li');
-            li.className = 'p-3 border rounded-lg cursor-pointer hover:bg-purple-50 transition';
+            li.className = 'p-3 border rounded-lg cursor-pointer hover:bg-red-50 transition';
             li.innerHTML = `
                 <strong>${branch.name}</strong><br>
                 <span class="text-sm text-gray-500">${branch.address}</span>

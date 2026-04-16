@@ -26,17 +26,17 @@
         <h2 class="text-3xl font-bold text-gray-800 mb-8">Why Choose Us?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="text-purple-600 text-4xl mb-4">🏆</div>
+                <div class="text-accent text-4xl mb-4">🏆</div>
                 <h3 class="font-bold text-xl mb-2">Quality Products</h3>
                 <p class="text-gray-600">We stock only genuine, high-quality devices from top brands.</p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="text-purple-600 text-4xl mb-4">💰</div>
+                <div class="text-accent text-4xl mb-4">💰</div>
                 <h3 class="font-bold text-xl mb-2">Best Prices</h3>
                 <p class="text-gray-600">Competitive pricing and regular deals to save you money.</p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="text-purple-600 text-4xl mb-4">🤝</div>
+                <div class="text-accent text-4xl mb-4">🤝</div>
                 <h3 class="font-bold text-xl mb-2">Expert Support</h3>
                 <p class="text-gray-600">Our dedicated team is here to help you every step of the way.</p>
             </div>

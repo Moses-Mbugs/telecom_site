@@ -8,21 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#253748',
-        secondary: '#7e7f74',
-        accent: '#a02b2b',
+        primary: '#1e3040',
+        secondary: '#7a7a6a',
+        accent: '#b5342a',
         neutral: '#f1f5f9',
         brand: {
-          blue: '#0056b3',
-          green: '#28a745',
+          blue: '#1e3040',
+          red: '#b5342a',
+          grey: '#7a7a6a',
         },
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 20px rgba(102, 126, 234, 0.4)',
-        'glow-lg': '0 0 40px rgba(102, 126, 234, 0.6)',
+        glow: '0 0 20px rgba(181, 52, 42, 0.4)',
+        'glow-lg': '0 0 40px rgba(181, 52, 42, 0.6)',
       },
       keyframes: {
         float: {

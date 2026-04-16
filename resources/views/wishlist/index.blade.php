@@ -4,7 +4,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-gray-900">My Wishlist</h1>
-        <a href="{{ route('shop') }}" class="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-1">
+        <a href="{{ route('shop') }}" class="text-accent hover:text-primary font-medium flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Continue Shopping
         </a>
@@ -17,7 +17,7 @@
             </div>
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Your wishlist is empty</h2>
             <p class="text-gray-500 mb-8">Save items you love to your wishlist.</p>
-            <a href="{{ route('shop') }}" class="inline-block bg-purple-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-purple-700 transition shadow-lg hover:shadow-purple-500/30">
+            <a href="{{ route('shop') }}" class="inline-block bg-accent text-white px-8 py-3 rounded-xl font-bold hover:bg-primary transition shadow-lg hover:shadow-red-500/30">
                 Start Shopping
             </a>
         </div>
@@ -40,12 +40,12 @@
                     <div class="p-5">
                         <h3 class="font-bold text-gray-800 text-lg mb-1 truncate">{{ $item->product->name }}</h3>
                         <div class="flex items-center gap-2 mb-4">
-                            <span class="font-bold text-purple-600">KES {{ number_format($item->product->price) }}</span>
+                            <span class="font-bold text-accent">KES {{ number_format($item->product->price) }}</span>
                         </div>
                         
                         <form action="{{ route('cart.add', $item->product->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-gray-900 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-purple-600 transition flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full bg-gray-900 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-accent transition flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                 Add to Cart
                             </button>

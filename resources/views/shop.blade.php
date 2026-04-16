@@ -26,7 +26,7 @@
     <!-- Top Alert (Dynamic) -->
     @if ($shopPage && $shopPage->top_alert_active)
         <div
-            class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm py-2 text-center font-bold tracking-wide relative z-50 shadow-md">
+            class="bg-[#b5342a] text-white text-xs md:text-sm py-2 text-center font-bold tracking-wide relative z-50 shadow-md">
             {{ $shopPage->top_alert_content }}
         </div>
     @endif
@@ -38,15 +38,15 @@
                 <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World" class="h-8 w-auto">
             </a>
             <div class="flex items-center gap-4">
-                <button @click="$dispatch('open-cart')" class="relative text-gray-600 hover:text-purple-600 transition">
+                <button @click="$dispatch('open-cart')" class="relative text-gray-600 hover:text-accent transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                     </svg>
                     <span
-                        class="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">{{ count(session('cart', [])) }}</span>
+                        class="absolute -top-1 -right-1 bg-accent text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">{{ count(session('cart', [])) }}</span>
                 </button>
-                <button @click="$dispatch('open-mobile-menu')" class="text-gray-600 hover:text-purple-600 transition">
+                <button @click="$dispatch('open-mobile-menu')" class="text-gray-600 hover:text-accent transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
                         </path>
@@ -59,7 +59,7 @@
             <form action="{{ route('shop') }}" method="GET" class="relative">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Search products..."
-                    class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 px-5 pl-10 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all outline-none text-sm text-gray-700 placeholder-gray-400">
+                    class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 px-5 pl-10 focus:bg-white focus:border-accent focus:ring-2 focus:ring-red-100 transition-all outline-none text-sm text-gray-700 placeholder-gray-400">
                 <svg class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,8 +85,8 @@
                     <form action="{{ route('shop') }}" method="GET" class="relative group">
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Search for products, brands, and categories..."
-                            class="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-6 pl-12 focus:bg-white focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all duration-300 outline-none text-sm text-gray-700 placeholder-gray-400">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-purple-500 transition-colors"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-6 pl-12 focus:bg-white focus:border-accent focus:ring-2 focus:ring-red-100 transition-all duration-300 outline-none text-sm text-gray-700 placeholder-gray-400">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-accent transition-colors"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -98,7 +98,7 @@
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2 group cursor-pointer relative">
                         <div
-                            class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-500 group-hover:bg-purple-50 group-hover:text-purple-600 transition-colors">
+                            class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-500 group-hover:bg-red-50 group-hover:text-accent transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -111,24 +111,24 @@
                             @else
                                 <p class="text-xs text-gray-500">Account</p>
                                 <a href="{{ route('login') }}"
-                                    class="font-bold text-gray-800 hover:text-purple-600 transition">Sign In</a>
+                                    class="font-bold text-gray-800 hover:text-accent transition">Sign In</a>
                             @endauth
                         </div>
                     </div>
 
                     <!-- Cart -->
                     <a href="{{ route('cart.index') }}"
-                        class="flex items-center gap-3 group bg-gray-50 hover:bg-purple-50 px-4 py-2 rounded-full transition-colors">
+                        class="flex items-center gap-3 group bg-gray-50 hover:bg-red-50 px-4 py-2 rounded-full transition-colors">
                         <div class="relative">
-                            <svg class="w-5 h-5 text-gray-600 group-hover:text-purple-600 transition-colors" fill="none"
+                            <svg class="w-5 h-5 text-gray-600 group-hover:text-accent transition-colors" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                             </svg>
                             <span
-                                class="absolute -top-1.5 -right-1.5 bg-purple-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">{{ count(session('cart', [])) }}</span>
+                                class="absolute -top-1.5 -right-1.5 bg-accent text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">{{ count(session('cart', [])) }}</span>
                         </div>
-                        <span class="font-bold text-gray-800 text-sm group-hover:text-purple-700 transition">KES
+                        <span class="font-bold text-gray-800 text-sm group-hover:text-primary transition">KES
                             {{ number_format(collect(session('cart', []))->sum(fn($i) => $i['price'] * $i['quantity'])) }}</span>
                     </a>
                 </div>
@@ -141,7 +141,7 @@
 
             <!-- Breadcrumbs -->
             <nav class="flex mb-4 sm:mb-8 text-sm text-gray-500">
-                <a href="/" class="hover:text-purple-600 transition-colors">Home</a>
+                <a href="/" class="hover:text-accent transition-colors">Home</a>
                 <span class="mx-2">/</span>
                 <span class="text-gray-800 font-medium">Shop</span>
             </nav>
@@ -153,7 +153,7 @@
                     <!-- Categories -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <span class="w-1 h-6 bg-purple-600 rounded-full"></span>
+                            <span class="w-1 h-6 bg-accent rounded-full"></span>
                             Categories
                         </h3>
                         <ul class="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
@@ -161,7 +161,7 @@
                                 @if (isset($category->name) && isset($category->id))
                                     <li>
                                         <a href="{{ route('shop', array_merge(request()->except('category', 'page'), ['category' => $category->id])) }}"
-                                            class="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg transition-colors {{ request('category') == $category->id ? 'bg-purple-50 text-purple-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                            class="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg transition-colors {{ request('category') == $category->id ? 'bg-red-50 text-primary font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                             <span>{{ $category->name }}</span>
                                             <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -178,7 +178,7 @@
                     <!-- Price Filter -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <span class="w-1 h-6 bg-purple-600 rounded-full"></span>
+                            <span class="w-1 h-6 bg-accent rounded-full"></span>
                             Price Range
                         </h3>
                         <form action="{{ route('shop') }}" method="GET" class="space-y-4">
@@ -190,17 +190,17 @@
                                     <label class="text-xs text-gray-500 mb-1 block">Min</label>
                                     <input type="number" name="min_price" value="{{ request('min_price') }}"
                                         placeholder="0"
-                                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition">
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition">
                                 </div>
                                 <div>
                                     <label class="text-xs text-gray-500 mb-1 block">Max</label>
                                     <input type="number" name="max_price" value="{{ request('max_price') }}"
                                         placeholder="Max"
-                                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition">
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition">
                                 </div>
                             </div>
                             <button type="submit"
-                                class="w-full bg-gray-900 text-white text-sm font-bold py-2.5 rounded-lg hover:bg-purple-600 transition-colors shadow-lg shadow-gray-200">Apply
+                                class="w-full bg-gray-900 text-white text-sm font-bold py-2.5 rounded-lg hover:bg-accent transition-colors shadow-lg shadow-gray-200">Apply
                                 Filter</button>
                         </form>
                     </div>
@@ -208,14 +208,14 @@
                     <!-- Brands -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <span class="w-1 h-6 bg-purple-600 rounded-full"></span>
+                            <span class="w-1 h-6 bg-accent rounded-full"></span>
                             Brands
                         </h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($brands as $brand)
                                 @if (isset($brand->name) && isset($brand->id))
                                     <a href="{{ route('shop', array_merge(request()->except('brand', 'page'), ['brand' => $brand->id])) }}"
-                                        class="text-xs font-medium px-3 py-1.5 rounded-full border transition-all {{ request('brand') == $brand->id ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300 hover:text-purple-600' }}">
+                                        class="text-xs font-medium px-3 py-1.5 rounded-full border transition-all {{ request('brand') == $brand->id ? 'bg-accent text-white border-accent shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:text-accent' }}">
                                         {{ $brand->name }}
                                     </a>
                                 @endif
@@ -260,7 +260,7 @@
                         <div
                             class="mb-10 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl">
                             <div
-                                class="absolute top-0 right-0 w-96 h-96 bg-purple-600 rounded-full blur-[100px] opacity-30 -mr-20 -mt-20 pointer-events-none">
+                                class="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-[100px] opacity-30 -mr-20 -mt-20 pointer-events-none">
                             </div>
 
                             <div
@@ -335,10 +335,10 @@
                         <div class="mb-10">
                             <div class="flex justify-between items-end mb-6">
                                 <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <span class="text-purple-600">✦</span> Featured Products
+                                    <span class="text-accent">✦</span> Featured Products
                                 </h2>
                                 <a href="{{ route('shop', ['featured' => 1]) }}"
-                                    class="text-purple-600 text-sm font-bold hover:underline">View All</a>
+                                    class="text-accent text-sm font-bold hover:underline">View All</a>
                             </div>
 
                             <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar">
@@ -359,7 +359,7 @@
                                             @endif
                                         </div>
                                         <h3
-                                            class="font-bold text-gray-800 text-sm leading-snug line-clamp-1 mb-1 group-hover:text-purple-600 transition-colors">
+                                            class="font-bold text-gray-800 text-sm leading-snug line-clamp-1 mb-1 group-hover:text-accent transition-colors">
                                             <a
                                                 href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                         </h3>
@@ -514,7 +514,7 @@
                                     <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                 @endforeach
                                 <select name="sort" onchange="document.getElementById('sortForm').submit()"
-                                    class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 p-2.5 shadow-sm outline-none cursor-pointer">
+                                    class="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-accent focus:border-accent p-2.5 shadow-sm outline-none cursor-pointer">
                                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest Arrivals
                                     </option>
                                     <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price:
@@ -541,7 +541,7 @@
                             <p class="text-gray-500 mb-6 max-w-sm mx-auto">We couldn't find any products matching your
                                 current filters. Try adjusting your search or filter criteria.</p>
                             <a href="{{ route('shop') }}"
-                                class="inline-flex items-center gap-2 text-purple-600 font-bold hover:text-purple-700 transition">
+                                class="inline-flex items-center gap-2 text-accent font-bold hover:text-primary transition">
                                 Clear all filters
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -572,7 +572,7 @@
 
                                     <!-- Image -->
                                     <a href="{{ route('product.show', $product->slug) }}"
-                                        class="relative h-32 sm:h-40 lg:h-48 bg-gray-50 rounded-xl mb-3 overflow-hidden flex items-center justify-center group-hover:bg-purple-50/30 transition-colors block">
+                                        class="relative h-32 sm:h-40 lg:h-48 bg-gray-50 rounded-xl mb-3 overflow-hidden flex items-center justify-center group-hover:bg-red-50/30 transition-colors block">
                                         @if ($product->image)
                                             <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                 class="max-w-[80%] max-h-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
@@ -596,7 +596,7 @@
                                             <span
                                                 class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1 block">{{ data_get($product, 'category.name', 'General') }}</span>
                                             <h3
-                                                class="font-bold text-sm sm:text-base text-gray-900 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
+                                                class="font-bold text-sm sm:text-base text-gray-900 leading-snug line-clamp-2 group-hover:text-accent transition-colors">
                                                 <a
                                                     href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                             </h3>
@@ -617,7 +617,7 @@
                                             <form action="{{ route('cart.add', $product->id) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" aria-label="Add to Cart"
-                                                    class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-purple-600 hover:shadow-purple-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
+                                                    class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-accent hover:shadow-red-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
                                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300 group-hover/btn:text-white transition-colors"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -679,13 +679,13 @@
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" name="min_price" value="{{ request('min_price') }}"
                                     placeholder="Min"
-                                    class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-purple-500 focus:border-purple-500 w-full">
+                                    class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-accent focus:border-accent w-full">
                                 <input type="number" name="max_price" value="{{ request('max_price') }}"
                                     placeholder="Max"
-                                    class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-purple-500 focus:border-purple-500 w-full">
+                                    class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-accent focus:border-accent w-full">
                             </div>
                             <button type="submit"
-                                class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-200">Apply
+                                class="w-full bg-accent text-white font-bold py-3 rounded-xl shadow-lg shadow-red-200">Apply
                                 Filter</button>
                         </form>
                     </div>
@@ -698,7 +698,7 @@
                                 @if (isset($category->name) && isset($category->id))
                                     <li>
                                         <a href="{{ route('shop', array_merge(request()->except('category', 'page'), ['category' => $category->id])) }}"
-                                            class="flex items-center justify-between py-2 px-3 rounded-lg {{ request('category') == $category->id ? 'bg-purple-50 text-purple-700 font-bold' : 'bg-gray-50 text-gray-700' }}">
+                                            class="flex items-center justify-between py-2 px-3 rounded-lg {{ request('category') == $category->id ? 'bg-red-50 text-primary font-bold' : 'bg-gray-50 text-gray-700' }}">
                                             <span>{{ $category->name }}</span>
                                             @if (request('category') == $category->id)
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -721,7 +721,7 @@
                             @foreach ($brands as $brand)
                                 @if (isset($brand->name) && isset($brand->id))
                                     <a href="{{ route('shop', array_merge(request()->except('brand', 'page'), ['brand' => $brand->id])) }}"
-                                        class="px-3 py-1.5 rounded-full text-xs font-bold border {{ request('brand') == $brand->id ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-600 border-gray-200' }}">
+                                        class="px-3 py-1.5 rounded-full text-xs font-bold border {{ request('brand') == $brand->id ? 'bg-accent text-white border-accent' : 'bg-white text-gray-600 border-gray-200' }}">
                                         {{ $brand->name }}
                                     </a>
                                 @endif

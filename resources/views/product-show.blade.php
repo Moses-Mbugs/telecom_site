@@ -29,7 +29,7 @@
             <div class="flex items-center justify-between gap-4">
                 <div class="flex items-center gap-4 md:gap-6">
                     <a href="{{ route('shop') }}"
-                        class="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600 transition-colors">
+                        class="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-accent transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -43,9 +43,9 @@
                     <form action="{{ route('shop') }}" method="GET" class="relative group">
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Search products..."
-                            class="w-full bg-gray-100 border-2 border-transparent rounded-full py-2.5 px-6 pr-12 focus:bg-white focus:border-purple-500 focus:ring-0 transition-all duration-300">
+                            class="w-full bg-gray-100 border-2 border-transparent rounded-full py-2.5 px-6 pr-12 focus:bg-white focus:border-accent focus:ring-0 transition-all duration-300">
                         <button type="submit"
-                            class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 hover:shadow-lg transition-all duration-300">
+                            class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-accent text-white p-2 rounded-full hover:bg-primary hover:shadow-lg transition-all duration-300">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
@@ -56,10 +56,10 @@
                 <div class="flex items-center gap-4 md:gap-8">
                     <a href="{{ route('cart.index') }}" class="flex items-center gap-3 group">
                         <div class="relative p-2">
-                            <svg class="w-7 h-7 text-gray-600 group-hover:text-purple-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-7 h-7 text-gray-600 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            <span class="absolute top-0 right-0 bg-purple-600 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
+                            <span class="absolute top-0 right-0 bg-accent text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
                                 {{ count(session('cart', [])) }}
                             </span>
                         </div>
@@ -75,20 +75,20 @@
             <nav class="text-sm font-medium text-gray-500">
                 <ol class="list-none p-0 inline-flex flex-wrap gap-2">
                     <li class="flex items-center">
-                        <a href="/" class="hover:text-purple-600 transition-colors">Home</a>
+                        <a href="/" class="hover:text-accent transition-colors">Home</a>
                         <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </li>
                     <li class="flex items-center">
-                        <a href="{{ route('shop') }}" class="hover:text-purple-600 transition-colors">Shop</a>
+                        <a href="{{ route('shop') }}" class="hover:text-accent transition-colors">Shop</a>
                         <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </li>
                     @if (isset($product->category->name) && isset($product->category->id))
                         <li class="flex items-center">
-                            <a href="{{ route('shop', ['category' => $product->category->id]) }}" class="hover:text-purple-600 transition-colors">{{ $product->category->name }}</a>
+                            <a href="{{ route('shop', ['category' => $product->category->id]) }}" class="hover:text-accent transition-colors">{{ $product->category->name }}</a>
                             <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </li>
                     @endif
-                    <li class="text-purple-600 font-bold truncate max-w-[200px]">{{ $product->name }}</li>
+                    <li class="text-accent font-bold truncate max-w-[200px]">{{ $product->name }}</li>
                 </ol>
             </nav>
         </div>
@@ -126,7 +126,7 @@
 
                         @if($product->image)
                         <div class="flex gap-4 overflow-x-auto pb-2">
-                            <div class="w-24 h-24 rounded-xl border-2 border-purple-600 p-2 cursor-pointer bg-white flex-shrink-0">
+                            <div class="w-24 h-24 rounded-xl border-2 border-accent p-2 cursor-pointer bg-white flex-shrink-0">
                                 <img src="{{ $product->image_url }}" class="w-full h-full object-contain">
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                         <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">{{ $product->name }}</h1>
 
                         <div class="flex items-end gap-4 mb-8">
-                            <span class="text-4xl font-black text-purple-600">KES {{ number_format($product->price) }}</span>
+                            <span class="text-4xl font-black text-accent">KES {{ number_format($product->price) }}</span>
                             @if ($product->discount_price)
                                 <span class="text-xl text-gray-400 line-through mb-1">KES {{ number_format($product->discount_price) }}</span>
                                 <span class="text-sm font-bold text-red-500 mb-2 bg-red-50 px-2 py-1 rounded-md">
@@ -159,9 +159,9 @@
                         </div>
 
                         @if($product->deposit_amount || $product->monthly_payment)
-                        <div class="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 mb-8 border border-purple-100">
+                        <div class="bg-gradient-to-br from-red-50 to-gray-50 rounded-2xl p-6 mb-8 border border-red-100">
                             <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 Flexible Payment Options
                             </h3>
                             <div class="grid grid-cols-2 gap-4">
@@ -192,10 +192,10 @@
                                 <div class="w-24">
                                     <label class="sr-only">Quantity</label>
                                     <input type="number" name="quantity" value="1" min="1" max="10"
-                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-center font-bold focus:ring-purple-500 focus:border-purple-500">
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-center font-bold focus:ring-accent focus:border-accent">
                                 </div>
                                 <button type="submit"
-                                    class="flex-1 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-purple-600 shadow-xl hover:shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-3">
+                                    class="flex-1 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-accent shadow-xl hover:shadow-red-500/30 transition-all duration-300 flex items-center justify-center gap-3">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                                     Add to Cart
                                 </button>
@@ -244,13 +244,13 @@
             <div class="border-b border-gray-200" x-data="{ tab: 'description' }">
                 <div class="flex gap-8 mb-8 overflow-x-auto">
                     <button @click="tab = 'description'"
-                        :class="{'text-purple-600 border-purple-600': tab === 'description', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'description'}"
+                        :class="{'text-accent border-accent': tab === 'description', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'description'}"
                         class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Description</button>
                     <button @click="tab = 'specifications'"
-                        :class="{'text-purple-600 border-purple-600': tab === 'specifications', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'specifications'}"
+                        :class="{'text-accent border-accent': tab === 'specifications', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'specifications'}"
                         class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Specifications</button>
                     <button @click="tab = 'reviews'"
-                        :class="{'text-purple-600 border-purple-600': tab === 'reviews', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'reviews'}"
+                        :class="{'text-accent border-accent': tab === 'reviews', 'text-gray-500 border-transparent hover:text-gray-700': tab !== 'reviews'}"
                         class="pb-4 border-b-2 font-bold text-lg whitespace-nowrap transition-colors">Reviews ({{ $reviewsCount ?? 0 }})</button>
                 </div>
 
@@ -301,9 +301,9 @@
                                     <h4 class="text-lg font-bold text-gray-800 mb-2">No Reviews Yet</h4>
                                     <p class="text-gray-500 mb-6">Be the first to review this product.</p>
                                     @auth
-                                        <a href="#write-review" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</a>
+                                        <a href="#write-review" class="inline-block bg-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-primary transition">Write a Review</a>
                                     @else
-                                        <a href="{{ route('login') }}" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Sign in to review</a>
+                                        <a href="{{ route('login') }}" class="inline-block bg-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-primary transition">Sign in to review</a>
                                     @endauth
                                 </div>
                             @else
@@ -333,9 +333,9 @@
 
                                 <div class="mt-10 flex justify-center">
                                     @auth
-                                        <a href="#write-review" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Write a Review</a>
+                                        <a href="#write-review" class="inline-block bg-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-primary transition">Write a Review</a>
                                     @else
-                                        <a href="{{ route('login') }}" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition">Sign in to review</a>
+                                        <a href="{{ route('login') }}" class="inline-block bg-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-primary transition">Sign in to review</a>
                                     @endauth
                                 </div>
                             @endif
@@ -351,7 +351,7 @@
                                         @csrf
                                         <div>
                                             <label class="block text-sm font-bold text-gray-700 mb-2">Rating</label>
-                                            <select name="rating" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none">
+                                            <select name="rating" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-200 focus:border-accent outline-none">
                                                 @for($i = 5; $i >= 1; $i--)
                                                     <option value="{{ $i }}" {{ (int) old('rating', 5) === $i ? 'selected' : '' }}>{{ $i }}</option>
                                                 @endfor
@@ -361,20 +361,20 @@
 
                                         <div>
                                             <label class="block text-sm font-bold text-gray-700 mb-2">Title</label>
-                                            <input type="text" name="title" value="{{ old('title') }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none">
+                                            <input type="text" name="title" value="{{ old('title') }}" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-200 focus:border-accent outline-none">
                                             @error('title')<p class="text-xs text-red-500 mt-2">{{ $message }}</p>@enderror
                                         </div>
 
                                         <div>
                                             <label class="block text-sm font-bold text-gray-700 mb-2">Comment</label>
-                                            <textarea name="comment" rows="4" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-200 focus:border-purple-500 outline-none resize-none">{{ old('comment') }}</textarea>
+                                            <textarea name="comment" rows="4" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-200 focus:border-accent outline-none resize-none">{{ old('comment') }}</textarea>
                                             @error('comment')<p class="text-xs text-red-500 mt-2">{{ $message }}</p>@enderror
                                         </div>
 
-                                        <button type="submit" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-purple-600 transition-colors">Submit Review</button>
+                                        <button type="submit" class="w-full bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-accent transition-colors">Submit Review</button>
                                     </form>
                                 @else
-                                    <a href="{{ route('login') }}" class="block w-full text-center bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-purple-600 transition-colors">Sign in to review</a>
+                                    <a href="{{ route('login') }}" class="block w-full text-center bg-gray-900 text-white py-3 rounded-xl font-bold hover:bg-accent transition-colors">Sign in to review</a>
                                 @endauth
                             </div>
                         </div>
@@ -387,7 +387,7 @@
         @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
             <div class="mt-20">
                 <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
-                    <span class="text-purple-600">✦</span> Related Products
+                    <span class="text-accent">✦</span> Related Products
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach($relatedProducts as $related)
@@ -401,7 +401,7 @@
                                 <a href="{{ route('product.show', $related->slug) }}" class="absolute inset-0 z-10"></a>
                             </div>
                             <div class="p-5">
-                                <h3 class="font-bold text-gray-800 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-purple-600 transition-colors">
+                                <h3 class="font-bold text-gray-800 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-accent transition-colors">
                                     <a href="{{ route('product.show', $related->slug) }}">{{ $related->name }}</a>
                                 </h3>
                                 <div class="flex items-center justify-between">
@@ -421,13 +421,13 @@
         @if(isset($brands) && count($brands) > 0)
         <div class="mt-20">
             <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
-                <span class="text-purple-600">✦</span> Shop by Brand
+                <span class="text-accent">✦</span> Shop by Brand
             </h2>
             <div class="flex flex-wrap gap-4">
                 @foreach($brands as $brand)
                     @if(isset($brand->name) && isset($brand->id))
                         <a href="{{ route('shop', ['brand' => $brand->id]) }}"
-                           class="px-6 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-600 hover:border-purple-600 hover:text-purple-600 hover:shadow-md transition-all">
+                           class="px-6 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-600 hover:border-accent hover:text-accent hover:shadow-md transition-all">
                             {{ $brand->name }}
                         </a>
                     @endif
