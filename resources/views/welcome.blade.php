@@ -214,7 +214,7 @@
         </div>
     </section>
 
-    {{-- 4. Quick Top-Up Section (Replaces Take Now, Pay Later) --}}
+    {{-- 4. Quick Top-Up Section (Coming Soon) --}}
     <section id="topup" class="py-32 px-6 bg-[#1e3040] relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-96 h-96 bg-[#b5342a] rounded-full filter blur-3xl animate-pulse-slow"></div>
@@ -222,31 +222,43 @@
         </div>
 
         <div class="max-w-4xl mx-auto text-center relative z-10">
+            {{-- Coming Soon Badge --}}
+            <span class="inline-block mb-6 px-5 py-2 rounded-full text-sm font-semibold tracking-widest uppercase bg-[#b5342a]/20 border border-[#b5342a]/50 text-[#e87b72]">
+                Coming Soon
+            </span>
+
             <h2 class="text-5xl md:text-6xl font-bold text-white mb-6">
                 Quick <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#b5342a] to-[#7a7a6a]">Top-Up</span>
             </h2>
-            <p class="text-xl text-gray-300 mb-12">
+            <p class="text-xl text-gray-300 mb-4">
                 Recharge your line instantly with just one click
             </p>
+            <p class="text-gray-400 mb-12">We're putting the finishing touches on this feature. Stay tuned!</p>
 
-            <div class="bg-white/10 backdrop-blur-lg border border-white/20 p-10 rounded-3xl shadow-2xl">
-                <form id="topupForm" class="flex flex-col md:flex-row gap-4">
+            <div class="relative bg-white/10 backdrop-blur-lg border border-white/20 p-10 rounded-3xl shadow-2xl">
+                {{-- Disabled overlay --}}
+                <div class="absolute inset-0 rounded-3xl bg-[#1e3040]/60 backdrop-blur-sm z-10 flex items-center justify-center">
+                    <p class="text-white text-lg font-semibold tracking-wide opacity-80">Available Soon</p>
+                </div>
+
+                <form id="topupForm" class="flex flex-col md:flex-row gap-4 pointer-events-none select-none">
                     @csrf
                     <input
                         type="tel"
                         id="phoneNumber"
                         placeholder="Enter phone number (e.g., 0712345678)"
-                        class="flex-1 px-6 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-[#b5342a] transition-all duration-300"
-                        required
+                        class="flex-1 px-6 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all duration-300 opacity-50"
+                        disabled
                     />
                     <button
-                        type="submit"
-                        class="px-10 py-4 bg-[#b5342a] text-white rounded-xl font-semibold hover:shadow-2xl hover:bg-[#1e3040] transform hover:scale-105 transition-all duration-300">
+                        type="button"
+                        disabled
+                        class="px-10 py-4 bg-[#b5342a]/50 text-white/50 rounded-xl font-semibold cursor-not-allowed">
                         Top Up Now
                     </button>
                 </form>
 
-                <div class="mt-8 flex justify-center gap-8 flex-wrap">
+                <div class="mt-8 flex justify-center gap-8 flex-wrap opacity-50">
                     <div class="text-white">
                         <p class="text-sm text-gray-400">Instant Processing</p>
                         <p class="font-semibold">✓ Under 5 seconds</p>
