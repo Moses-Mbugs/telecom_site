@@ -344,30 +344,30 @@
                             <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar">
                                 @foreach ($featuredProducts as $product)
                                     <div
-                                        class="min-w-[160px] sm:min-w-[200px] md:min-w-[240px] snap-center bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+                                        class="min-w-[160px] sm:min-w-[200px] md:min-w-[240px] snap-center bg-[#1e3040] rounded-2xl p-3 sm:p-4 shadow-md border border-white/10 hover:shadow-xl hover:border-accent/40 transition-all duration-300 group">
                                         <div
-                                            class="relative h-40 bg-gray-50 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
+                                            class="relative h-40 bg-white/10 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
                                             @if ($product->image)
                                                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                                     class="max-w-[90%] max-h-[90%] object-contain group-hover:scale-110 transition-transform duration-500">
                                             @else
-                                                <span class="text-gray-400 text-xs">No Image</span>
+                                                <span class="text-white/40 text-xs">No Image</span>
                                             @endif
                                             @if ($product->discount_price)
                                                 <span
-                                                    class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">Sale</span>
+                                                    class="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded-full">Sale</span>
                                             @endif
                                         </div>
                                         <h3
-                                            class="font-bold text-gray-800 text-sm leading-snug line-clamp-1 mb-1 group-hover:text-accent transition-colors">
+                                            class="font-bold text-white text-sm leading-snug line-clamp-1 mb-1 group-hover:text-accent transition-colors">
                                             <a
                                                 href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                         </h3>
                                         <div class="flex items-center gap-2">
-                                            <span class="font-bold text-gray-900">KES
+                                            <span class="font-bold text-white">KES
                                                 {{ number_format($product->price) }}</span>
                                             @if ($product->discount_price)
-                                                <span class="text-xs text-gray-400 line-through">KES
+                                                <span class="text-xs text-white/50 line-through">KES
                                                     {{ number_format($product->discount_price) }}</span>
                                             @endif
                                         </div>
