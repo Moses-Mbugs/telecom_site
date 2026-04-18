@@ -117,6 +117,18 @@
                     </div>
 
                     <!-- Cart -->
+                    @php
+                        if (auth()->check()) {
+                            $shopCartModel = \App\Models\Cart::where('user_id', auth()->id())->where('status', 'active')->first();
+                            $shopCartItems = $shopCartModel ? $shopCartModel->items : collect();
+                            $shopCartCount = $shopCartItems->sum('quantity');
+                            $shopCartTotal = $shopCartItems->sum(fn($i) => $i->price * $i->quantity);
+                        } else {
+                            $shopCart = session('cart', []);
+                            $shopCartCount = array_sum(array_column($shopCart, 'quantity'));
+                            $shopCartTotal = collect($shopCart)->sum(fn($i) => $i['price'] * $i['quantity']);
+                        }
+                    @endphp
                     <a href="{{ route('cart.index') }}"
                         class="flex items-center gap-3 group bg-gray-50 hover:bg-red-50 px-4 py-2 rounded-full transition-colors">
                         <div class="relative">
@@ -126,10 +138,10 @@
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                             </svg>
                             <span
-                                class="absolute -top-1.5 -right-1.5 bg-accent text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">{{ count(session('cart', [])) }}</span>
+                                class="absolute -top-1.5 -right-1.5 bg-accent text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">{{ $shopCartCount }}</span>
                         </div>
                         <span class="font-bold text-gray-800 text-sm group-hover:text-primary transition">KES
-                            {{ number_format(collect(session('cart', []))->sum(fn($i) => $i['price'] * $i['quantity'])) }}</span>
+                            {{ number_format($shopCartTotal) }}</span>
                     </a>
                 </div>
             </div>

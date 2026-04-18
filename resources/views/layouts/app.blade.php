@@ -319,9 +319,16 @@
                 </li>
                 <li>
                     @php
-                        $cart = session('cart', []);
-                        $cartCount = array_sum(array_column($cart, 'quantity'));
-                        $cartTotal = collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']);
+                        if (auth()->check()) {
+                            $cartModel = \App\Models\Cart::where('user_id', auth()->id())->where('status', 'active')->first();
+                            $cartItems = $cartModel ? $cartModel->items : collect();
+                            $cartCount = $cartItems->sum('quantity');
+                            $cartTotal = $cartItems->sum(fn($i) => $i->price * $i->quantity);
+                        } else {
+                            $cart = session('cart', []);
+                            $cartCount = array_sum(array_column($cart, 'quantity'));
+                            $cartTotal = collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']);
+                        }
                     @endphp
                     <a href="{{ route('cart.index') }}" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 group">
                         <div class="relative">
