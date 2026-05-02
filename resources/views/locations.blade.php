@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@include('partials.ad-banner')
+
     <div class="max-w-7xl mx-auto px-6 py-12">
 
         <!-- Header -->

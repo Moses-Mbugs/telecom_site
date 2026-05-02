@@ -38,3 +38,5 @@ class DatabaseSeeder extends Seeder
 
 
 // hello world
+// Email : noreply@safeworldtelecom.co.ke
+// Password : Noreply@1234

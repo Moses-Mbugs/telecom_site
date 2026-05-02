@@ -302,8 +302,14 @@
             <ul class="hidden md:flex space-x-8 items-center">
                 <li><a href="/" class="nav-link hover:text-accent transition font-medium">Home</a></li>
                 <li><a href="{{ route('about') }}" class="nav-link hover:text-accent transition font-medium">About</a></li>
-                <li><a href="#services" class="nav-link hover:text-accent transition font-medium">Services</a></li>
+                <li><a href="{{ route('services') }}" class="nav-link hover:text-accent transition font-medium">Services</a></li>
                 <li><a href="{{ route('shop') }}" class="nav-link hover:text-accent transition font-medium">Shop</a></li>
+                <li>
+                    <button onclick="document.getElementById('mpesa-modal').classList.remove('hidden')"
+                            class="px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/30">
+                        M-Pesa Enquiry
+                    </button>
+                </li>
                 <li>
                     @auth
                         <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -361,9 +367,15 @@
         <div id="mobile-menu" class="hidden md:hidden glass-dark mobile-menu-enter">
             <ul class="space-y-4 px-6 py-6">
                 <li><a href="/" class="block hover:text-accent transition font-medium py-2">Home</a></li>
-                <li><a href="#about" class="block hover:text-accent transition font-medium py-2">About</a></li>
-                <li><a href="#services" class="block hover:text-accent transition font-medium py-2">Services</a></li>
+                <li><a href="{{ route('about') }}" class="block hover:text-accent transition font-medium py-2">About</a></li>
+                <li><a href="{{ route('services') }}" class="block hover:text-accent transition font-medium py-2">Services</a></li>
                 <li><a href="{{ route('shop') }}" class="block hover:text-accent transition font-medium py-2">Shop</a></li>
+                <li>
+                    <button onclick="document.getElementById('mpesa-modal').classList.remove('hidden'); document.getElementById('mobile-menu').classList.add('hidden');"
+                            class="block w-full px-6 py-3 bg-green-600 rounded-full font-semibold text-center text-white hover:bg-green-700 transition-all duration-300">
+                        M-Pesa Enquiry
+                    </button>
+                </li>
                 <li>
                     @auth
                         <form action="{{ route('logout') }}" method="POST" class="w-full">
@@ -399,55 +411,47 @@
         <div class="container mx-auto px-6 relative z-10">
             <!-- Footer Top -->
             <div class="grid md:grid-cols-4 gap-10 mb-12">
-                <!-- Products -->
+
+                <!-- Explore -->
                 <div>
-                    <h4 class="text-xl font-bold mb-6 text-accent">
-                        Products
-                    </h4>
+                    <h4 class="text-xl font-bold mb-6 text-accent">Explore</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="footer-link text-gray-300">Devices</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Accessories</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">IoT Solutions</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Enterprise Tools</a></li>
+                        <li><a href="{{ route('welcome') }}" class="footer-link text-gray-300">Home</a></li>
+                        <li><a href="{{ route('shop') }}" class="footer-link text-gray-300">Shop</a></li>
+                        <li><a href="{{ route('services') }}" class="footer-link text-gray-300">Our Services</a></li>
+                        <li><a href="{{ route('after-sale-support') }}" class="footer-link text-gray-300">After-Sale Support</a></li>
                     </ul>
                 </div>
 
-                <!-- About -->
+                <!-- Company -->
                 <div>
-                    <h4 class="text-xl font-bold mb-6 text-accent">
-                        Company
-                    </h4>
+                    <h4 class="text-xl font-bold mb-6 text-accent">Company</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="footer-link text-gray-300">About Us</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Careers</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">FAQs</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Press Kit</a></li>
+                        <li><a href="{{ route('about') }}" class="footer-link text-gray-300">About Us</a></li>
+                        <li><a href="{{ route('careers') }}" class="footer-link text-gray-300">Careers</a></li>
+                        <li><a href="{{ route('events') }}" class="footer-link text-gray-300">Our Events</a></li>
+                        <li><a href="{{ route('sdg') }}" class="footer-link text-gray-300">SDG &amp; Sustainability</a></li>
                     </ul>
                 </div>
 
-                <!-- Services -->
+                <!-- Find Us -->
                 <div>
-                    <h4 class="text-xl font-bold mb-6 text-accent">
-                        Services
-                    </h4>
+                    <h4 class="text-xl font-bold mb-6 text-accent">Find Us</h4>
                     <ul class="space-y-3">
-                        <li><a href="#topup" class="footer-link text-gray-300">Pinless Airtime</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">M-Pesa Integration</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Fiber Internet</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">VoIP Solutions</a></li>
+                        <li><a href="{{ route('locations') }}" class="footer-link text-gray-300">Our Locations</a></li>
+                        <li>
+                            <button onclick="document.getElementById('mpesa-modal').classList.remove('hidden')"
+                                    class="footer-link text-gray-300 text-left">
+                                M-Pesa Enquiry
+                            </button>
+                        </li>
                     </ul>
                 </div>
 
-                <!-- Contact & Social -->
+                <!-- Connect -->
                 <div>
-                    <h4 class="text-xl font-bold mb-6 text-accent">
-                        Connect
-                    </h4>
-                    <ul class="space-y-3 mb-6">
-                        <li><a href="#" class="footer-link text-gray-300">Find a Store</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Support Center</a></li>
-                        <li><a href="#" class="footer-link text-gray-300">Contact Us</a></li>
-                    </ul>
+                    <h4 class="text-xl font-bold mb-6 text-accent">Connect</h4>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">19 outlets nationwide. Follow us for the latest offers and updates.</p>
                     <!-- Social Media Icons -->
                     <div class="flex space-x-4">
                         <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-all duration-300 hover:scale-110">
@@ -472,9 +476,9 @@
                     © {{ date('Y') }} Safe World Telecom. All Rights Reserved.
                 </p>
                 <div class="flex space-x-6 text-sm">
-                    <a href="#" class="text-gray-400 hover:text-accent transition">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-accent transition">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-accent transition">Cookie Policy</a>
+                    <a href="{{ route('about') }}" class="text-gray-400 hover:text-accent transition">About Us</a>
+                    <a href="{{ route('locations') }}" class="text-gray-400 hover:text-accent transition">Find a Store</a>
+                    <a href="{{ route('after-sale-support') }}" class="text-gray-400 hover:text-accent transition">Support</a>
                 </div>
             </div>
         </div>
@@ -559,9 +563,72 @@
                 }
             });
         });
-    </scrip>
+    </script>
 
     @stack('scripts')
+
+    {{-- M-Pesa Enquiry Modal --}}
+    <div id="mpesa-modal" class="hidden fixed inset-0 z-[200000] flex items-center justify-center px-4">
+        {{-- Backdrop --}}
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('mpesa-modal').classList.add('hidden')"></div>
+
+        {{-- Modal Card --}}
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg z-10 overflow-hidden">
+            {{-- Header --}}
+            <div class="bg-gradient-to-r from-[#1e3040] to-[#2d4a60] px-8 py-6 flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-7 h-7 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="text-white font-bold text-lg">M-Pesa Enquiry</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm">Fill in your details and we will get back to you.</p>
+                </div>
+                <button onclick="document.getElementById('mpesa-modal').classList.add('hidden')"
+                        class="w-9 h-9 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            {{-- Form --}}
+            <form action="{{ route('mpesa-enquiry.store') }}" method="POST" class="px-8 py-6 space-y-4">
+                @csrf
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Full Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required placeholder="John Doe"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Position <span class="text-red-500">*</span></label>
+                        <input type="text" name="position" required placeholder="e.g. Business Owner"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Email Address <span class="text-red-500">*</span></label>
+                    <input type="email" name="email" required placeholder="you@example.com"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none">
+                    <p class="text-xs text-gray-400 mt-1">A confirmation email will be sent here.</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Workplace <span class="text-xs text-gray-400">(optional)</span></label>
+                    <input type="text" name="workplace" placeholder="Company or organisation name"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Your Enquiry <span class="text-red-500">*</span></label>
+                    <textarea name="enquiry" rows="4" required placeholder="Tell us what you need..."
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none resize-none"></textarea>
+                </div>
+                <button type="submit"
+                        class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-green-500/30">
+                    Submit Enquiry
+                </button>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

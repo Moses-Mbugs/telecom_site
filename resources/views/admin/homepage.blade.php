@@ -59,7 +59,10 @@
 
     {{-- Journey Section --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b">🚀 Our Journey Section</h2>
+        <h2 class="text-lg font-semibold text-gray-700 mb-5 pb-3 border-b flex items-center gap-2">
+            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Our Journey Section
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-1">Journey Title</label>

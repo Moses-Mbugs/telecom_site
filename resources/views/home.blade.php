@@ -1,4 +1,5 @@
 {{--  home.blade.php  --}}
+{{--  not in use  --}}
 
 @extends('layouts.app')
 
@@ -341,15 +342,24 @@
             <div class="mt-8 flex justify-center gap-8">
                 <div class="text-white">
                     <p class="text-sm text-gray-400">Instant Processing</p>
-                    <p class="font-semibold">✓ Under 5 seconds</p>
+                    <p class="font-semibold flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Under 5 seconds
+                    </p>
                 </div>
                 <div class="text-white">
                     <p class="text-sm text-gray-400">Secure Payment</p>
-                    <p class="font-semibold">✓ 256-bit Encryption</p>
+                    <p class="font-semibold flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        256-bit Encryption
+                    </p>
                 </div>
                 <div class="text-white">
                     <p class="text-sm text-gray-400">All Networks</p>
-                    <p class="font-semibold">✓ 100% Coverage</p>
+                    <p class="font-semibold flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        100% Coverage
+                    </p>
                 </div>
             </div>
         </div>

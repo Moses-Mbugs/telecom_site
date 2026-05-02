@@ -259,17 +259,26 @@
                 </form>
 
                 <div class="mt-8 flex justify-center gap-8 flex-wrap opacity-50">
-                    <div class="text-white">
-                        <p class="text-sm text-gray-400">Instant Processing</p>
-                        <p class="font-semibold">✓ Under 5 seconds</p>
+                    <div class="text-white flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Instant Processing</p>
+                            <p class="font-semibold">Under 5 seconds</p>
+                        </div>
                     </div>
-                    <div class="text-white">
-                        <p class="text-sm text-gray-400">Secure Payment</p>
-                        <p class="font-semibold">✓ 256-bit Encryption</p>
+                    <div class="text-white flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">Secure Payment</p>
+                            <p class="font-semibold">256-bit Encryption</p>
+                        </div>
                     </div>
-                    <div class="text-white">
-                        <p class="text-sm text-gray-400">All Networks</p>
-                        <p class="font-semibold">✓ 100% Coverage</p>
+                    <div class="text-white flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div>
+                            <p class="text-sm text-gray-400">All Networks</p>
+                            <p class="font-semibold">100% Coverage</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,7 +302,7 @@
                             Our Locations
                         </a>
                         <a href="{{ route('shop') }}" target="_blank" class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold hover:bg-white hover:text-gray-900 transition duration-300 shadow-lg">
-                            Shop Devices
+                            Shop 
                         </a>
                     </div>
                 </div>
@@ -429,6 +438,28 @@
             </div>
         </div>
     </section>
+
+    {{-- 8. Our Partners Section --}}
+    @if($partners->isNotEmpty())
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1.5 bg-[#b5342a]/10 text-[#b5342a] text-sm font-bold rounded-full uppercase tracking-widest mb-4">Trusted By</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1e3040]">Our Partners</h2>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+                @foreach($partners as $partner)
+                <div class="flex items-center justify-center">
+                    <img src="{{ asset('storage/' . $partner->logo) }}"
+                         alt="{{ $partner->name }}"
+                         class="max-h-14 max-w-[140px] object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                         title="{{ $partner->name }}">
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     {{-- Footer --}}
     <footer class="bg-[#1e3040] text-white py-16 relative overflow-hidden">

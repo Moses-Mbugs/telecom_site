@@ -15,11 +15,11 @@
     @elseif(isset($flashSales) && count($flashSales) > 0)
         @php $flashSale = $flashSales[0]; @endphp
         <div class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50">
-            🚀 {{ $flashSale->name ?? 'FLASH SALE' }}: UP TO {{ $flashSale->discount_percentage ?? '50' }}% OFF SELECTED PHONES! LIMITED TIME OFFER.
+            {{ $flashSale->name ?? 'FLASH SALE' }}: UP TO {{ $flashSale->discount_percentage ?? '50' }}% OFF SELECTED PHONES! LIMITED TIME OFFER.
         </div>
     @else
         <div class="bg-gradient-to-r from-red-600 to-red-500 text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50">
-            🚀 FLASH SALE: UP TO 50% OFF SELECTED PHONES! LIMITED TIME OFFER.
+            FLASH SALE: UP TO 50% OFF SELECTED PHONES! LIMITED TIME OFFER.
         </div>
     @endif
 

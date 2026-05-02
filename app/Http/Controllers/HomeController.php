@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\HomepageSetting;
 use App\Models\Location;
+use App\Models\Partner;
 use App\Models\Testimonial;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -23,8 +23,9 @@ class HomeController extends Controller
         $settings = HomepageSetting::whereIn('key', $keys)->pluck('value', 'key');
 
         $testimonials = Testimonial::orderBy('created_at', 'desc')->get();
+        $partners = Partner::where('is_active', true)->latest()->get();
 
-        return view('welcome', compact('settings', 'testimonials'));
+        return view('welcome', compact('settings', 'testimonials', 'partners'));
     }
 
     public function locations()
