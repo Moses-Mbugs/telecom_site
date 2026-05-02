@@ -86,6 +86,33 @@
                         <span class="text-sm font-medium text-gray-600">Mark as Featured Product</span>
                     </label>
                 </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">
+                        Storage / RAM Variants
+                        <span class="text-xs text-gray-400 font-normal ml-1">— optional, for phones with multiple storage options</span>
+                    </label>
+                    <div id="variants-container" class="space-y-2 mb-3">
+                        @foreach(old('variant_labels', []) as $i => $label)
+                        <div class="flex gap-2 items-center">
+                            <input type="text" name="variant_labels[]" value="{{ $label }}" placeholder="Label (e.g. 4GB / 64GB)"
+                                class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+                            <input type="number" name="variant_prices[]" value="{{ old('variant_prices')[$i] ?? '' }}" placeholder="Price (KES)" min="0"
+                                class="w-40 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+                            <button type="button" onclick="this.closest('div').remove()"
+                                class="p-2 text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" id="add-variant-btn"
+                        class="px-4 py-2 text-sm bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition font-medium flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Add Variant
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2">On the product page, customers will see these as selectable buttons. Choosing one updates the displayed price automatically.</p>
+                </div>
             </div>
 
             <div class="flex gap-3 pt-2">
@@ -100,3 +127,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.getElementById('add-variant-btn').addEventListener('click', function () {
+    const container = document.getElementById('variants-container');
+    const row = document.createElement('div');
+    row.className = 'flex gap-2 items-center';
+    row.innerHTML = `
+        <input type="text" name="variant_labels[]" placeholder="Label (e.g. 4GB / 64GB)"
+            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+        <input type="number" name="variant_prices[]" placeholder="Price (KES)" min="0"
+            class="w-40 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+        <button type="button" onclick="this.closest('div').remove()"
+            class="p-2 text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    `;
+    container.appendChild(row);
+    row.querySelector('input[type=text]').focus();
+});
+</script>
+@endpush

@@ -58,6 +58,7 @@ class ProductController extends Controller
             'brand_id'        => $validated['brand_id'] ?? null,
             'is_featured'     => $request->boolean('is_featured'),
             'image'           => $imagePath,
+            'variants'        => $this->buildVariants($request),
         ]);
 
         return redirect()->route('admin.products.index')
@@ -97,11 +98,26 @@ class ProductController extends Controller
         }
 
         $validated['is_featured'] = $request->boolean('is_featured');
+        $validated['variants']    = $this->buildVariants($request);
 
         $product->update($validated);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully.');
+    }
+
+    private function buildVariants(Request $request): ?array
+    {
+        $labels = $request->input('variant_labels', []);
+        $prices = $request->input('variant_prices', []);
+        $variants = [];
+        foreach ($labels as $i => $label) {
+            $label = trim($label);
+            if ($label !== '') {
+                $variants[] = ['label' => $label, 'price' => (float) ($prices[$i] ?? 0)];
+            }
+        }
+        return !empty($variants) ? $variants : null;
     }
 
     public function destroy(Product $product)

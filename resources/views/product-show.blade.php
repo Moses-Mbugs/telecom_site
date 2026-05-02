@@ -134,7 +134,24 @@
                     </div>
 
                     <!-- Right: Product Info -->
-                    <div class="flex flex-col h-full">
+                    <div class="flex flex-col h-full" x-data="{
+                        variants: @json($product->variants ?? []),
+                        selectedVariant: null,
+                        basePrice: {{ $product->price }},
+                        baseDiscount: {{ $product->discount_price ?? 'null' }},
+                        get currentPrice() {
+                            return this.selectedVariant !== null ? this.selectedVariant.price : this.basePrice;
+                        },
+                        get hasSavings() {
+                            return this.selectedVariant === null && this.baseDiscount !== null;
+                        },
+                        formatPrice(n) {
+                            return 'KES ' + Number(n).toLocaleString('en-KE');
+                        },
+                        selectVariant(v) {
+                            this.selectedVariant = (this.selectedVariant && this.selectedVariant.label === v.label) ? null : v;
+                        }
+                    }">
                         <div class="mb-2 flex items-center gap-3">
                             @if (data_get($product, 'brand.name'))
                                 <span class="text-sm font-bold text-gray-500 uppercase tracking-wider">{{ data_get($product, 'brand.name') }}</span>
@@ -149,17 +166,21 @@
                         <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">{{ $product->name }}</h1>
 
                         <div class="flex items-end gap-4 mb-8">
-                            <span class="text-4xl font-black text-accent">KES {{ number_format($product->price) }}</span>
-                            @if ($product->discount_price)
-                                <span class="text-xl text-gray-400 line-through mb-1">KES {{ number_format($product->discount_price) }}</span>
-                                <span class="text-sm font-bold text-red-500 mb-2 bg-red-50 px-2 py-1 rounded-md">
-                                    Save KES {{ number_format($product->discount_price - $product->price) }}
-                                </span>
-                            @endif
+                            <span class="text-4xl font-black text-accent" x-text="formatPrice(currentPrice)">KES {{ number_format($product->price) }}</span>
+                            <span class="text-xl text-gray-400 line-through mb-1" x-show="hasSavings" x-text="formatPrice(baseDiscount)"
+                                @if(!$product->discount_price) style="display:none" @endif>
+                                @if($product->discount_price)KES {{ number_format($product->discount_price) }}@endif
+                            </span>
+                            <span class="text-sm font-bold text-red-500 mb-2 bg-red-50 px-2 py-1 rounded-md" x-show="hasSavings"
+                                x-text="'Save ' + formatPrice(baseDiscount - basePrice)"
+                                @if(!$product->discount_price) style="display:none" @endif>
+                                @if($product->discount_price)Save KES {{ number_format($product->discount_price - $product->price) }}@endif
+                            </span>
                         </div>
 
                         @if($product->deposit_amount || $product->monthly_payment)
-                        <div class="bg-gradient-to-br from-red-50 to-gray-50 rounded-2xl p-6 mb-8 border border-red-100">
+                        <div class="bg-gradient-to-br from-red-50 to-gray-50 rounded-2xl p-6 mb-8 border border-red-100"
+                            x-show="selectedVariant === null">
                             <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 Flexible Payment Options
@@ -185,10 +206,33 @@
                             {{ Str::limit(strip_tags($product->description), 200) }}
                         </div>
 
+                        <!-- Variant Selector -->
+                        <template x-if="variants.length > 0">
+                            <div class="mb-8">
+                                <p class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Storage / RAM</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="v in variants" :key="v.label">
+                                        <button type="button"
+                                            @click="selectVariant(v)"
+                                            :class="selectedVariant && selectedVariant.label === v.label
+                                                ? 'bg-gray-900 text-white border-gray-900'
+                                                : 'bg-white text-gray-700 border-gray-200 hover:border-gray-900 hover:text-gray-900'"
+                                            class="px-4 py-2 rounded-xl border-2 font-bold text-sm transition-all duration-200">
+                                            <span x-text="v.label"></span>
+                                            <span class="ml-1 opacity-70 font-normal text-xs" x-text="'· ' + formatPrice(v.price)"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-3" x-show="!selectedVariant">Select a variant above — price updates automatically.</p>
+                            </div>
+                        </template>
+
                         <!-- Actions -->
                         <div class="mt-auto space-y-4">
                             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="flex gap-4">
                                 @csrf
+                                <input type="hidden" name="variant_label" :value="selectedVariant ? selectedVariant.label : ''">
+                                <input type="hidden" name="variant_price" :value="selectedVariant ? selectedVariant.price : ''">
                                 <div class="w-24">
                                     <label class="sr-only">Quantity</label>
                                     <input type="number" name="quantity" value="1" min="1" max="10"

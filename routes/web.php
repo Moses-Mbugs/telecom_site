@@ -13,6 +13,7 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\SdgController;
 use App\Http\Controllers\MpesaEnquiryController;
+use App\Http\Controllers\ServiceEnquiryController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
@@ -34,6 +35,9 @@ Route::get('/sdg', [SdgController::class, 'index'])->name('sdg');
 
 // M-Pesa Enquiry
 Route::post('/mpesa-enquiry', [MpesaEnquiryController::class, 'store'])->name('mpesa-enquiry.store');
+
+// Service Enquiry
+Route::post('/service-enquiry', [ServiceEnquiryController::class, 'store'])->name('service-enquiry.store');
 
 // Shop Route
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
@@ -87,4 +91,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     // Enquiries (read + delete only)
     Route::get('enquiries', [\App\Http\Controllers\Admin\EnquiryController::class, 'index'])->name('enquiries.index');
     Route::delete('enquiries/{enquiry}', [\App\Http\Controllers\Admin\EnquiryController::class, 'destroy'])->name('enquiries.destroy');
+
+    // Service Enquiries (read + delete only)
+    Route::get('service-enquiries', [\App\Http\Controllers\Admin\ServiceEnquiryController::class, 'index'])->name('service-enquiries.index');
+    Route::delete('service-enquiries/{serviceEnquiry}', [\App\Http\Controllers\Admin\ServiceEnquiryController::class, 'destroy'])->name('service-enquiries.destroy');
 });

@@ -37,7 +37,7 @@ class CartController extends Controller
     }
 
     // Add to cart
-    public function add($id)
+    public function add(Request $request, $id)
     {
         $product = Product::find($id);
 
@@ -45,37 +45,50 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'Product not found');
         }
 
+        $variantLabel = trim($request->input('variant_label', ''));
+        $variantPrice = $request->input('variant_price');
+        $qty          = max(1, (int) $request->input('quantity', 1));
+
+        $price = ($variantLabel && $variantPrice) ? (float) $variantPrice : ($product->discount_price ?? $product->price);
+        $name  = $variantLabel ? "{$product->name} ({$variantLabel})" : $product->name;
+
         if (auth()->check()) {
             $model = Cart::firstOrCreate(
                 ['user_id' => auth()->id(), 'status' => 'active'],
                 ['user_id' => auth()->id(), 'status' => 'active']
             );
-            $item = $model->items()->where('product_id', $product->id)->first();
+            $item = $model->items()
+                ->where('product_id', $product->id)
+                ->where('variant', $variantLabel ?: null)
+                ->first();
             if ($item) {
-                $item->increment('quantity');
+                $item->increment('quantity', $qty);
             } else {
                 $model->items()->create([
                     'product_id' => $product->id,
-                    'name' => $product->name,
-                    'price' => $product->discount_price ?? $product->price,
-                    'quantity' => 1,
-                    'image' => $product->image,
-                    'slug' => $product->slug,
+                    'name'       => $name,
+                    'price'      => $price,
+                    'quantity'   => $qty,
+                    'image'      => $product->image,
+                    'slug'       => $product->slug,
+                    'variant'    => $variantLabel ?: null,
                 ]);
             }
         } else {
-            $cart = session()->get('cart', []);
+            $cart    = session()->get('cart', []);
+            $cartKey = $variantLabel ? "{$id}_{$variantLabel}" : (string) $id;
 
-            if (isset($cart[$id])) {
-                $cart[$id]['quantity']++;
+            if (isset($cart[$cartKey])) {
+                $cart[$cartKey]['quantity'] += $qty;
             } else {
-                $cart[$id] = [
+                $cart[$cartKey] = [
                     'id'       => $product->id,
-                    'name'     => $product->name,
-                    'price'    => $product->discount_price ?? $product->price,
-                    'quantity' => 1,
+                    'name'     => $name,
+                    'price'    => $price,
+                    'quantity' => $qty,
                     'image'    => $product->image,
                     'slug'     => $product->slug,
+                    'variant'  => $variantLabel ?: null,
                 ];
             }
             session()->put('cart', $cart);

@@ -24,11 +24,13 @@ class Product extends Model
         'is_featured',
         'discount_price',
         'deal_end_time',
+        'variants',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
         'deal_end_time' => 'datetime',
+        'variants' => 'array',
     ];
 
     public function getImageUrlAttribute()
