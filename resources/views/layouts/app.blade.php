@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="@yield('meta_description', 'Safe World Telecom – Kenya\'s trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.')">
+    <meta name="description" content="@yield('meta_description', 'Safe World Telecom - Trusted phone retailer with 19 outlets in Kenya. Shop smartphones, M-Pesa integration and expert after-sale support.')">
     <meta name="robots" content="index, follow">
     <title>@yield('title', config('app.name', 'Safe World Telecom'))</title>
     <link rel="canonical" href="{{ config('app.url') . request()->getRequestUri() }}">
@@ -21,7 +21,7 @@
     <meta property="og:url" content="{{ config('app.url') . request()->getRequestUri() }}">
     <meta property="og:site_name" content="Safe World Telecom">
     <meta property="og:title" content="@yield('title', 'Safe World Telecom')">
-    <meta property="og:description" content="@yield('meta_description', 'Kenya\'s trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.')">
+    <meta property="og:description" content="@yield('meta_description', 'Trusted phone retailer with 19 outlets in Kenya. Shop smartphones, M-Pesa integration services, and expert after-sale support.')">
     <meta property="og:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -30,7 +30,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'Safe World Telecom')">
-    <meta name="twitter:description" content="@yield('meta_description', 'Kenya\'s trusted phone retailer with 19 outlets nationwide.')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Trusted phone retailer with 19 outlets in Kenya.')">
     <meta name="twitter:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
 
     <!-- Schema.org Organization structured data -->
