@@ -8,7 +8,8 @@
       "Bash(Select-Object -First 20)",
       "Bash(Format-List FullName)",
       "Bash(Select-String -Path \"e:\\\\2025\\\\Projects\\\\telecom_site\\\\resources\\\\views\\\\services.blade.php\" -Pattern \"@section|@endsection|@push|@endpush\")",
-      "Bash(Select-Object LineNumber, Line)"
+      "Bash(Select-Object LineNumber, Line)",
+      "Bash(php -r ' *)"
     ]
   }
 }

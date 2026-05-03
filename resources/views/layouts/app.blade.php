@@ -34,35 +34,10 @@
     <meta name="twitter:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
 
     <!-- Schema.org Organization structured data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Safe World Telecom",
-        "url": "{{ config('app.url') }}",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "{{ asset('images/safe_world_logo_cropped_transparent.png') }}",
-            "width": 500,
-            "height": 250
-        },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+254712345678",
-            "contactType": "customer service",
-            "areaServed": "KE",
-            "availableLanguage": "English"
-        },
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "KE"
-        },
-        "numberOfEmployees": {
-            "@type": "QuantitativeValue",
-            "minValue": 50
-        }
-    }
-    </script>
+    @php
+        $orgSchema = ['@context'=>'https://schema.org','@type'=>'Organization','name'=>'Safe World Telecom','url'=>config('app.url'),'logo'=>['@type'=>'ImageObject','url'=>asset('images/safe_world_logo_cropped_transparent.png'),'width'=>500,'height'=>250],'contactPoint'=>['@type'=>'ContactPoint','telephone'=>'+254712345678','contactType'=>'customer service','areaServed'=>'KE','availableLanguage'=>'English'],'address'=>['@type'=>'PostalAddress','addressCountry'=>'KE']];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
