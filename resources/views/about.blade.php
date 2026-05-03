@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'About Us | Safe World Telecom')
+@section('meta_description', 'Learn about Safe World Telecom – our story, mission, and commitment to providing affordable smartphones and telecom services across Kenya.')
+
 @section('content')
 
 @include('partials.ad-banner')

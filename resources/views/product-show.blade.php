@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $product->name . ' | Safe World Telecom')
+@section('meta_description', 'Buy ' . $product->name . ' in Kenya. Best price KES ' . number_format($product->discount_price ?? $product->price) . ' with genuine warranty. Available at Safe World Telecom.')
+
 @php
     $hideNavbar = true;
 @endphp

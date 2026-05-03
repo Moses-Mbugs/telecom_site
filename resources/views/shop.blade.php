@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Shop Smartphones | Safe World Telecom')
+@section('meta_description', 'Browse our full range of smartphones and mobile devices. Great prices, genuine products, and 19 outlets across Kenya.')
+
 @php
     $hideNavbar = true;
 @endphp

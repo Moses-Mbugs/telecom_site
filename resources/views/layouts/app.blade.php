@@ -5,9 +5,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Safe World Telecom - Modern telecom solutions for the future">
-    <title>{{ config('app.name', 'Safe World Telecom') }}</title>
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <meta name="description" content="@yield('meta_description', 'Safe World Telecom – Kenya\'s trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.')">
+    <meta name="robots" content="index, follow">
+    <title>@yield('title', config('app.name', 'Safe World Telecom'))</title>
+    <link rel="canonical" href="{{ config('app.url') . request()->getRequestUri() }}">
+
+    <!-- Favicons -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('images/safe_world_logo_logo_only.svg') }}" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ config('app.url') . request()->getRequestUri() }}">
+    <meta property="og:site_name" content="Safe World Telecom">
+    <meta property="og:title" content="@yield('title', 'Safe World Telecom')">
+    <meta property="og:description" content="@yield('meta_description', 'Kenya\'s trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.')">
+    <meta property="og:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_KE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Safe World Telecom')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Kenya\'s trusted phone retailer with 19 outlets nationwide.')">
+    <meta name="twitter:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+
+    <!-- Schema.org Organization structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Safe World Telecom",
+        "url": "{{ config('app.url') }}",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ asset('images/safe_world_logo_cropped_transparent.png') }}",
+            "width": 500,
+            "height": 250
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+254712345678",
+            "contactType": "customer service",
+            "areaServed": "KE",
+            "availableLanguage": "English"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "KE"
+        },
+        "numberOfEmployees": {
+            "@type": "QuantitativeValue",
+            "minValue": 50
+        }
+    }
+    </script>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />

@@ -3,8 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Safe World Telecom - Modern telecom solutions for the future">
-    <title>{{ config('app.name', 'Safe World Telecom') }}</title>
+    <meta name="description" content="Safe World Telecom – Kenya's trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.">
+    <meta name="robots" content="index, follow">
+    <title>Safe World Telecom | Kenya's Trusted Phone Retailer</title>
+    <link rel="canonical" href="{{ config('app.url') }}">
+
+    <!-- Favicons -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('images/safe_world_logo_logo_only.svg') }}" type="image/svg+xml">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ config('app.url') }}">
+    <meta property="og:site_name" content="Safe World Telecom">
+    <meta property="og:title" content="Safe World Telecom | Kenya's Trusted Phone Retailer">
+    <meta property="og:description" content="Kenya's trusted phone retailer with 19 outlets nationwide. Shop smartphones, M-Pesa integration services, and expert after-sale support.">
+    <meta property="og:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+    <meta property="og:locale" content="en_KE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Safe World Telecom | Kenya's Trusted Phone Retailer">
+    <meta name="twitter:description" content="Kenya's trusted phone retailer with 19 outlets nationwide.">
+    <meta name="twitter:image" content="{{ asset('images/safe_world_logo_cropped_transparent.png') }}">
+
+    <!-- Schema.org Organization structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Safe World Telecom",
+        "url": "{{ config('app.url') }}",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ asset('images/safe_world_logo_cropped_transparent.png') }}",
+            "width": 500,
+            "height": 250
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+254712345678",
+            "contactType": "customer service",
+            "areaServed": "KE",
+            "availableLanguage": "English"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "KE"
+        }
+    }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Google Fonts -->

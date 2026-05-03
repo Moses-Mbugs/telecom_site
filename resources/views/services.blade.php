@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Our Services | Safe World Telecom')
+@section('meta_description', 'Explore Safe World Telecom services including M-Pesa integration, phone financing, device repairs, and business telecom solutions across Kenya.')
+
 @section('content')
 
 @include('partials.ad-banner')

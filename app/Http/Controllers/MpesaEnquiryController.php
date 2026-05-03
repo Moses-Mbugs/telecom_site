@@ -24,7 +24,7 @@ class MpesaEnquiryController extends Controller
             $enquiry = MpesaEnquiry::create($validated);
         } catch (\Exception $e) {
             Log::error('Failed to save M-Pesa enquiry', ['error' => $e->getMessage(), 'data' => $validated]);
-            return back()->with('error', 'DB Error: ' . $e->getMessage());
+            return back()->with('error', 'Sorry, we could not save your enquiry. Please try again or contact us directly on WhatsApp.');
         }
 
         try {
