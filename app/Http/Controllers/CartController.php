@@ -49,7 +49,7 @@ class CartController extends Controller
         $variantPrice = $request->input('variant_price');
         $qty          = max(1, (int) $request->input('quantity', 1));
 
-        $price = ($variantLabel && $variantPrice) ? (float) $variantPrice : ($product->discount_price ?? $product->price);
+        $price = ($variantLabel && $variantPrice) ? (float) $variantPrice : $product->price;
         $name  = $variantLabel ? "{$product->name} ({$variantLabel})" : $product->name;
 
         if (auth()->check()) {

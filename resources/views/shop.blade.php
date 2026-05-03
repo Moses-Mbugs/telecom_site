@@ -21,6 +21,17 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        @keyframes brandScroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .brand-carousel {
+            animation: brandScroll 25s linear infinite;
+        }
+        .brand-carousel-wrapper:hover .brand-carousel {
+            animation-play-state: paused;
+        }
     </style>
 @endpush
 
@@ -629,20 +640,31 @@
                                                 </div>
                                             </div>
 
-                                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" aria-label="Add to Cart"
-                                                    class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-accent hover:shadow-red-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
-                                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300 group-hover/btn:text-white transition-colors"
-                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                            @if(!empty($product->variants))
+                                                <a href="{{ route('product.show', $product->slug) }}"
+                                                    class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-accent hover:shadow-red-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2">
+                                                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                                     </svg>
-                                                    <span class="hidden sm:inline">Add to Cart</span>
-                                                    <span class="sm:hidden">Add</span>
-                                                </button>
-                                            </form>
+                                                    <span class="hidden sm:inline">View Options</span>
+                                                    <span class="sm:hidden">Options</span>
+                                                </a>
+                                            @else
+                                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" aria-label="Add to Cart"
+                                                        class="w-full bg-gray-900 text-white py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-gray-200 hover:bg-accent hover:shadow-red-200 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn">
+                                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300 group-hover/btn:text-white transition-colors"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                                        </svg>
+                                                        <span class="hidden sm:inline">Add to Cart</span>
+                                                        <span class="sm:hidden">Add</span>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -658,6 +680,36 @@
                 </main>
             </div>
         </div>
+
+        <!-- Shop by Brand Carousel -->
+        @php $brandsWithLogos = $brands->filter(fn($b) => $b->logo); @endphp
+        @if($brandsWithLogos->isNotEmpty())
+        <section class="py-14 bg-gray-50 border-t border-gray-100">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
+                    Shop by <span class="text-accent">Brand</span>
+                </h2>
+                <div class="relative overflow-hidden brand-carousel-wrapper">
+                    <div class="flex gap-5 w-max brand-carousel">
+                        @foreach($brandsWithLogos as $brand)
+                            <a href="{{ route('shop', ['brand' => $brand->id]) }}"
+                               class="flex-shrink-0 bg-white border border-gray-200 rounded-2xl p-5 flex flex-col items-center gap-3 w-36 hover:border-accent hover:shadow-lg transition-all duration-300 group">
+                                <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}" class="h-12 w-auto object-contain">
+                                <span class="text-xs font-bold text-gray-600 group-hover:text-accent transition-colors text-center leading-tight">{{ $brand->name }}</span>
+                            </a>
+                        @endforeach
+                        @foreach($brandsWithLogos as $brand)
+                            <a href="{{ route('shop', ['brand' => $brand->id]) }}"
+                               class="flex-shrink-0 bg-white border border-gray-200 rounded-2xl p-5 flex flex-col items-center gap-3 w-36 hover:border-accent hover:shadow-lg transition-all duration-300 group">
+                                <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}" class="h-12 w-auto object-contain">
+                                <span class="text-xs font-bold text-gray-600 group-hover:text-accent transition-colors text-center leading-tight">{{ $brand->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </section>
+        @endif
 
         <!-- Mobile Filter Sidebar (Off-canvas) -->
         <div x-show="mobileFiltersOpen" x-cloak class="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true">

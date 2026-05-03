@@ -9,7 +9,8 @@
       "Bash(Format-List FullName)",
       "Bash(Select-String -Path \"e:\\\\2025\\\\Projects\\\\telecom_site\\\\resources\\\\views\\\\services.blade.php\" -Pattern \"@section|@endsection|@push|@endpush\")",
       "Bash(Select-Object LineNumber, Line)",
-      "Bash(php -r ' *)"
+      "Bash(php -r ' *)",
+      "Bash(grep -n 'discount_price ?? $product->price\\\\|->price;' e:/2025/Projects/telecom_site/app/Http/Controllers/CartController.php)"
     ]
   }
 }

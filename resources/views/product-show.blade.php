@@ -440,8 +440,8 @@
                     @foreach($relatedProducts as $related)
                         <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
                             <div class="relative h-48 bg-gray-50 p-6 flex items-center justify-center">
-                                @if ($related->image)
-                                    <img src="{{ $related->image }}" alt="{{ $related->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
+                                @if ($related->image_url)
+                                    <img src="{{ $related->image_url }}" alt="{{ $related->name }}" class="max-w-full max-h-full object-contain group-hover:scale-110 transition duration-500">
                                 @else
                                     <span class="text-gray-400 text-sm">No Image</span>
                                 @endif
@@ -474,8 +474,11 @@
                 @foreach($brands as $brand)
                     @if(isset($brand->name) && isset($brand->id))
                         <a href="{{ route('shop', ['brand' => $brand->id]) }}"
-                           class="px-6 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-600 hover:border-accent hover:text-accent hover:shadow-md transition-all">
-                            {{ $brand->name }}
+                           class="flex items-center gap-3 px-5 py-3 bg-white border border-gray-200 rounded-xl hover:border-accent hover:shadow-md transition-all group">
+                            @if($brand->logo)
+                                <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}" class="h-7 w-auto object-contain">
+                            @endif
+                            <span class="font-bold text-gray-600 group-hover:text-accent transition-colors text-sm">{{ $brand->name }}</span>
                         </a>
                     @endif
                 @endforeach
