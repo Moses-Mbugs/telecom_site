@@ -190,6 +190,73 @@
         </div>
     </div>
 
+    {{-- Ad Banner Section --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between pb-3 border-b mb-5">
+            <h2 class="text-lg font-semibold text-gray-700">📢 Site-Wide Ad Banner</h2>
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <div class="relative">
+                    <input type="checkbox" name="ad_active" value="1" id="ad_active"
+                        {{ ($settings['ad_active'] ?? '0') === '1' ? 'checked' : '' }}
+                        class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-purple-600 transition-colors"></div>
+                    <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-600">Show Banner</span>
+            </label>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Headline</label>
+                <input type="text" name="ad_title" value="{{ old('ad_title', $settings['ad_title'] ?? '') }}"
+                    placeholder="e.g. Flash Sale — Up to 30% Off!"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Subtitle</label>
+                <input type="text" name="ad_subtitle" value="{{ old('ad_subtitle', $settings['ad_subtitle'] ?? '') }}"
+                    placeholder="e.g. Limited time offer on all Samsung devices"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Button Label</label>
+                <input type="text" name="ad_cta" value="{{ old('ad_cta', $settings['ad_cta'] ?? '') }}"
+                    placeholder="e.g. Shop Now"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Button Link</label>
+                <input type="url" name="ad_link" value="{{ old('ad_link', $settings['ad_link'] ?? '') }}"
+                    placeholder="https://safeworldtelecom.co.ke/shop"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Background Colour</label>
+                <div class="flex items-center gap-3">
+                    <input type="color" name="ad_bg" value="{{ old('ad_bg', $settings['ad_bg'] ?? '#b5342a') }}"
+                        class="h-10 w-16 cursor-pointer rounded-lg border border-gray-300 p-1">
+                    <span class="text-xs text-gray-400">Pick any colour for the banner background</span>
+                </div>
+            </div>
+            <div class="flex items-end">
+                @php
+                    $previewBg = $settings['ad_bg'] ?? '#b5342a';
+                    $previewTitle = $settings['ad_title'] ?? 'Special Offer';
+                    $previewSub = $settings['ad_subtitle'] ?? 'Explore our latest deals.';
+                    $previewCta = $settings['ad_cta'] ?? 'Shop Now';
+                @endphp
+                <div class="w-full rounded-xl p-4 text-white text-sm" style="background-color: {{ $previewBg }}">
+                    <p class="text-[10px] font-bold uppercase tracking-widest opacity-70 mb-0.5">Preview</p>
+                    <p class="font-bold">{{ $previewTitle }}</p>
+                    <p class="text-white/80 text-xs">{{ $previewSub }}</p>
+                    @if($previewCta)
+                        <span class="inline-block mt-2 px-4 py-1 bg-white text-xs font-bold rounded-full" style="color: {{ $previewBg }}">{{ $previewCta }}</span>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="flex justify-end">
         <button type="submit"
             class="px-8 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition shadow-lg">

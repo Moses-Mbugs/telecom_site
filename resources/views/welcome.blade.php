@@ -101,6 +101,8 @@
 </head>
 <body class="bg-neutral text-gray-900 antialiased">
 
+    @include('partials.ad-banner')
+
     {{-- 1. Hero Section --}}
     <section class="relative h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
 

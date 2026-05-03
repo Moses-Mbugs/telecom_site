@@ -18,6 +18,7 @@ class HomepageSettingController extends Controller
             'why_us_2_title', 'why_us_2_text',
             'why_us_3_title', 'why_us_3_text',
             'shop_video', 'shop_video_title', 'shop_video_text',
+            'ad_active', 'ad_title', 'ad_subtitle', 'ad_link', 'ad_cta', 'ad_bg',
         ];
 
         $settings = HomepageSetting::whereIn('key', $keys)->pluck('value', 'key');
@@ -35,6 +36,7 @@ class HomepageSettingController extends Controller
             'why_us_2_title', 'why_us_2_text',
             'why_us_3_title', 'why_us_3_text',
             'shop_video_title', 'shop_video_text',
+            'ad_title', 'ad_subtitle', 'ad_link', 'ad_cta', 'ad_bg',
         ];
 
         $imageKeys = ['hero_image', 'journey_image', 'plans_image'];
@@ -72,6 +74,9 @@ class HomepageSettingController extends Controller
                 HomepageSetting::set($key, $path);
             }
         }
+
+        // Ad banner active toggle (checkbox — absent when unchecked)
+        HomepageSetting::set('ad_active', $request->has('ad_active') ? '1' : '0');
 
         // Handle deletions for videos
         foreach (['hero_video', 'plans_video', 'shop_video'] as $videoKey) {
