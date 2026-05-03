@@ -566,6 +566,7 @@
     </script>
 
     @stack('scripts')
+    @stack('modals')
 
     {{-- M-Pesa Enquiry Modal --}}
     <div id="mpesa-modal" class="hidden fixed inset-0 z-[200000] flex items-center justify-center px-4">

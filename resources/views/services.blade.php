@@ -71,105 +71,125 @@
     </div>
 </div>
 
+@endsection
+
+@push('modals')
 {{-- =====================================================================
      Service Enquiry Modal
 ====================================================================== --}}
-<div id="service-enquiry-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
-    x-data>
+<div id="service-enquiry-modal" class="hidden fixed inset-0 z-[200000] flex items-center justify-center px-4">
     {{-- Backdrop --}}
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onclick="document.getElementById('service-enquiry-modal').classList.add('hidden')"></div>
 
     {{-- Modal card --}}
-    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg z-10 overflow-hidden max-h-[92vh] flex flex-col">
 
         {{-- Header --}}
-        <div class="bg-gradient-to-br from-[#1e3040] to-[#2d4a60] px-8 pt-8 pb-6 text-white">
+        <div class="bg-gradient-to-r from-[#1e3040] to-[#2d4a60] px-8 py-6 flex items-center justify-between flex-shrink-0">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="w-7 h-7 bg-[#b5342a] rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg">Service Enquiry</h3>
+                </div>
+                <p class="text-gray-300 text-sm">Fill in your details and we will get back to you.</p>
+            </div>
             <button onclick="document.getElementById('service-enquiry-modal').classList.add('hidden')"
-                class="absolute top-4 right-4 text-white/60 hover:text-white transition p-1 rounded-full hover:bg-white/10">
+                class="w-9 h-9 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <div class="w-12 h-12 bg-[#b5342a] rounded-2xl flex items-center justify-center mb-4">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-            </div>
-            <h2 class="text-2xl font-bold mb-1">Service Enquiry</h2>
-            <p class="text-white/70 text-sm">Tell us what you need and we'll get back to you within 1–2 business days.</p>
         </div>
 
-        {{-- Success message --}}
+        {{-- Success state --}}
         @if(session('service_enquiry_success'))
-        <div class="px-8 py-4 bg-green-50 border-b border-green-100 flex items-center gap-3">
-            <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <p class="text-green-800 text-sm font-medium">{{ session('service_enquiry_success') }}</p>
-        </div>
-        @endif
-
-        {{-- Form --}}
-        <form action="{{ route('service-enquiry.store') }}" method="POST" class="px-8 py-6 space-y-4">
-            @csrf
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" required placeholder="John Doe"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
-                    @error('name')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number</label>
-                    <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="+254 7XX XXX XXX"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
-                    @error('phone')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
-                </div>
+        <div class="px-8 py-10 text-center flex-1 flex flex-col items-center justify-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email Address <span class="text-red-500">*</span></label>
-                <input type="email" name="email" value="{{ old('email') }}" required placeholder="you@example.com"
-                    class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
-                <p class="text-xs text-gray-400 mt-1">A confirmation email will be sent here.</p>
-                @error('email')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Service of Interest</label>
-                <select name="service_interest"
-                    class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
-                    <option value="">— Select a service (optional) —</option>
-                    <option value="Mobile Device Retail" {{ old('service_interest') == 'Mobile Device Retail' ? 'selected' : '' }}>Mobile Device Retail</option>
-                    <option value="Device Financing" {{ old('service_interest') == 'Device Financing' ? 'selected' : '' }}>Device Financing & Instalment Plans</option>
-                    <option value="Device Repair" {{ old('service_interest') == 'Device Repair' ? 'selected' : '' }}>Device Repair & Maintenance</option>
-                    <option value="M-Pesa Integration" {{ old('service_interest') == 'M-Pesa Integration' ? 'selected' : '' }}>M-Pesa Integration Services</option>
-                    <option value="Internet & Connectivity" {{ old('service_interest') == 'Internet & Connectivity' ? 'selected' : '' }}>Internet & Connectivity Solutions</option>
-                    <option value="Corporate Procurement" {{ old('service_interest') == 'Corporate Procurement' ? 'selected' : '' }}>Corporate & Bulk Procurement</option>
-                    <option value="Digital Literacy Training" {{ old('service_interest') == 'Digital Literacy Training' ? 'selected' : '' }}>Digital Literacy Training</option>
-                    <option value="Extended Warranty" {{ old('service_interest') == 'Extended Warranty' ? 'selected' : '' }}>Extended Warranty & Protection Plans</option>
-                    <option value="Other" {{ old('service_interest') == 'Other' ? 'selected' : '' }}>Other</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1.5">Your Message <span class="text-red-500">*</span></label>
-                <textarea name="message" rows="4" required placeholder="Tell us what you need..."
-                    class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition resize-none">{{ old('message') }}</textarea>
-                @error('message')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <button type="submit"
-                class="w-full bg-gradient-to-r from-[#b5342a] to-[#1e3040] text-white font-bold py-3 rounded-xl hover:opacity-90 transition-opacity shadow-lg">
-                Submit Enquiry
+            <h4 class="text-xl font-bold text-gray-900 mb-2">Enquiry Submitted!</h4>
+            <p class="text-gray-500 text-sm mb-6">{{ session('service_enquiry_success') }}</p>
+            <button onclick="document.getElementById('service-enquiry-modal').classList.add('hidden')"
+                class="px-8 py-3 bg-[#1e3040] text-white font-bold rounded-xl hover:bg-[#b5342a] transition-colors">
+                Close
             </button>
-        </form>
+        </div>
+        @else
+
+        {{-- Scrollable form body --}}
+        <div class="overflow-y-auto flex-1">
+            <form action="{{ route('service-enquiry.store') }}" method="POST" class="px-8 py-6 space-y-4">
+                @csrf
+
+                @if($errors->any())
+                <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+                    Please correct the errors below and try again.
+                </div>
+                @endif
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Full Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" value="{{ old('name') }}" required placeholder="John Doe"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition @error('name') border-red-400 @enderror">
+                        @error('name')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Phone Number</label>
+                        <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="+254 7XX XXX XXX"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Email Address <span class="text-red-500">*</span></label>
+                    <input type="email" name="email" value="{{ old('email') }}" required placeholder="you@example.com"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition @error('email') border-red-400 @enderror">
+                    <p class="text-xs text-gray-400 mt-1">A confirmation email will be sent here.</p>
+                    @error('email')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Service of Interest</label>
+                    <select name="service_interest"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition">
+                        <option value="">— Select a service (optional) —</option>
+                        <option value="Mobile Device Retail"          {{ old('service_interest') == 'Mobile Device Retail' ? 'selected' : '' }}>Mobile Device Retail</option>
+                        <option value="Device Financing"              {{ old('service_interest') == 'Device Financing' ? 'selected' : '' }}>Device Financing & Instalment Plans</option>
+                        <option value="Device Repair"                 {{ old('service_interest') == 'Device Repair' ? 'selected' : '' }}>Device Repair & Maintenance</option>
+                        <option value="M-Pesa Integration"            {{ old('service_interest') == 'M-Pesa Integration' ? 'selected' : '' }}>M-Pesa Integration Services</option>
+                        <option value="Internet & Connectivity"       {{ old('service_interest') == 'Internet & Connectivity' ? 'selected' : '' }}>Internet & Connectivity Solutions</option>
+                        <option value="Corporate Procurement"         {{ old('service_interest') == 'Corporate Procurement' ? 'selected' : '' }}>Corporate & Bulk Procurement</option>
+                        <option value="Digital Literacy Training"     {{ old('service_interest') == 'Digital Literacy Training' ? 'selected' : '' }}>Digital Literacy Training</option>
+                        <option value="Extended Warranty"             {{ old('service_interest') == 'Extended Warranty' ? 'selected' : '' }}>Extended Warranty & Protection Plans</option>
+                        <option value="Other"                         {{ old('service_interest') == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Your Message <span class="text-red-500">*</span></label>
+                    <textarea name="message" rows="4" required placeholder="Tell us what you need..."
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#b5342a]/30 focus:border-[#b5342a] outline-none transition resize-none @error('message') border-red-400 @enderror">{{ old('message') }}</textarea>
+                    @error('message')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 bg-[#b5342a] hover:bg-[#9c2820] text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-red-500/20">
+                    Submit Enquiry
+                </button>
+            </form>
+        </div>
+
+        @endif
     </div>
 </div>
 
-@if(session('service_enquiry_success') || $errors->has('name') || $errors->has('email') || $errors->has('message'))
+@if($errors->has('name') || $errors->has('email') || $errors->has('message'))
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('service-enquiry-modal').classList.remove('hidden');
     });
 </script>
 @endif
-
-@endsection
+@endpush
