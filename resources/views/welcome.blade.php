@@ -512,6 +512,8 @@
     </section>
     @endif
 
+    @include('partials.promo-section')
+
     {{-- Footer --}}
     <footer class="bg-[#1e3040] text-white py-16 relative overflow-hidden">
         <!-- Animated Background Elements -->

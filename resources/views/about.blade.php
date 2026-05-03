@@ -5,8 +5,6 @@
 
 @section('content')
 
-@include('partials.ad-banner')
-
 <div class="max-w-7xl mx-auto px-6 py-12">
     <div class="text-center mb-16">
         <h1 class="text-4xl font-extrabold text-gray-900 mb-4">About Safe World Telecom</h1>

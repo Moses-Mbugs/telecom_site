@@ -19,6 +19,8 @@ class HomepageSettingController extends Controller
             'why_us_3_title', 'why_us_3_text',
             'shop_video', 'shop_video_title', 'shop_video_text',
             'ad_active', 'ad_title', 'ad_subtitle', 'ad_link', 'ad_cta', 'ad_bg',
+            'promo_active', 'promo_image', 'promo_video',
+            'promo_title', 'promo_text', 'promo_cta', 'promo_link',
         ];
 
         $settings = HomepageSetting::whereIn('key', $keys)->pluck('value', 'key');
@@ -37,10 +39,11 @@ class HomepageSettingController extends Controller
             'why_us_3_title', 'why_us_3_text',
             'shop_video_title', 'shop_video_text',
             'ad_title', 'ad_subtitle', 'ad_link', 'ad_cta', 'ad_bg',
+            'promo_title', 'promo_text', 'promo_cta', 'promo_link',
         ];
 
-        $imageKeys = ['hero_image', 'journey_image', 'plans_image'];
-        $videoKeys = ['hero_video', 'plans_video', 'shop_video'];
+        $imageKeys = ['hero_image', 'journey_image', 'plans_image', 'promo_image'];
+        $videoKeys = ['hero_video', 'plans_video', 'shop_video', 'promo_video'];
 
         $rules = [];
         foreach ($textKeys as $key) {
@@ -53,7 +56,7 @@ class HomepageSettingController extends Controller
             $rules[$key . '_file'] = 'nullable|mimes:mp4,mov,avi,wmv|max:51200'; // 50MB max
         }
 
-        $validated = $request->validate($rules);
+        $request->validate($rules);
 
         // Save text fields
         foreach ($textKeys as $key) {
@@ -75,11 +78,12 @@ class HomepageSettingController extends Controller
             }
         }
 
-        // Ad banner active toggle (checkbox — absent when unchecked)
-        HomepageSetting::set('ad_active', $request->has('ad_active') ? '1' : '0');
+        // Checkbox toggles (absent when unchecked)
+        HomepageSetting::set('ad_active',    $request->has('ad_active')    ? '1' : '0');
+        HomepageSetting::set('promo_active', $request->has('promo_active') ? '1' : '0');
 
         // Handle deletions for videos
-        foreach (['hero_video', 'plans_video', 'shop_video'] as $videoKey) {
+        foreach (['hero_video', 'plans_video', 'shop_video', 'promo_video'] as $videoKey) {
             if ($request->has('remove_' . $videoKey)) {
                 $oldPath = HomepageSetting::get($videoKey);
                 if ($oldPath && !str_starts_with($oldPath, 'http')) {

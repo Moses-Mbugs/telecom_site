@@ -37,8 +37,6 @@
 
 @section('content')
 
-    @include('partials.ad-banner')
-
     <!-- Top Alert (Dynamic) -->
     @if ($shopPage && $shopPage->top_alert_active)
         <div

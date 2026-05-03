@@ -190,6 +190,94 @@
         </div>
     </div>
 
+    {{-- Promotional Media Section --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center justify-between pb-3 border-b mb-5">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-700">🎬 Promotional Section</h2>
+                <p class="text-xs text-gray-400 mt-0.5">Full-width image or video section shown on every page, just above the footer.</p>
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <div class="relative">
+                    <input type="checkbox" name="promo_active" value="1" id="promo_active"
+                        {{ ($settings['promo_active'] ?? '0') === '1' ? 'checked' : '' }}
+                        class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-purple-600 transition-colors"></div>
+                    <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-600">Show Section</span>
+            </label>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            {{-- Media uploads --}}
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Background Image</label>
+                @if(!empty($settings['promo_image']))
+                    <div class="mb-2">
+                        @php $pi = $settings['promo_image']; @endphp
+                        <img src="{{ Str::startsWith($pi, 'http') ? $pi : asset('storage/' . $pi) }}"
+                             class="h-24 w-full rounded-lg object-cover" alt="Current promo image">
+                    </div>
+                @endif
+                <input type="file" name="promo_image_file" accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+                <p class="text-xs text-gray-400 mt-1">Used when no video is set. Recommended: 1920×600px or wider.</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Background Video</label>
+                @if(!empty($settings['promo_video']))
+                    <div class="mb-2 flex items-center justify-between">
+                        <span class="text-sm text-green-600 font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            Video Uploaded
+                        </span>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="remove_promo_video" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <span class="ml-2 text-sm text-red-600">Remove Video</span>
+                        </label>
+                    </div>
+                @endif
+                <input type="file" name="promo_video_file" accept="video/mp4,video/x-m4v,video/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+                <p class="text-xs text-gray-400 mt-1">Video takes priority over image. Max 50MB. Plays silently on a loop.</p>
+            </div>
+
+            {{-- Text fields --}}
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Headline</label>
+                <input type="text" name="promo_title" value="{{ old('promo_title', $settings['promo_title'] ?? '') }}"
+                    placeholder="e.g. Up to 30% Off All Samsung Devices"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+                <p class="text-xs text-gray-400 mt-1">Use a new line (Enter) to break the headline across two lines.</p>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Subtitle / Body Text</label>
+                <textarea name="promo_text" rows="2"
+                    placeholder="e.g. Limited time offer — visit any of our 19 outlets or shop online."
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none resize-none">{{ old('promo_text', $settings['promo_text'] ?? '') }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Button Label</label>
+                <input type="text" name="promo_cta" value="{{ old('promo_cta', $settings['promo_cta'] ?? '') }}"
+                    placeholder="e.g. Shop Now"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Button Link</label>
+                <input type="url" name="promo_link" value="{{ old('promo_link', $settings['promo_link'] ?? '') }}"
+                    placeholder="https://safeworldtelecom.co.ke/shop"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+            </div>
+
+        </div>
+    </div>
+
     {{-- Ad Banner Section --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div class="flex items-center justify-between pb-3 border-b mb-5">

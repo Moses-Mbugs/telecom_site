@@ -425,10 +425,14 @@
     </nav>
     @endunless
 
+    @include('partials.ad-banner')
+
     <!-- Main content -->
     <main class="{{ (isset($hideNavbar) && $hideNavbar) ? '' : 'pt-20' }}">
         @yield('content')
     </main>
+
+    @include('partials.promo-section')
 
     <!-- Footer -->
     <footer class="bg-[#1e3040] text-white py-16 relative overflow-hidden">

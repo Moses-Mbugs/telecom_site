@@ -9,8 +9,6 @@
 
 @section('content')
 
-    @include('partials.ad-banner')
-
     <!-- Top Advert Strip -->
     @if (isset($shopPage) && $shopPage->top_alert_active)
         <div class="text-white text-xs md:text-sm py-2.5 text-center font-bold tracking-wider relative z-50"
