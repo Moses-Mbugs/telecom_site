@@ -484,18 +484,18 @@
 
     {{-- 8. Our Partners Section --}}
     @if($partners->isNotEmpty())
-    <section class="py-20 bg-white overflow-hidden">
-        <div class="container mx-auto px-6 mb-10 text-center">
+    <section class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-6 mb-10 text-center">
             <span class="inline-block px-4 py-1.5 bg-[#b5342a]/10 text-[#b5342a] text-sm font-bold rounded-full uppercase tracking-widest mb-4">Trusted By</span>
             <h2 class="text-3xl md:text-4xl font-bold text-[#1e3040]">Our Partners</h2>
         </div>
-        <div class="relative w-full overflow-hidden partner-carousel-wrapper">
-            <div class="flex items-center gap-14 w-max partner-carousel">
+        <div class="max-w-5xl mx-auto relative overflow-hidden partner-carousel-wrapper">
+            <div class="flex items-center gap-16 w-max partner-carousel">
                 @foreach($partners as $partner)
                     <div class="flex-shrink-0 flex items-center justify-center">
                         <img src="{{ asset('storage/' . $partner->logo) }}"
                              alt="{{ $partner->name }}"
-                             class="max-h-14 max-w-[140px] object-contain opacity-80 hover:opacity-100 transition-all duration-300"
+                             class="max-h-20 max-w-[180px] object-contain opacity-80 hover:opacity-100 transition-all duration-300"
                              title="{{ $partner->name }}">
                     </div>
                 @endforeach
@@ -503,7 +503,7 @@
                     <div class="flex-shrink-0 flex items-center justify-center">
                         <img src="{{ asset('storage/' . $partner->logo) }}"
                              alt="{{ $partner->name }}"
-                             class="max-h-14 max-w-[140px] object-contain opacity-80 hover:opacity-100 transition-all duration-300"
+                             class="max-h-20 max-w-[180px] object-contain opacity-80 hover:opacity-100 transition-all duration-300"
                              title="{{ $partner->name }}">
                     </div>
                 @endforeach

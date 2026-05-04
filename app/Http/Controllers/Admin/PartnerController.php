@@ -24,7 +24,7 @@ class PartnerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'required|image|max:2048',
+            'logo' => 'required|mimes:jpg,jpeg,png,gif,webp,svg|max:2048',
         ]);
 
         $logoPath = $request->file('logo')->store('partners', 'public');
@@ -48,7 +48,7 @@ class PartnerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|max:2048',
+            'logo' => 'nullable|mimes:jpg,jpeg,png,gif,webp,svg|max:2048',
         ]);
 
         $data = [
