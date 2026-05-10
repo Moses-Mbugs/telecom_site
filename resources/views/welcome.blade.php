@@ -104,7 +104,7 @@
     @include('partials.ad-banner')
 
     {{-- 1. Hero Section --}}
-    <section class="relative h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
+    <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
 
         {{-- Background Media --}}
         <div class="absolute inset-0 z-0">
@@ -128,10 +128,10 @@
             <div class="relative z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center justify-center h-full pb-20">
 
                 {{-- Glass Card Wrapper --}}
-                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 md:p-12 shadow-2xl max-w-3xl w-full mx-auto transform hover:scale-[1.01] transition duration-500">
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-5 sm:p-8 md:p-12 shadow-2xl max-w-3xl w-full mx-auto transform hover:scale-[1.01] transition duration-500">
                     {{-- Logo --}}
                     <div class="mb-8">
-                        <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World Telecom Logo" class="h-32 md:h-40 object-contain drop-shadow-2xl mx-auto">
+                        <img src="{{ asset('images/safe_world_logo_cropped_transparent.png') }}" alt="Safe World Telecom Logo" class="h-20 sm:h-32 md:h-40 object-contain drop-shadow-2xl mx-auto">
                     </div>
 
                     {{-- Company Name --}}
@@ -159,7 +159,7 @@
         {{-- Stats Footer (Full Width, Blurred) --}}
         <div class="absolute bottom-0 w-full bg-white/10 backdrop-blur-md border-t border-white/10 z-20 py-6">
             <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="grid grid-cols-3 gap-2 md:gap-6 text-center">
                     <div class="transform hover:scale-105 transition duration-300">
                         <span class="block text-2xl md:text-3xl font-bold text-white drop-shadow-md stat-number" data-target="19">0</span>
                         <span class="text-xs md:text-sm text-gray-300 uppercase tracking-wider font-medium">Retail Outlets</span>
@@ -178,7 +178,7 @@
     </section>
 
     {{-- 2. Story Section --}}
-    <section id="our-story" class="py-20 bg-gray-50">
+    <section id="our-story" class="py-12 md:py-20 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center gap-12">
 
@@ -247,7 +247,7 @@
                         @php $plansImage = $settings['plans_image'] ?? 'https://images.unsplash.com/photo-1556740758-90de374c12ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'; @endphp
                         <img src="{{ Str::startsWith($plansImage, 'http') ? $plansImage : asset('storage/' . $plansImage) }}" class="w-full h-full object-cover" alt="Ad Slide 1">
                     @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-10 md:p-16">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-16">
                         <span class="px-4 py-1 bg-[#b5342a] text-white text-sm font-bold rounded-full w-fit mb-4">Featured Offer</span>
                         <h3 class="text-3xl md:text-5xl font-bold text-white mb-4">{{ $settings['plans_title'] ?? 'Unlimited Data Plans' }}</h3>
                         <p class="text-gray-200 text-lg md:text-xl max-w-xl">{{ $settings['plans_text'] ?? 'Stay connected without limits. Stream, game, and work with our new affordable unlimited fiber packages.' }}</p>
@@ -258,7 +258,7 @@
     </section>
 
     {{-- 4. Quick Top-Up Section (Coming Soon) --}}
-    <section id="topup" class="py-32 px-6 bg-[#1e3040] relative overflow-hidden">
+    <section id="topup" class="py-16 md:py-32 px-6 bg-[#1e3040] relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-96 h-96 bg-[#b5342a] rounded-full filter blur-3xl animate-pulse-slow"></div>
             <div class="absolute bottom-0 right-0 w-96 h-96 bg-[#7a7a6a] rounded-full filter blur-3xl animate-pulse-slow"></div>
@@ -270,7 +270,7 @@
                 Coming Soon
             </span>
 
-            <h2 class="text-5xl md:text-6xl font-bold text-white mb-6">
+            <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6">
                 Quick <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#b5342a] to-[#7a7a6a]">Top-Up</span>
             </h2>
             <p class="text-xl text-gray-300 mb-4">
@@ -331,12 +331,12 @@
     {{-- 5. Explore Devices & Locations (Map Background Card) --}}
     <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[500px]">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl min-h-[400px] md:min-h-[500px]">
                 {{-- Background Image (Phone with Maps) --}}
                 <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Find a Store" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-black/60"></div>
 
-                <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-8">
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-4 md:p-8">
                     <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 max-w-3xl">
                         Explore our latest devices, find a store near you, or discover our corporate solutions today.
                     </h2>
@@ -354,10 +354,10 @@
     </section>
 
     {{-- 6. Why Choose Us (Revamped UI) --}}
-    <section class="py-24 bg-white">
+    <section class="py-14 md:py-24 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Choose <span class="text-[#b5342a]">Us</span></h2>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Why Choose <span class="text-[#b5342a]">Us</span></h2>
                 <p class="text-xl text-gray-500 max-w-2xl mx-auto">We are committed to providing the best connectivity experience in Kenya.</p>
             </div>
 
@@ -402,9 +402,9 @@
     <div id="map-section"></div>
 
     {{-- 7. Customer Reviews Section (Marquee) --}}
-    <section class="py-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+    <section class="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
         <div class="container mx-auto px-6 mb-12 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">What Our <span class="text-[#b5342a]">Clients Say</span></h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">What Our <span class="text-[#b5342a]">Clients Say</span></h2>
             <p class="text-xl text-gray-500 max-w-2xl mx-auto">Real stories from satisfied customers across the country.</p>
         </div>
 
@@ -484,7 +484,7 @@
 
     {{-- 8. Our Partners Section --}}
     @if($partners->isNotEmpty())
-    <section class="py-20 bg-white">
+    <section class="py-12 md:py-20 bg-white">
         <div class="max-w-5xl mx-auto px-6 mb-10 text-center">
             <span class="inline-block px-4 py-1.5 bg-[#b5342a]/10 text-[#b5342a] text-sm font-bold rounded-full uppercase tracking-widest mb-4">Trusted By</span>
             <h2 class="text-3xl md:text-4xl font-bold text-[#1e3040]">Our Partners</h2>
@@ -524,7 +524,7 @@
 
         <div class="container mx-auto px-6 relative z-10">
             <!-- Footer Top -->
-            <div class="grid md:grid-cols-4 gap-10 mb-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
                 <!-- Company Info -->
                 <div>
                     <h4 class="text-xl font-bold mb-6 text-[#b5342a]">

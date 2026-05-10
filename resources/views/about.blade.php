@@ -21,7 +21,7 @@
                 At Safe World Telecom, we believe in the power of connection. Our mission is to provide affordable, high-quality mobile devices and telecommunication solutions to everyone. We strive to bridge the digital divide and empower individuals and businesses to thrive in a connected world.
             </p>
             <p class="text-gray-600 leading-relaxed">
-                Founded in 2020, we have quickly grown to become a trusted name in the industry, known for our reliability, customer-centric approach, and innovative product offerings.
+                Founded in 2014, we have quickly grown to become a trusted name in the industry, known for our reliability, customer-centric approach, and innovative product offerings.
             </p>
         </div>
     </div>
