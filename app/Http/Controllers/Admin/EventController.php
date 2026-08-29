@@ -28,6 +28,7 @@ class EventController extends Controller
             'image'       => 'required|image|max:4096',
         ]);
 
+        $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
         $imagePath = $request->file('image')->store('events', 'public');
 
         CompanyEvent::create([
@@ -56,6 +57,7 @@ class EventController extends Controller
         $data = ['title' => $request->title, 'description' => $request->description];
 
         if ($request->hasFile('image')) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             Storage::disk('public')->delete($event->image);
             $data['image'] = $request->file('image')->store('events', 'public');
         }

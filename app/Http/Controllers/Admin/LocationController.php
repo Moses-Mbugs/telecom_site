@@ -35,6 +35,7 @@ class LocationController extends Controller
         }
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             $validated['image_url'] = $request->file('image')->store('locations', 'public');
         }
 
@@ -63,6 +64,7 @@ class LocationController extends Controller
         }
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             if ($location->image_url && !str_starts_with($location->image_url, 'http')) {
                 Storage::disk('public')->delete($location->image_url);
             }

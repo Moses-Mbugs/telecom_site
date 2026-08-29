@@ -36,6 +36,7 @@ class CategoryController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             $imagePath = $request->file('image')->store('categories', 'public');
         }
 
@@ -62,6 +63,7 @@ class CategoryController extends Controller
         ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             if ($category->image && !str_starts_with($category->image, 'http')) {
                 Storage::disk('public')->delete($category->image);
             }

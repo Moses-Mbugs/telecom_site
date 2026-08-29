@@ -63,12 +63,24 @@ class HomepageSettingController extends Controller
             HomepageSetting::set($key, $request->input($key));
         }
 
-        $allFileKeys = array_merge($imageKeys, $videoKeys);
-
         // Save file uploads
-        foreach ($allFileKeys as $key) {
+        foreach ($imageKeys as $key) {
             $fileField = $key . '_file';
             if ($request->hasFile($fileField) && $request->file($fileField)->isValid()) {
+                $this->assertAllowedMimeType($request->file($fileField), self::ALLOWED_IMAGE_MIMES, $fileField);
+                $oldPath = HomepageSetting::get($key);
+                if ($oldPath && !str_starts_with($oldPath, 'http')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+                }
+                $path = $request->file($fileField)->store('homepage', 'public');
+                HomepageSetting::set($key, $path);
+            }
+        }
+
+        foreach ($videoKeys as $key) {
+            $fileField = $key . '_file';
+            if ($request->hasFile($fileField) && $request->file($fileField)->isValid()) {
+                $this->assertAllowedMimeType($request->file($fileField), self::ALLOWED_VIDEO_MIMES, $fileField);
                 $oldPath = HomepageSetting::get($key);
                 if ($oldPath && !str_starts_with($oldPath, 'http')) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);

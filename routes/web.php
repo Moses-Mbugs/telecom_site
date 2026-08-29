@@ -14,10 +14,13 @@ use App\Http\Controllers\EventsController;
 use App\Http\Controllers\SdgController;
 use App\Http\Controllers\MpesaEnquiryController;
 use App\Http\Controllers\ServiceEnquiryController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::redirect('/home', '/');
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Auth::routes();
 

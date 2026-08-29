@@ -42,6 +42,7 @@ class ProductController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
@@ -89,6 +90,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             if ($product->image && !str_starts_with($product->image, 'http')) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
             }

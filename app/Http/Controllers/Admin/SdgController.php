@@ -32,6 +32,7 @@ class SdgController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             $imagePath = $request->file('image')->store('sdg', 'public');
         }
 
@@ -70,6 +71,7 @@ class SdgController extends Controller
         ];
 
         if ($request->hasFile('image')) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             if ($sdg->image) {
                 Storage::disk('public')->delete($sdg->image);
             }

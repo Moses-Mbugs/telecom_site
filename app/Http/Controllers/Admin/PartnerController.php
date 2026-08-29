@@ -24,9 +24,10 @@ class PartnerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'required|mimes:jpg,jpeg,png,gif,webp,svg|max:2048',
+            'logo' => 'required|mimes:jpg,jpeg,png,gif,webp|max:2048',
         ]);
 
+        $this->assertAllowedMimeType($request->file('logo'), self::ALLOWED_IMAGE_MIMES, 'logo');
         $logoPath = $request->file('logo')->store('partners', 'public');
 
         Partner::create([
@@ -48,7 +49,7 @@ class PartnerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|mimes:jpg,jpeg,png,gif,webp,svg|max:2048',
+            'logo' => 'nullable|mimes:jpg,jpeg,png,gif,webp|max:2048',
         ]);
 
         $data = [
@@ -57,6 +58,7 @@ class PartnerController extends Controller
         ];
 
         if ($request->hasFile('logo')) {
+            $this->assertAllowedMimeType($request->file('logo'), self::ALLOWED_IMAGE_MIMES, 'logo');
             Storage::disk('public')->delete($partner->logo);
             $data['logo'] = $request->file('logo')->store('partners', 'public');
         }

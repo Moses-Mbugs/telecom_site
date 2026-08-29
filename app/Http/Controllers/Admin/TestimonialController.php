@@ -30,6 +30,7 @@ class TestimonialController extends Controller
 
         $imageUrl = null;
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             $imageUrl = $request->file('image')->store('testimonials', 'public');
         }
 
@@ -59,6 +60,7 @@ class TestimonialController extends Controller
         ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->assertAllowedMimeType($request->file('image'), self::ALLOWED_IMAGE_MIMES, 'image');
             if ($testimonial->image_url && !str_starts_with($testimonial->image_url, 'http')) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($testimonial->image_url);
             }

@@ -36,6 +36,7 @@ class BrandController extends Controller
 
         $logoPath = null;
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
+            $this->assertAllowedMimeType($request->file('logo'), self::ALLOWED_IMAGE_MIMES, 'logo');
             $logoPath = $request->file('logo')->store('brands', 'public');
         }
 
@@ -62,6 +63,7 @@ class BrandController extends Controller
         ]);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
+            $this->assertAllowedMimeType($request->file('logo'), self::ALLOWED_IMAGE_MIMES, 'logo');
             if ($brand->logo && !str_starts_with($brand->logo, 'http')) {
                 Storage::disk('public')->delete($brand->logo);
             }
